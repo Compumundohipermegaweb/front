@@ -1,4 +1,5 @@
-# HefestoFront
+# Hefesto Front
+[![CI](https://github.com/Compumundohipermegaweb/front/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Compumundohipermegaweb/front/actions/workflows/ci.yml)
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.2.11.
 
