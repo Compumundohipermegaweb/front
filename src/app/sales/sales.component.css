@@ -1,0 +1,25 @@
+table {
+    width: 100%;
+}
+
+tr.mat-footer-row {
+    font-weight: bold;
+}
+
+.spacer {
+    flex: 1 1 auto;
+}
+
+button.mat-error {
+    float: right;
+    display: inline-flex;
+}
+
+button.mat-primary {
+    float: right;
+    display: inline-flex;
+}
+
+.mat-form-field {
+    padding: 0.5rem;
+}
