@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { SalesService } from './service/sales.service';
+import { Sale, SaleResponse, SalesService } from './service/sales.service';
 
 @Component({
   selector: 'app-sales',
@@ -21,7 +21,7 @@ export class SalesComponent implements OnInit {
   itemForm: FormGroup;
 
   invoiceTypeControl = new FormControl("B");
-  sellerControl = new FormControl("");
+  salesmanControl = new FormControl("");
   branchControl = new FormControl("");
 
   idControl = new FormControl("");
@@ -30,12 +30,15 @@ export class SalesComponent implements OnInit {
   quantityControl = new FormControl("");
   priceControl = new FormControl("");
 
-  constructor(private formBuilderl: FormBuilder, private changeDetectorRefs: ChangeDetectorRef) {
+  saleResponse: SaleResponse;
+
+  constructor(private formBuilderl: FormBuilder, private changeDetectorRefs: ChangeDetectorRef, private salesService: SalesService) {
     this.items = []
 
     this.constantsForm = formBuilderl.group({
       invoice: this.invoiceTypeControl,
-      seller: this.sellerControl,
+      seller: this.salesmanControl
+  ,
       branchId: this.branchControl
     });
 
@@ -79,24 +82,46 @@ export class SalesComponent implements OnInit {
 
 
   registerSale(){
-      this.items = [];
-      this.refreshDataSource();
+    this.invoiceSale()
+    this.items = [];
+    this.refreshDataSource();
+  }
 
+  invoiceSale() {
+    const sale = this.createRequest()
+    this.saleResponse = this.salesService.postSale(sale)
+  }
+
+  createRequest(): Sale {
+    return {
+      invoiceType: this.invoiceTypeControl.value,
+      client: {
+        name: "Cliente casual",
+        document: {
+          type: "DNI",
+          value: "00000000",
+        },
+        invoice_address: ""
+      },
+      salesman: {
+        code: this.salesmanControl
+    .value
+      },
+      branch: {
+        id: this.branchControl.value
+      },
+      detail: this.items,
+      payment_details: [
+        { type: "CASH", amount: this.items.map(i => i.price * i.quantity).reduce((a, b) => a + b) }
+      ]
+    }
   }
 }
-
-
 
 export interface Item {
   id: String;
   sku: Number;
   detail: String;
   quantity: number;
-  price: number
+  price: number;
 }
-
-
-
-
-
-//Jaja te engañe
