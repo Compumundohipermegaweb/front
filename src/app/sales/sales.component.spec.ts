@@ -89,7 +89,7 @@ describe('SalesComponent', () => {
     component.addItem()
 
     expect(component.invoiceTypeControl.value).toBe("A")
-    expect(component.sellerControl.value).toBe("COD10")
+    expect(component.salesmanControl.value).toBe("COD10")
     expect(component.branchControl.value).toBe("SUC03")
   })
 
