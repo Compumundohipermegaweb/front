@@ -1,5 +1,5 @@
 import { AppComponent } from './app.component';
-import { SalesComponent } from './sales/sales.component'; 
+import { SalesComponent } from './sales/sales.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 
 import { NgModule } from '@angular/core';

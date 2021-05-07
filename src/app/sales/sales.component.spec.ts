@@ -54,7 +54,7 @@ describe('SalesComponent', () => {
   it("should add item", () => {
     component.constantsForm.setValue({invoice: "A", seller: "COD10", branchId: "SUC03"})
     component.itemForm.setValue({id: 1, sku: 1, detail: "Details", quantity: 10, price: 110.50})
-    
+
     component.addItem()
 
     expect(component.items).toHaveSize(1)
@@ -76,7 +76,7 @@ describe('SalesComponent', () => {
   it("should not add the item if form is not valid", () => {
     component.constantsForm.setValue({invoice: "A", seller: "COD10", branchId: "SUC03"})
     component.itemForm.setValue({id: null, sku: 1, detail: "Details", quantity: 10, price: 110.50})
-    
+
     component.addItem()
 
     expect(component.items).toHaveSize(0)
@@ -85,7 +85,7 @@ describe('SalesComponent', () => {
   it("should not clean constant form when adding item", () => {
     component.constantsForm.setValue({invoice: "A", seller: "COD10", branchId: "SUC03"})
     component.itemForm.setValue({id: 1, sku: 1, detail: "Details", quantity: 10, price: 110.50})
-  
+
     component.addItem()
 
     expect(component.invoiceTypeControl.value).toBe("A")
@@ -98,6 +98,16 @@ describe('SalesComponent', () => {
     component.itemForm.setValue({id: 1, sku: 1, detail: "Details", quantity: 10, price: 110.50})
 
     component.addItem()
+
+    expect(component.items).toHaveSize(0)
+  })
+
+  it("shoul clean all items", () => {
+    component.constantsForm.setValue({invoice: "A", seller: "COD10", branchId: "SUC03"})
+    component.itemForm.setValue({id: 1, sku: 1, detail: "Details", quantity: 10, price: 110.50})
+    component.addItem()
+
+    component.registerSale()
 
     expect(component.items).toHaveSize(0)
   })

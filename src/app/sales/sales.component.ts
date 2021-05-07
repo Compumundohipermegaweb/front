@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { SalesService } from './service/sales.service';
 
 @Component({
   selector: 'app-sales',
@@ -19,7 +20,7 @@ export class SalesComponent implements OnInit {
   constantsForm: FormGroup;
   itemForm: FormGroup;
 
-  invoiceTypeControl = new FormControl("A");
+  invoiceTypeControl = new FormControl("B");
   sellerControl = new FormControl("");
   branchControl = new FormControl("");
 
@@ -50,15 +51,21 @@ export class SalesComponent implements OnInit {
   ngOnInit(): void {
   }
 
+
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator
+  }
+
+
+  refreshDataSource(){
+    this.dataSource.data = this.items
   }
 
   addItem() {
     if(this.itemForm.valid && this.constantsForm.valid) {
       this.items.push(this.itemForm.value)
       this.itemForm.reset()
-      this.dataSource.data = this.items
+      this.refreshDataSource();
     }
   }
 
@@ -70,7 +77,15 @@ export class SalesComponent implements OnInit {
     }
   }
 
+
+  registerSale(){
+      this.items = [];
+      this.refreshDataSource();
+
+  }
 }
+
+
 
 export interface Item {
   id: String;
@@ -79,3 +94,9 @@ export interface Item {
   quantity: number;
   price: number
 }
+
+
+
+
+
+//Jaja te engañe

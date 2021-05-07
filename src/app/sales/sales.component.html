@@ -1,6 +1,6 @@
 <mat-card style="height: fit-content;">
     <mat-card-title style="padding: 1rem;">
-        <mat-icon>sell</mat-icon> 
+        <mat-icon>sell</mat-icon>
         <span> Ventas</span>
     </mat-card-title>
 
@@ -14,16 +14,16 @@
             <mat-form-field>
                 <mat-label>Tipo de factura</mat-label>
                 <mat-select [formControl]="invoiceTypeControl" required>
-                    <mat-option value="A">Consumidor final</mat-option>
+                    <mat-option value="B">Consumidor final</mat-option>
                 </mat-select>
             </mat-form-field>
-            
+
             <mat-form-field>
                 <mat-label>Vendedor</mat-label>
                 <input matInput [formControl]="sellerControl" required>
                 <mat-hint>Código de empleado</mat-hint>
             </mat-form-field>
-            
+
             <mat-form-field>
                 <mat-label>Sucursal</mat-label>
                 <input matInput [formControl]="branchControl" required>
@@ -37,7 +37,7 @@
                     <input matInput [formControl]="idControl" required>
                 </mat-form-field>
 
-                <mat-form-field>    
+                <mat-form-field>
                     <mat-label>SKU</mat-label>
                     <input matInput type="number" [formControl]="skuControl" required>
                 </mat-form-field>
@@ -46,13 +46,13 @@
                     <mat-label>Detalle</mat-label>
                     <input matInput [formControl]="detailControl" required>
                 </mat-form-field>
-                
+
                 <mat-form-field>
                     <mat-label>Cantidad</mat-label>
                     <input matInput type="number" [formControl]="quantityControl" required>
                 </mat-form-field>
 
-                
+
                 <mat-form-field>
                     <mat-label>Precio unitario</mat-label>
                     <input matInput type="number" [formControl]="priceControl" required>
@@ -64,40 +64,40 @@
                 </button>
             </div>
         </form>
-        <div>          
+        <div>
             <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
-            
+
             <table mat-table [dataSource]="dataSource">
                 <ng-container matColumnDef="id">
                     <th mat-header-cell *matHeaderCellDef>Nº de ítem</th>
                     <td mat-cell *matCellDef="let item"> {{item.id}} </td>
                     <td mat-footer-cell *matFooterCellDef></td>
                 </ng-container>
-                
+
                 <ng-container matColumnDef="sku">
                     <th mat-header-cell *matHeaderCellDef>SKU</th>
                     <td mat-cell *matCellDef="let item"> {{item.sku}} </td>
                     <td mat-footer-cell *matFooterCellDef></td>
                 </ng-container>
-                
+
                 <ng-container matColumnDef="detail">
                     <th mat-header-cell *matHeaderCellDef>Detalle</th>
                     <td mat-cell *matCellDef="let item"> {{item.detail}} </td>
                     <td mat-footer-cell *matFooterCellDef></td>
                 </ng-container>
-                
+
                 <ng-container matColumnDef="quantity">
                     <th mat-header-cell *matHeaderCellDef>Cantidad</th>
                     <td mat-cell *matCellDef="let item"> {{item.quantity}} </td>
                     <td mat-footer-cell *matFooterCellDef></td>
                 </ng-container>
-                
+
                 <ng-container matColumnDef="price">
                     <th mat-header-cell *matHeaderCellDef>Precio</th>
                     <td mat-cell *matCellDef="let item"> {{item.price}} </td>
                     <td mat-footer-cell *matFooterCellDef> Total </td>
                 </ng-container>
-                
+
                 <ng-container matColumnDef="subTotal">
                     <th mat-header-cell *matHeaderCellDef>Sub total</th>
                     <td mat-cell *matCellDef="let item"> {{item.price * item.quantity}} </td>
@@ -114,7 +114,7 @@
         </div>
     </mat-card-content>
     <mat-card-actions style="overflow: hidden;">
-        <button mat-raised-button color="primary">Vender</button>
+        <button mat-raised-button color="primary" (click)="registerSale()" >Vender</button>
         <button mat-raised-button color="error">Cancelar venta</button>
     </mat-card-actions>
 </mat-card>
