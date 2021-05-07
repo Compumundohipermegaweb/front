@@ -23,7 +23,6 @@ export class SalesComponent implements OnInit {
   invoiceTypeControl = new FormControl("B");
   salesmanControl = new FormControl("");
   branchControl = new FormControl("");
-
   idControl = new FormControl("");
   skuControl = new FormControl("");
   detailControl = new FormControl("");
@@ -33,12 +32,11 @@ export class SalesComponent implements OnInit {
   saleResponse: SaleResponse;
 
   constructor(private formBuilderl: FormBuilder, private changeDetectorRefs: ChangeDetectorRef, private salesService: SalesService) {
-    this.items = []
+    this.initItems()
 
     this.constantsForm = formBuilderl.group({
       invoice: this.invoiceTypeControl,
-      seller: this.salesmanControl
-  ,
+      seller: this.salesmanControl,
       branchId: this.branchControl
     });
 
@@ -57,11 +55,6 @@ export class SalesComponent implements OnInit {
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator
-  }
-
-
-  refreshDataSource(){
-    this.dataSource.data = this.items
   }
 
   addItem() {
@@ -83,16 +76,29 @@ export class SalesComponent implements OnInit {
 
   registerSale(){
     this.invoiceSale()
-    this.items = [];
+    this.initItems()
     this.refreshDataSource();
   }
 
-  invoiceSale() {
+  cancelSale() {
+    this.initItems()
+    this.refreshDataSource();
+  }
+
+  private initItems() {
+    this.items = [];
+  }
+
+  private refreshDataSource(){
+    this.dataSource.data = this.items
+  }
+
+  private invoiceSale() {
     const sale = this.createRequest()
     this.saleResponse = this.salesService.postSale(sale)
   }
 
-  createRequest(): Sale {
+  private createRequest(): Sale {
     return {
       invoiceType: this.invoiceTypeControl.value,
       client: {

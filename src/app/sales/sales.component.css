@@ -2,24 +2,34 @@ table {
     width: 100%;
 }
 
-tr.mat-footer-row {
-    font-weight: bold;
-}
-
-.spacer {
-    flex: 1 1 auto;
-}
-
 button.mat-error {
     float: right;
     display: inline-flex;
+    margin: 5px;
 }
 
 button.mat-primary {
     float: right;
     display: inline-flex;
+    margin: 5px;
 }
 
 .mat-form-field {
     padding: 0.5rem;
+}
+
+.mat-card-title {
+    padding: 1rem;
+}
+
+.mat-card-subtitle {
+    padding: 0.5rem;
+}
+
+.mat-card-actions {
+    overflow: hidden;
+}
+
+tr.mat-footer-row {
+    font-weight: bold;
 }

@@ -1,12 +1,12 @@
-<mat-card style="height: fit-content;">
-    <mat-card-title style="padding: 1rem;">
+<mat-card>
+    <mat-card-title>
         <mat-icon>sell</mat-icon>
         <span> Ventas</span>
     </mat-card-title>
 
     <mat-divider></mat-divider>
 
-    <mat-card-subtitle style="padding: 0.5rem;">* campo obligatorio</mat-card-subtitle>
+    <mat-card-subtitle>* campo obligatorio</mat-card-subtitle>
 
     <mat-card-content>
 
@@ -113,8 +113,8 @@
 
         </div>
     </mat-card-content>
-    <mat-card-actions style="overflow: hidden;">
+    <mat-card-actions>
         <button mat-raised-button color="primary" (click)="registerSale()" >Vender</button>
-        <button mat-raised-button color="error">Cancelar venta</button>
+        <button mat-raised-button color="error" (click)="cancelSale()">Cancelar venta</button>
     </mat-card-actions>
 </mat-card>

@@ -124,4 +124,17 @@ describe('SalesComponent', () => {
 
     expect(component.saleResponse).toBeDefined()
   })
+
+  it("should cancel the sale", () => {
+    component.constantsForm.setValue({invoice: "A", seller: "COD10", branchId: "SUC03"})
+    component.items = [
+      { id: "1", sku: 1, detail: "Details", quantity: 10, price: 110.50 }, 
+      { id: "2", sku: 22, detail: "Details", quantity: 15, price: 25.10 }, 
+      { id: "3", sku: 333, detail: "Details", quantity: 3, price: 570.00 }
+    ]
+
+    component.cancelSale()
+
+    expect(component.items).toHaveSize(0)
+  })
 })
