@@ -62,6 +62,8 @@ export class SalesComponent implements OnInit {
       this.items.push(this.itemForm.value)
       this.itemForm.reset()
       this.refreshDataSource();
+    } else {
+      this.constantsForm.markAllAsTouched()
     }
   }
 
