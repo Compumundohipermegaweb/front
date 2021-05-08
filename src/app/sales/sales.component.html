@@ -8,8 +8,8 @@
 
     <mat-card-subtitle>* campo obligatorio</mat-card-subtitle>
 
-    <mat-vertical-stepper [linear]="true" #stepper>
-        <mat-step [stepControl]="constantsForm">
+    <mat-vertical-stepper linear #stepper>
+        <mat-step >
             <form [formGroup]="constantsForm">
                 <ng-template matStepLabel>Detalle</ng-template>
                 <mat-form-field>
@@ -114,7 +114,7 @@
                 <button mat-button matStepperNext>Siguiente</button>
             </div>
         </mat-step>
-        <mat-step>
+        <mat-step [stepControl]="paymentForm">
             <form [formGroup]="paymentForm">
                 <ng-template matStepLabel>Pago ${{totalCost | number : locale}}</ng-template>
 
@@ -127,12 +127,11 @@
 
                 <mat-form-field>
                     <mat-label>Monto</mat-label>
-                    <input matInput type="number" [formControl]="paymentAmountControl" required>
+                    <input matInput type="number" [formControl]="paymentAmountControl" value="{{totalCost}}" required>
                     <span matPrefix>$&nbsp;</span>
                 </mat-form-field>
             </form>
-
-
+        
             <button mat-button matStepperPrevious>Atras</button>
             <button mat-button matStepperNext>Siguiente</button>
         </mat-step>

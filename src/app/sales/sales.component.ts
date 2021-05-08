@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Sale, SaleResponse, SalesService } from './service/sales.service';
@@ -63,6 +63,7 @@ export class SalesComponent implements OnInit {
     this.priceControl = new FormControl("");
     this.paymentMethodControl = new FormControl("CASH")
     this.paymentAmountControl = new FormControl("");
+    this.paymentAmountControl.disable()
   }
 
   initForms(formBuilder: FormBuilder) {
@@ -85,7 +86,7 @@ export class SalesComponent implements OnInit {
       amount: this.paymentAmountControl
     });
   }
-  
+
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator
   }
