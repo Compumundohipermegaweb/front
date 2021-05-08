@@ -200,7 +200,7 @@
 
             </mat-card>
             <button mat-raised-button color="error" matStepperPrevious>Atras</button>
-            <button mat-raised-button color="primary" matStepperNext>Confirmar</button>
+            <button mat-raised-button color="primary" (click)="registerSale(); stepper.reset()" matStepperNext>Confirmar</button>
         </mat-step>
     </mat-vertical-stepper>
     
