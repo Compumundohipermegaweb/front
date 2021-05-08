@@ -14,6 +14,8 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatButtonModule } from '@angular/material/button';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CurrencyPipe } from '@angular/common'
+import { LocalCurrencyPipe } from '../pipe/local-currency.pipe'
 
 describe('SalesComponent', () => {
   let component: SalesComponent;
@@ -21,7 +23,7 @@ describe('SalesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SalesComponent ],
+      declarations: [ SalesComponent, LocalCurrencyPipe ],
       imports: [
         MatDividerModule,
         MatIconModule,
@@ -36,7 +38,8 @@ describe('SalesComponent', () => {
         MatPaginatorModule,
         MatButtonModule,
         BrowserAnimationsModule
-      ]
+      ],
+      providers: [CurrencyPipe]
     })
     .compileComponents();
   });

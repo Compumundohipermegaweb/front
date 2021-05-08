@@ -1,7 +1,7 @@
 <mat-card>
     <mat-card-title>
         <mat-icon>sell</mat-icon>
-        <span> Ventas</span>
+        <span>&nbsp;Ventas</span>
     </mat-card-title>
 
     <mat-divider></mat-divider>
@@ -9,7 +9,7 @@
     <mat-card-subtitle>* campo obligatorio</mat-card-subtitle>
 
     <mat-vertical-stepper linear #stepper>
-        <mat-step >
+        <mat-step [stepControl]="constantsForm">
             <form [formGroup]="constantsForm">
                 <ng-template matStepLabel>Detalle</ng-template>
                 <mat-form-field>
@@ -102,7 +102,7 @@
                     <ng-container matColumnDef="subTotal">
                         <th mat-header-cell *matHeaderCellDef>Sub total</th>
                         <td mat-cell *matCellDef="let item"> {{item.price * item.quantity}} </td>
-                        <td mat-footer-cell *matFooterCellDef>$ {{ totalCost | number : locale}} </td>
+                        <td mat-footer-cell *matFooterCellDef>{{ totalCost | localCurrency}} </td>
                     </ng-container>
 
                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
@@ -111,17 +111,17 @@
                 </table>
             </div>
             <div>
-                <button mat-button matStepperNext>Siguiente</button>
+                <button mat-raised-button color="primary" matStepperNext>Siguiente</button>
             </div>
         </mat-step>
         <mat-step [stepControl]="paymentForm">
             <form [formGroup]="paymentForm">
-                <ng-template matStepLabel>Pago ${{totalCost | number : locale}}</ng-template>
+                <ng-template matStepLabel>Medio de pago</ng-template>
 
                 <mat-form-field>
                     <mat-label>Medio de pago</mat-label>
                     <mat-select [formControl]="paymentMethodControl" required>
-                        <mat-option value="CASH">Efectivo</mat-option>
+                        <mat-option value="EFECTIVO">Efectivo</mat-option>
                     </mat-select>
                 </mat-form-field>
 
@@ -132,14 +132,75 @@
                 </mat-form-field>
             </form>
         
-            <button mat-button matStepperPrevious>Atras</button>
-            <button mat-button matStepperNext>Siguiente</button>
+            <button mat-raised-button color="error" matStepperPrevious>Atras</button>
+            <button mat-raised-button color="primary" matStepperNext>Siguiente</button>
         </mat-step>
         <mat-step>
             <ng-template matStepLabel>Resumen</ng-template>
-            
-            <button mat-button matStepperPrevious>Atras</button>
-            <button mat-button matStepperNext>Confirmar</button>
+            <mat-card style="margin-top: 0.5rem;">
+                <mat-card-title>
+                    <span>Factura tipo {{ invoiceTypeControl.value }}</span>
+                </mat-card-title>
+                <mat-card-subtitle>
+                    <span>{{ salesmanControl.value }} / Sucursal {{ branchControl.value }}</span>
+                </mat-card-subtitle>
+                <mat-card-content>
+                    <div class="detail">
+                        <span>Medio de pago: {{ paymentMethodControl.value }}</span>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div class="detail">
+                        <span>Pago a realizar: {{ totalCost | localCurrency }}</span>
+                    </div>
+                    <mat-divider></mat-divider>
+                </mat-card-content>
+                <mat-card-title>
+                    <span>Detalle de la venta</span>
+                </mat-card-title>
+                <mat-card-content>
+                    <table mat-table [dataSource]="dataSource">
+                        <ng-container matColumnDef="id">
+                            <th mat-header-cell *matHeaderCellDef>Nº de ítem</th>
+                            <td mat-cell *matCellDef="let item"> {{item.id}} </td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="sku">
+                            <th mat-header-cell *matHeaderCellDef>SKU</th>
+                            <td mat-cell *matCellDef="let item"> {{item.sku}} </td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="detail">
+                            <th mat-header-cell *matHeaderCellDef>Detalle</th>
+                            <td mat-cell *matCellDef="let item"> {{item.detail}} </td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="quantity">
+                            <th mat-header-cell *matHeaderCellDef>Cantidad</th>
+                            <td mat-cell *matCellDef="let item"> {{item.quantity}} </td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="price">
+                            <th mat-header-cell *matHeaderCellDef>Precio</th>
+                            <td mat-cell *matCellDef="let item"> {{item.price}} </td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="subTotal">
+                            <th mat-header-cell *matHeaderCellDef>Sub total</th>
+                            <td mat-cell *matCellDef="let item"> {{item.price * item.quantity}} </td>
+                        </ng-container>
+    
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table>
+                </mat-card-content>
+                <mat-card-title>
+                    <span>Total:</span>
+                    <span>{{ totalCost | localCurrency}} </span>
+                </mat-card-title>
+
+            </mat-card>
+            <button mat-raised-button color="error" matStepperPrevious>Atras</button>
+            <button mat-raised-button color="primary" matStepperNext>Confirmar</button>
         </mat-step>
     </mat-vertical-stepper>
     

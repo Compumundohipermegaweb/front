@@ -61,7 +61,7 @@ export class SalesComponent implements OnInit {
     this.detailControl = new FormControl("");
     this.quantityControl = new FormControl("");
     this.priceControl = new FormControl("");
-    this.paymentMethodControl = new FormControl("CASH")
+    this.paymentMethodControl = new FormControl("EFECTIVO")
     this.paymentAmountControl = new FormControl("");
     this.paymentAmountControl.disable()
   }

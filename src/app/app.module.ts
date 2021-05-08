@@ -23,12 +23,21 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { AppRoutingModule } from './app-routing.module';
 import { MatStepperModule } from '@angular/material/stepper';
+import { LocalCurrencyPipe } from './pipe/local-currency.pipe'
+import { CurrencyPipe } from '@angular/common'
+
+
+import { registerLocaleData } from '@angular/common';
+import localEsAr from "@angular/common/locales/es-AR"
+
+registerLocaleData(localEsAr)
 
 @NgModule({
   declarations: [
     AppComponent,
     NavBarComponent,
-    SalesComponent
+    SalesComponent,
+    LocalCurrencyPipe
   ],
   imports: [
     BrowserModule,
@@ -53,7 +62,7 @@ import { MatStepperModule } from '@angular/material/stepper';
     AppRoutingModule,
     MatStepperModule
   ],
-  providers: [],
+  providers: [CurrencyPipe],
   bootstrap: [AppComponent, NavBarComponent]
 })
 export class AppModule { }

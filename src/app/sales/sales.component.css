@@ -3,13 +3,11 @@ table {
 }
 
 button.mat-error {
-    float: right;
     display: inline-flex;
     margin: 5px;
 }
 
 button.mat-primary {
-    float: right;
     display: inline-flex;
     margin: 5px;
 }
@@ -32,4 +30,8 @@ button.mat-primary {
 
 tr.mat-footer-row {
     font-weight: bold;
+}
+
+.detail {
+    padding: 1rem;
 }
