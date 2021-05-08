@@ -1,15 +1,17 @@
 import { Injectable } from '@angular/core';
 import { Item } from '../sales.component';
+import { HttpClient } from '@angular/common/http'
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SalesService {
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
-  postSale(sale: Sale): SaleResponse {
-    return this.mockResponse(sale)
+  postSale(sale: Sale): Observable<SaleResponse> {
+    return new BehaviorSubject<SaleResponse>(this.mockResponse(sale))
   }
 
   private mockResponse(sale: Sale): SaleResponse {

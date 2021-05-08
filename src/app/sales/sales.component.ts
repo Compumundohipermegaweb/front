@@ -127,7 +127,8 @@ export class SalesComponent implements OnInit {
 
   private invoiceSale() {
     const sale = this.createRequest()
-    this.saleResponse = this.salesService.postSale(sale)
+    this.salesService.postSale(sale)
+      .subscribe((response: SaleResponse) => this.saleResponse = response);
   }
 
   private createRequest(): Sale {

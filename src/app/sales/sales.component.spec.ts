@@ -16,6 +16,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CurrencyPipe } from '@angular/common'
 import { LocalCurrencyPipe } from '../pipe/local-currency.pipe'
+import { HttpClient, HttpHandler } from '@angular/common/http'
 
 describe('SalesComponent', () => {
   let component: SalesComponent;
@@ -39,7 +40,7 @@ describe('SalesComponent', () => {
         MatButtonModule,
         BrowserAnimationsModule
       ],
-      providers: [CurrencyPipe]
+      providers: [ CurrencyPipe, HttpClient, HttpHandler ]
     })
     .compileComponents();
   });
