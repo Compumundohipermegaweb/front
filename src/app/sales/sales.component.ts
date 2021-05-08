@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Sale, SaleResponse, SalesService } from './service/sales.service';
@@ -11,48 +11,81 @@ import { Sale, SaleResponse, SalesService } from './service/sales.service';
 })
 export class SalesComponent implements OnInit {
 
-  @ViewChild(MatPaginator) paginator: MatPaginator
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  displayedColumns: string[] = ["id", "sku", "detail", "quantity", "price", "subTotal"];
+  displayedColumns: string[];
   dataSource = new MatTableDataSource<Item>();
-  items: Item[]
+  items: Item[];
+  totalCost: number;
+  saleResponse: SaleResponse;
 
   constantsForm: FormGroup;
   itemForm: FormGroup;
+  paymentForm: FormGroup;
 
-  invoiceTypeControl = new FormControl("B");
-  salesmanControl = new FormControl("");
-  branchControl = new FormControl("");
-  idControl = new FormControl("");
-  skuControl = new FormControl("");
-  detailControl = new FormControl("");
-  quantityControl = new FormControl("");
-  priceControl = new FormControl("");
+  invoiceTypeControl: FormControl;
+  salesmanControl: FormControl;
+  branchControl: FormControl;
+  idControl: FormControl;
+  skuControl: FormControl;
+  detailControl: FormControl;
+  quantityControl: FormControl;
+  priceControl: FormControl;
+  paymentMethodControl: FormControl;
+  paymentAmountControl: FormControl;
 
-  saleResponse: SaleResponse;
+  constructor(private formBuilder: FormBuilder, private changeDetectorRefs: ChangeDetectorRef, private salesService: SalesService) {
+    this.initColumns();
+    this.initItems();
+    this.initControls();
+    this.initForms(formBuilder);
+  }
 
-  constructor(private formBuilderl: FormBuilder, private changeDetectorRefs: ChangeDetectorRef, private salesService: SalesService) {
-    this.initItems()
+  ngOnInit(): void {
+  }
 
-    this.constantsForm = formBuilderl.group({
+  initColumns() {
+    this.displayedColumns = ["id", "sku", "detail", "quantity", "price", "subTotal"]
+  }
+
+  initItems() {
+    this.items = [];
+  }
+
+  initControls() {
+    this.invoiceTypeControl = new FormControl("B");
+    this.salesmanControl = new FormControl("");
+    this.branchControl = new FormControl("");
+    this.idControl = new FormControl("");
+    this.skuControl = new FormControl("");
+    this.detailControl = new FormControl("");
+    this.quantityControl = new FormControl("");
+    this.priceControl = new FormControl("");
+    this.paymentMethodControl = new FormControl("CASH")
+    this.paymentAmountControl = new FormControl("");
+  }
+
+  initForms(formBuilder: FormBuilder) {
+    this.constantsForm = formBuilder.group({
       invoice: this.invoiceTypeControl,
       seller: this.salesmanControl,
       branchId: this.branchControl
     });
 
-    this.itemForm = formBuilderl.group({
+    this.itemForm = formBuilder.group({
       id: this.idControl,
       sku: this.skuControl,
       detail: this.detailControl,
       quantity: this.quantityControl,
       price: this.priceControl
     });
+
+    this.paymentForm = formBuilder.group({
+      paymentMethod: this.paymentMethodControl,
+      amount: this.paymentAmountControl
+    });
   }
-
-  ngOnInit(): void {
-  }
-
-
+  
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator
   }
@@ -62,19 +95,19 @@ export class SalesComponent implements OnInit {
       this.items.push(this.itemForm.value)
       this.itemForm.reset()
       this.refreshDataSource();
+      this.calculateTotalCost()
     } else {
       this.constantsForm.markAllAsTouched()
     }
   }
 
-  getTotalCost() {
+  calculateTotalCost() {
     if(this.items.length > 0) {
-      return this.items.map(i => i.price * i.quantity ).reduce((a, b) => a + b);
+      this.totalCost = this.items.map(i => i.price * i.quantity ).reduce((a, b) => a + b);
     } else {
       return 0
     }
   }
-
 
   registerSale(){
     this.invoiceSale()
@@ -85,10 +118,6 @@ export class SalesComponent implements OnInit {
   cancelSale() {
     this.initItems()
     this.refreshDataSource();
-  }
-
-  private initItems() {
-    this.items = [];
   }
 
   private refreshDataSource(){
