@@ -3,9 +3,11 @@ import { SalesComponent } from './sales/sales.component'
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
+import { SaleInvoiceComponent } from './sale-invoice/sale-invoice.component';
 
-const routes: Routes = [
-  {path: "sales", component: SalesComponent}
+export const routes: Routes = [
+  { path: "sales", component: SalesComponent },
+  { path: "sales/invoice", component: SaleInvoiceComponent }
 ]
 
 @NgModule({

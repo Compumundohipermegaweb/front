@@ -200,8 +200,10 @@
 
             </mat-card>
             <button mat-raised-button color="error" matStepperPrevious>Atras</button>
-            <button mat-raised-button color="primary" (click)="registerSale(); stepper.reset()" matStepperNext>Confirmar</button>
+            <button mat-raised-button color="primary" (click)="registerSale()" matStepperNext>Confirmar</button>
         </mat-step>
     </mat-vertical-stepper>
-    
 </mat-card>
+<div *ngIf="fetchingData" style="position: fixed; top: 50%; left: 50%;">
+    <mat-spinner></mat-spinner>
+</div>

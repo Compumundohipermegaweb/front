@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from "@angular/router/testing";
 
 import { SalesComponent } from './sales.component';
 
@@ -14,11 +15,15 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatButtonModule } from '@angular/material/button';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { CurrencyPipe } from '@angular/common'
-import { LocalCurrencyPipe } from '../pipe/local-currency.pipe'
-import { HttpClient, HttpHandler } from '@angular/common/http'
+import { CurrencyPipe, Location } from '@angular/common';
+import { LocalCurrencyPipe } from '../pipe/local-currency.pipe';
+import { HttpClient, HttpHandler } from '@angular/common/http';
+import { routes } from '../app-routing.module'
+import { Router } from '@angular/router';
 
 describe('SalesComponent', () => {
+  let location: Location;
+  let router: Router
   let component: SalesComponent;
   let fixture: ComponentFixture<SalesComponent>;
 
@@ -38,7 +43,8 @@ describe('SalesComponent', () => {
         MatTableModule,
         MatPaginatorModule,
         MatButtonModule,
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
+        RouterTestingModule.withRoutes(routes)
       ],
       providers: [ CurrencyPipe, HttpClient, HttpHandler ]
     })
@@ -46,9 +52,12 @@ describe('SalesComponent', () => {
   });
 
   beforeEach(() => {
+    router = TestBed.inject(Router);
+    location = TestBed.inject(Location);
     fixture = TestBed.createComponent(SalesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    router.initialNavigation()
   });
 
   it('should create', () => {
@@ -106,29 +115,6 @@ describe('SalesComponent', () => {
     expect(component.items).toHaveSize(0)
   })
 
-  it("shoul clean all items", () => {
-    component.constantsForm.setValue({invoice: "A", seller: "COD10", branchId: "SUC03"})
-    component.itemForm.setValue({id: 1, sku: 1, detail: "Details", quantity: 10, price: 110.50})
-    component.addItem()
-
-    component.registerSale()
-
-    expect(component.items).toHaveSize(0)
-  })
-
-  it("should invoice when register a sale", () => {
-    component.constantsForm.setValue({invoice: "A", seller: "COD10", branchId: "SUC03"})
-    component.items = [
-      { id: "1", sku: 1, detail: "Details", quantity: 10, price: 110.50 }, 
-      { id: "2", sku: 22, detail: "Details", quantity: 15, price: 25.10 }, 
-      { id: "3", sku: 333, detail: "Details", quantity: 3, price: 570.00 }
-    ]
-
-    component.registerSale()
-
-    expect(component.saleResponse).toBeDefined()
-  })
-
   it("should cancel the sale", () => {
     component.constantsForm.setValue({invoice: "A", seller: "COD10", branchId: "SUC03"})
     component.items = [
@@ -140,5 +126,5 @@ describe('SalesComponent', () => {
     component.cancelSale()
 
     expect(component.items).toHaveSize(0)
-  })
+  });
 })

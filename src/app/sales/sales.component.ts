@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
 import { Sale, SaleResponse, SalesService } from './service/sales.service';
 
 @Component({
@@ -12,12 +13,13 @@ import { Sale, SaleResponse, SalesService } from './service/sales.service';
 export class SalesComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  
+  fetchingData = false;
 
   displayedColumns: string[];
   dataSource = new MatTableDataSource<Item>();
   items: Item[];
   totalCost: number;
-  saleResponse: SaleResponse;
 
   constantsForm: FormGroup;
   itemForm: FormGroup;
@@ -34,7 +36,10 @@ export class SalesComponent implements OnInit {
   paymentMethodControl: FormControl;
   paymentAmountControl: FormControl;
 
-  constructor(private formBuilder: FormBuilder, private changeDetectorRefs: ChangeDetectorRef, private salesService: SalesService) {
+  constructor(private formBuilder: FormBuilder, 
+              private changeDetectorRefs: ChangeDetectorRef, 
+              private salesService: SalesService,
+              private router: Router) {
     this.initColumns();
     this.initItems();
     this.initControls();
@@ -105,15 +110,16 @@ export class SalesComponent implements OnInit {
   calculateTotalCost() {
     if(this.items.length > 0) {
       this.totalCost = this.items.map(i => i.price * i.quantity ).reduce((a, b) => a + b);
-    } else {
-      return 0
-    }
+    } else { return 0 }
   }
 
-  registerSale(){
-    this.invoiceSale()
-    this.initItems()
-    this.refreshDataSource();
+  registerSale() {
+    this.fetchingData = true
+    const sale = this.createRequest()
+    this.salesService.postSale(sale)
+      .subscribe((response: SaleResponse) => {
+        this.router.navigateByUrl('/sales/invoice', { state: { data: response } });
+      });
   }
 
   cancelSale() {
@@ -123,12 +129,6 @@ export class SalesComponent implements OnInit {
 
   private refreshDataSource(){
     this.dataSource.data = this.items
-  }
-
-  private invoiceSale() {
-    const sale = this.createRequest()
-    this.salesService.postSale(sale)
-      .subscribe((response: SaleResponse) => this.saleResponse = response);
   }
 
   private createRequest(): Sale {

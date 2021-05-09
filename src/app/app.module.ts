@@ -25,10 +25,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { MatStepperModule } from '@angular/material/stepper';
 import { LocalCurrencyPipe } from './pipe/local-currency.pipe'
 import { CurrencyPipe } from '@angular/common'
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
 import { registerLocaleData } from '@angular/common';
-import localEsAr from "@angular/common/locales/es-AR"
+import localEsAr from "@angular/common/locales/es-AR";
+import { SaleInvoiceComponent } from './sale-invoice/sale-invoice.component'
 
 registerLocaleData(localEsAr)
 
@@ -37,7 +39,8 @@ registerLocaleData(localEsAr)
     AppComponent,
     NavBarComponent,
     SalesComponent,
-    LocalCurrencyPipe
+    LocalCurrencyPipe,
+    SaleInvoiceComponent
   ],
   imports: [
     BrowserModule,
@@ -60,7 +63,8 @@ registerLocaleData(localEsAr)
     MatToolbarModule,
     MatButtonModule,
     AppRoutingModule,
-    MatStepperModule
+    MatStepperModule,
+    MatProgressSpinnerModule
   ],
   providers: [CurrencyPipe],
   bootstrap: [AppComponent, NavBarComponent]
