@@ -27,6 +27,7 @@ export class SaleInvoiceComponent implements OnInit {
     if(history.state != null && history.state["data"] != null) {
       this.saleResponse = history.state["data"]
     }
+    
     this.dataSource.data = this.saleResponse.detail
     this.totalCost = this.saleResponse.detail.map((item: Item) => item.quantity * item.price).reduce((a, b) => a + b)
   }
