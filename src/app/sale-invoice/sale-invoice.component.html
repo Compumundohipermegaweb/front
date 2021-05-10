@@ -1,6 +1,86 @@
-<div>
-    Factura = {{ saleResponse.invoice_id }}
-    Total = {{ saleResponse.total }}
+<div id="invoice" #invoice>
+    <mat-card style="margin: 1rem; padding-right: 3rem;">
+        <mat-card-content>
+            <mat-grid-list cols="16" rowHeight="1:2">
+                <mat-grid-tile colspan="8" #seller>
+                    <mat-card class="invoice-detail">
+                        <mat-card-content>
+                            <div>
+                                <span>Nombre de la ferreteria</span>
+                            </div>
+                            <div>
+                                <span>{{ saleResponse.branch.address }}</span>
+                            </div>
+                            <div>
+                                <span> Tel: {{ saleResponse.branch.contact }}</span>
+                            </div>
+                        </mat-card-content>
+                    </mat-card>
+                </mat-grid-tile>
+                <mat-grid-tile colspan="8" #invoiceDetail>
+                    <mat-card class="invoice-detail">
+                        <mat-card-content>
+                            <div>
+                                <span>Nro. factura: {{ saleResponse.invoice_id }}</span>
+                            </div>
+                            <div>
+                                <span>Fecha: Fecha de facturacion</span>
+                            </div>
+                            <div>
+                                <span>C.U.I.T.: {{ saleResponse.branch.cuit }}</span>
+                            </div>
+                        </mat-card-content>
+                    </mat-card>
+                </mat-grid-tile>
+                <mat-grid-tile colspan="16" #clientDetail>
+                    <mat-card class="client-detail">
+                        <mat-card-content>
+                            <div>
+                                <span>Cliente: {{ saleResponse.client.name }}</span>
+                            </div>
+                            <div>
+                                <span>Domicilio: {{ saleResponse.client.invoice_address }}</span>
+                            </div>
+                            <div>
+                                <span>Tipo de factura: {{ saleResponse.invoice_type }}</span>
+                            </div>
+                        </mat-card-content>
+                    </mat-card>
+                </mat-grid-tile>
+            </mat-grid-list>
+            <mat-card>
+                <table mat-table [dataSource]="dataSource" style="width: 100%; padding: 1rem;">
+                    
+        
+                    <ng-container matColumnDef="quantity">
+                        <th mat-header-cell *matHeaderCellDef>Cantidad</th>
+                        <td mat-cell *matCellDef="let item"> {{item.quantity}} </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+        
+                    <ng-container matColumnDef="detail">
+                        <th mat-header-cell *matHeaderCellDef>Detalle</th>
+                        <td mat-cell *matCellDef="let item"> {{item.detail}} </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+        
+                    <ng-container matColumnDef="price">
+                        <th mat-header-cell *matHeaderCellDef>Precio</th>
+                        <td mat-cell *matCellDef="let item"> {{item.price}} </td>
+                        <td mat-footer-cell *matFooterCellDef> Total </td>
+                    </ng-container>
+        
+                    <ng-container matColumnDef="subTotal">
+                        <th mat-header-cell *matHeaderCellDef>Sub total</th>
+                        <td mat-cell *matCellDef="let item"> {{item.price * item.quantity}} </td>
+                        <td mat-footer-cell *matFooterCellDef>{{ totalCost | localCurrency}} </td>
+                    </ng-container>
+        
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
+                </table>
+            </mat-card>
+        </mat-card-content>
+    </mat-card>
 </div>
-
-

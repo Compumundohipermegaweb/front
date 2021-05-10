@@ -1,0 +1,22 @@
+.invoice-detail {
+    width: 96%;
+    height: 85%;
+}
+
+.client-detail {
+    width: 98%; 
+    height: 80%;
+}
+
+tr.mat-footer-row {
+    font-weight: bold;
+}
+
+@media print {
+    .mat-toolbar {
+        display: none;
+    }
+    button {
+      display: none;
+    }
+  }
