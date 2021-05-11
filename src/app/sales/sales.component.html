@@ -21,13 +21,13 @@
 
                 <mat-form-field>
                     <mat-label>Vendedor</mat-label>
-                    <input matInput [formControl]="salesmanControl" required>
+                    <input matInput type="number" [formControl]="salesmanControl" required>
                     <mat-hint>Código de empleado</mat-hint>
                 </mat-form-field>
 
                 <mat-form-field>
                     <mat-label>Sucursal</mat-label>
-                    <input matInput [formControl]="branchControl" required>
+                    <input matInput type="number" [formControl]="branchControl" required>
                     <mat-hint>Código de sucursal</mat-hint>
                 </mat-form-field>
             </form>
@@ -45,7 +45,7 @@
 
                     <mat-form-field>
                         <mat-label>Detalle</mat-label>
-                        <input matInput [formControl]="detailControl" required>
+                        <input matInput [formControl]="descriptionControl" required>
                     </mat-form-field>
 
                     <mat-form-field>
@@ -81,9 +81,9 @@
                         <td mat-footer-cell *matFooterCellDef></td>
                     </ng-container>
 
-                    <ng-container matColumnDef="detail">
+                    <ng-container matColumnDef="description">
                         <th mat-header-cell *matHeaderCellDef>Detalle</th>
-                        <td mat-cell *matCellDef="let item"> {{item.detail}} </td>
+                        <td mat-cell *matCellDef="let item"> {{item.description}} </td>
                         <td mat-footer-cell *matFooterCellDef></td>
                     </ng-container>
 
@@ -127,7 +127,7 @@
 
                 <mat-form-field>
                     <mat-label>Monto</mat-label>
-                    <input matInput type="number" [formControl]="paymentAmountControl" value="{{totalCost}}" required>
+                    <input matInput type="number" [formControl]="paymentAmountControl" value="{{ totalCost }}" required>
                     <span matPrefix>$&nbsp;</span>
                 </mat-form-field>
             </form>
@@ -169,9 +169,9 @@
                             <td mat-cell *matCellDef="let item"> {{item.sku}} </td>
                         </ng-container>
     
-                        <ng-container matColumnDef="detail">
-                            <th mat-header-cell *matHeaderCellDef>Detalle</th>
-                            <td mat-cell *matCellDef="let item"> {{item.detail}} </td>
+                        <ng-container matColumnDef="description">
+                            <th mat-header-cell *matHeaderCellDef>Descripción</th>
+                            <td mat-cell *matCellDef="let item"> {{item.description}} </td>
                         </ng-container>
     
                         <ng-container matColumnDef="quantity">

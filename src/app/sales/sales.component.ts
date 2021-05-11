@@ -3,7 +3,9 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { Sale, SaleResponse, SalesService } from './service/sales.service';
+import { Item, Sale } from './sales.model';
+import { SalesService } from './service/sales.service';
+import Swal  from 'sweetalert2';
 
 @Component({
   selector: 'app-sales',
@@ -30,7 +32,7 @@ export class SalesComponent implements OnInit {
   branchControl: FormControl;
   idControl: FormControl;
   skuControl: FormControl;
-  detailControl: FormControl;
+  descriptionControl: FormControl;
   quantityControl: FormControl;
   priceControl: FormControl;
   paymentMethodControl: FormControl;
@@ -50,7 +52,7 @@ export class SalesComponent implements OnInit {
   }
 
   initColumns() {
-    this.displayedColumns = ["id", "sku", "detail", "quantity", "price", "subTotal"]
+    this.displayedColumns = ["id", "sku", "description", "quantity", "price", "subTotal"]
   }
 
   initItems() {
@@ -63,7 +65,7 @@ export class SalesComponent implements OnInit {
     this.branchControl = new FormControl("");
     this.idControl = new FormControl("");
     this.skuControl = new FormControl("");
-    this.detailControl = new FormControl("");
+    this.descriptionControl = new FormControl("");
     this.quantityControl = new FormControl("");
     this.priceControl = new FormControl("");
     this.paymentMethodControl = new FormControl("EFECTIVO")
@@ -81,7 +83,7 @@ export class SalesComponent implements OnInit {
     this.itemForm = formBuilder.group({
       id: this.idControl,
       sku: this.skuControl,
-      detail: this.detailControl,
+      description: this.descriptionControl,
       quantity: this.quantityControl,
       price: this.priceControl
     });
@@ -101,7 +103,8 @@ export class SalesComponent implements OnInit {
       this.items.push(this.itemForm.value)
       this.itemForm.reset()
       this.refreshDataSource();
-      this.calculateTotalCost()
+      this.calculateTotalCost();
+      this.paymentAmountControl.setValue(this.totalCost);
     } else {
       this.constantsForm.markAllAsTouched()
     }
@@ -114,12 +117,23 @@ export class SalesComponent implements OnInit {
   }
 
   registerSale() {
-    this.fetchingData = true
+    this.fetchingData = true;
     const sale = this.createRequest()
     this.salesService.postSale(sale)
-      .subscribe((response: SaleResponse) => {
-        this.router.navigateByUrl('/sales/invoice', { state: { data: response } });
-      });
+      .subscribe(
+        (response) => { 
+          this.router.navigateByUrl('/sales/invoice', { state: { data: response } }) 
+        },
+        (error) => {
+          console.log(error)
+          this.fetchingData = false;
+          Swal.fire({
+            icon: "error",
+            title: "Venta fallida",
+            text: "Si el error persiste contacte a un administrador"
+          })
+        }
+      );
   }
 
   cancelSale() {
@@ -132,35 +146,21 @@ export class SalesComponent implements OnInit {
   }
 
   private createRequest(): Sale {
+    console.log(this.paymentAmountControl.value)
+
     return {
       invoiceType: this.invoiceTypeControl.value,
-      client: {
-        name: "Cliente casual",
-        document: {
-          type: "DNI",
-          value: "00000000",
-        },
-        invoice_address: ""
-      },
-      salesman: {
-        code: this.salesmanControl
-    .value
-      },
-      branch: {
-        id: this.branchControl.value
-      },
-      detail: this.items,
-      payment_details: [
-        { type: "CASH", amount: this.items.map(i => i.price * i.quantity).reduce((a, b) => a + b) }
-      ]
+      client: { name: "Cliente frecuente" },
+      salesmanCode: this.salesmanControl.value,
+      branchCode: this.branchControl.value,
+      details: this.items,
+      payment: [
+        { 
+          method: this.paymentMethodControl.value, 
+          amount: this.paymentAmountControl.value 
+        }
+      ],
+      total: this.totalCost
     }
   }
-}
-
-export interface Item {
-  id: String;
-  sku: Number;
-  detail: String;
-  quantity: number;
-  price: number;
 }

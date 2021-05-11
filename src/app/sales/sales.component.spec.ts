@@ -66,7 +66,7 @@ describe('SalesComponent', () => {
 
   it("should add item", () => {
     component.constantsForm.setValue({invoice: "A", seller: "COD10", branchId: "SUC03"})
-    component.itemForm.setValue({id: 1, sku: 1, detail: "Details", quantity: 10, price: 110.50})
+    component.itemForm.setValue({id: 1, sku: 1, description: "Details", quantity: 10, price: 110.50})
 
     component.addItem()
 
@@ -75,20 +75,20 @@ describe('SalesComponent', () => {
 
   it("should clean item form values", () => {
     component.constantsForm.setValue({invoice: "A", seller: "COD10", branchId: "SUC03"})
-    component.itemForm.setValue({id: 1, sku: 1, detail: "Details", quantity: 10, price: 110.50})
+    component.itemForm.setValue({id: 1, sku: 1, description: "Details", quantity: 10, price: 110.50})
 
     component.addItem()
 
     expect(component.idControl.value).toBeNull()
     expect(component.skuControl.value).toBeNull()
-    expect(component.detailControl.value).toBeNull()
+    expect(component.descriptionControl.value).toBeNull()
     expect(component.quantityControl.value).toBeNull()
     expect(component.priceControl.value).toBeNull()
   })
 
   it("should not add the item if form is not valid", () => {
     component.constantsForm.setValue({invoice: "A", seller: "COD10", branchId: "SUC03"})
-    component.itemForm.setValue({id: null, sku: 1, detail: "Details", quantity: 10, price: 110.50})
+    component.itemForm.setValue({id: null, sku: 1, description: "Details", quantity: 10, price: 110.50})
 
     component.addItem()
 
@@ -97,7 +97,7 @@ describe('SalesComponent', () => {
 
   it("should not clean constant form when adding item", () => {
     component.constantsForm.setValue({invoice: "A", seller: "COD10", branchId: "SUC03"})
-    component.itemForm.setValue({id: 1, sku: 1, detail: "Details", quantity: 10, price: 110.50})
+    component.itemForm.setValue({id: 1, sku: 1, description: "Details", quantity: 10, price: 110.50})
 
     component.addItem()
 
@@ -108,7 +108,7 @@ describe('SalesComponent', () => {
 
   it("should fail if constant form is invalid", () => {
     component.constantsForm.setValue({invoice: "A", seller: null, branchId: null})
-    component.itemForm.setValue({id: 1, sku: 1, detail: "Details", quantity: 10, price: 110.50})
+    component.itemForm.setValue({id: 1, sku: 1, description: "Details", quantity: 10, price: 110.50})
 
     component.addItem()
 
@@ -118,9 +118,9 @@ describe('SalesComponent', () => {
   it("should cancel the sale", () => {
     component.constantsForm.setValue({invoice: "A", seller: "COD10", branchId: "SUC03"})
     component.items = [
-      { id: "1", sku: 1, detail: "Details", quantity: 10, price: 110.50 }, 
-      { id: "2", sku: 22, detail: "Details", quantity: 15, price: 25.10 }, 
-      { id: "3", sku: 333, detail: "Details", quantity: 3, price: 570.00 }
+      { id: "1", sku: 1, description: "Details", quantity: 10, price: 110.50 }, 
+      { id: "2", sku: 22, description: "Details", quantity: 15, price: 25.10 }, 
+      { id: "3", sku: 333, description: "Details", quantity: 3, price: 570.00 }
     ]
 
     component.cancelSale()

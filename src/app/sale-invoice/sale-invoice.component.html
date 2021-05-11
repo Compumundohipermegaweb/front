@@ -9,10 +9,10 @@
                                 <span>Nombre de la ferreteria</span>
                             </div>
                             <div>
-                                <span>{{ saleResponse.branch.address }}</span>
+                                <span>{{ saleResponse.branchAddress }}</span>
                             </div>
                             <div>
-                                <span> Tel: {{ saleResponse.branch.contact }}</span>
+                                <span> Tel: {{ saleResponse.branchContact }}</span>
                             </div>
                         </mat-card-content>
                     </mat-card>
@@ -21,13 +21,13 @@
                     <mat-card class="invoice-detail">
                         <mat-card-content>
                             <div>
-                                <span>Nro. factura: {{ saleResponse.invoice_id }}</span>
+                                <span>Nro. factura: {{ saleResponse.id }}</span>
                             </div>
                             <div>
-                                <span>Fecha: Fecha de facturacion</span>
+                                <span>Fecha: {{ saleResponse.billingDate }}</span>
                             </div>
                             <div>
-                                <span>C.U.I.T.: {{ saleResponse.branch.cuit }}</span>
+                                <span>C.U.I.T.: {{ saleResponse.cuit }}</span>
                             </div>
                         </mat-card-content>
                     </mat-card>
@@ -36,13 +36,10 @@
                     <mat-card class="client-detail">
                         <mat-card-content>
                             <div>
-                                <span>Cliente: {{ saleResponse.client.name }}</span>
+                                <span>Cliente: {{ saleResponse.client.first_name }}</span>
                             </div>
                             <div>
-                                <span>Domicilio: {{ saleResponse.client.invoice_address }}</span>
-                            </div>
-                            <div>
-                                <span>Tipo de factura: {{ saleResponse.invoice_type }}</span>
+                                <span>Tipo de factura: {{ saleResponse.type }}</span>
                             </div>
                         </mat-card-content>
                     </mat-card>

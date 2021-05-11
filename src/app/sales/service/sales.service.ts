@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Item } from '../sales.component';
 import { HttpClient } from '@angular/common/http'
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
+import { Sale, Item, Payment } from '../sales.model';
+import { SaleRequest, ClientRequest, SaleDetailsRequest, ItemRequest, PaymentRequest } from './sale-request.model';
+import { SaleResponse } from './sale-response.model';
+
 
 @Injectable({
   providedIn: 'root'
@@ -11,82 +14,48 @@ export class SalesService {
   constructor(private http: HttpClient) { }
 
   postSale(sale: Sale): Observable<SaleResponse> {
-    return new BehaviorSubject<SaleResponse>(this.mockResponse(sale))
+    const saleRequest = this.createRequest(sale);
+    return this.http.post<SaleResponse>("https://pp1-hefesto-api-dev.herokuapp.com/api/sales", saleRequest);
   }
 
-  private mockResponse(sale: Sale): SaleResponse {
-    const branch: BranchResponse = {
-      address: "Calle falsa 123",
-      contact: "+54 011 6914 0099",
-      cuit: "30-12345678-0",
-      gross_income: "00100023434599010",
-      activity_since: Date.now().toString()
+  createRequest(sale: Sale): SaleRequest {
+    const clientRequest: ClientRequest = {
+      document_number: "00000000",
+      first_name: "Cliente",
+      last_name: "Ocacional",
+      sur_name: "",
+      category: "Sin categoria",
+      email: "",
+      contact_number: ""
     }
-    const total = sale.detail.map(i => i.price * i.quantity).reduce((a, b) => a + b)
+
+    const saleDetails: SaleDetailsRequest = {
+      details: sale.details.map(it => this.toItemRequest(it)),
+      payments: sale.payment.map(it => this.toPaymentRequest(it))
+    }
 
     return {
-      invoice_id: "0190191029309",
       invoice_type: sale.invoiceType,
-      invoice_address: "Calle falsa 123",
-      client: sale.client,
-      branch: branch,
-      detail: sale.detail,
-      sub_total: null,
-      iva: null,
-      total: total
+      client: clientRequest,
+      salesman_id: sale.salesmanCode,
+      branch_id: sale.branchCode,
+      sale_details: saleDetails
     }
   }
-}
 
-export interface Sale {
-  invoiceType: String;
-  client: Client;
-  salesman: Salesman;
-  branch: BranchRequest;
-  detail: Item[];
-  payment_details: Payment[];
-}
+  toItemRequest(item: Item): ItemRequest {
+    return {
+      id: item.id,
+      description: item.description,
+      quantity: item.quantity,
+      unit_price: item.price
+    }
+  }
 
-export interface Client {
-  name: String;
-  document: ClientDocument;
-  invoice_address: String;
-}
-
-export interface ClientDocument {
-  type: String;
-  value: String;
-}
-
-export interface Salesman {
-  code: String;
-}
-
-export interface BranchRequest {
-  id: String;
-}
-
-export interface BranchResponse {
-  address: String;
-  contact: String;
-  cuit: String;
-  gross_income: String;
-  activity_since: String;
-}
-
-export interface Payment {
-  type: String;
-  amount: number;
-}
-
-export interface SaleResponse {
-  invoice_id: String;
-  invoice_type: String;
-  invoice_address: String;
-  client: Client;
-  branch: BranchResponse;
-  detail: Item[];
-  sub_total: number
-  iva: number
-  total: number
+  toPaymentRequest(payment: Payment): PaymentRequest {
+    return {
+      type: payment.method,
+      sub_total: payment.amount
+    }
+  }
 }

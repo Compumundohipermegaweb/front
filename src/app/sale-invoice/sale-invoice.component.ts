@@ -1,9 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
-import { Item } from '../sales/sales.component';
-import { SaleResponse } from '../sales/service/sales.service';
+import { Item } from '../sales/sales.model';
+import { ItemResponse, SaleResponse } from '../sales/service/sale-response.model';
 
 @Component({
   selector: 'app-sale-invoice',
@@ -28,7 +26,17 @@ export class SaleInvoiceComponent implements OnInit {
       this.saleResponse = history.state["data"]
     }
     
-    this.dataSource.data = this.saleResponse.detail
-    this.totalCost = this.saleResponse.detail.map((item: Item) => item.quantity * item.price).reduce((a, b) => a + b)
+    this.dataSource.data = this.saleResponse.saleDetails.sale_details.map(it => this.toItem(it))
+    this.totalCost = this.dataSource.data.map((item: Item) => item.quantity * item.price).reduce((a, b) => a + b)
+  }
+
+  toItem(itemResponse: ItemResponse): Item {
+    return {
+      id: itemResponse.id,
+      sku: 0,//TODO: se tiene que devolver el SKU
+      description: itemResponse.desscription,
+      quantity: itemResponse.quantity,
+      price: itemResponse.unit_price
+    }
   }
 }
