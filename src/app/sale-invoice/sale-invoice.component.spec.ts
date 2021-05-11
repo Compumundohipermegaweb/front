@@ -15,31 +15,31 @@ describe('SaleInvoiceComponent', () => {
 
   beforeEach(() => {
     history.replaceState({data: {
-      invoice_id: "00000912311909",
-      invoice_type: "B",
-      invoice_address: "Calle falsa 123",
+      id: 1234,
+      billingDate: "String",
+      type: "B",
+      branchAddress: "Calle falsa 123",
+      branchContact: "String",
+      cuit: "String",
+      activitySince: "String",
       client: {
-        name: "Nombre Cliente",
-        document: {
-          type: "DNI",
-          value: "40060441"
-        },
-        invoice_address: "Falsa calle 321"
+        document_number: "String",
+        first_name: "String",
+        last_name: "String",
+        sur_name: "String",
+        category: "String",
+        email: "String",
+        contact_number: "String",
       },
-      branch: {
-        address: "Calle falsa 123",
-        contact: "+54 011 6914 0099",
-        cuit: "20-40060441-0",
-        gross_income: "yoquese",
-        activity_since: "Ayer"
+      saleDetails: {
+        sale_details: [
+          { id: "1", sku: 1, desscription: "Martillo", quantity: 1, unit_price: 850 },
+          { id: "2", sku: 2, desscription: "Pinza de mano", quantity: 1, unit_price: 700 },
+          { id: "3", sku: 3, desscription: "Clavos", quantity: 50, unit_price: 0.5 }
+        ]
       },
-      detail: [
-        { id: "1", sku: 1, detail: "Martillo", quantity: 1, price: 850 },
-        { id: "2", sku: 2, detail: "Pinza de mano", quantity: 1, price: 700 },
-        { id: "3", sku: 3, detail: "Clavos", quantity: 50, price: 0.5 }
-      ],
-      sub_total: 0,
-      iva: 0,
+      subTotal: 0,
+      ivaSubTotal: 0,
       total: 1575,
     } }, "")
     fixture = TestBed.createComponent(SaleInvoiceComponent);
