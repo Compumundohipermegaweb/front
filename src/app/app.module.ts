@@ -1,6 +1,7 @@
 import { AppComponent } from './app.component';
 import { SalesComponent } from './sales/sales.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
+import { ClientLookupDialogComponent } from './client-lookup-dialog/client-lookup-dialog.component';
 
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -26,11 +27,12 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { LocalCurrencyPipe } from './pipe/local-currency.pipe'
 import { CurrencyPipe } from '@angular/common'
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatDialogModule } from '@angular/material/dialog';
 
 
 import { registerLocaleData } from '@angular/common';
 import localEsAr from "@angular/common/locales/es-AR";
-import { SaleInvoiceComponent } from './sale-invoice/sale-invoice.component'
+import { SaleInvoiceComponent } from './sale-invoice/sale-invoice.component';
 
 registerLocaleData(localEsAr)
 
@@ -40,7 +42,8 @@ registerLocaleData(localEsAr)
     NavBarComponent,
     SalesComponent,
     LocalCurrencyPipe,
-    SaleInvoiceComponent
+    SaleInvoiceComponent,
+    ClientLookupDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -64,7 +67,8 @@ registerLocaleData(localEsAr)
     MatButtonModule,
     AppRoutingModule,
     MatStepperModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatDialogModule
   ],
   providers: [CurrencyPipe],
   bootstrap: [AppComponent, NavBarComponent]

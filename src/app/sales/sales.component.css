@@ -2,20 +2,6 @@ table {
     width: 100%;
 }
 
-button.mat-error {
-    display: inline-flex;
-    margin: 5px;
-}
-
-button.mat-primary {
-    display: inline-flex;
-    margin: 5px;
-}
-
-.mat-form-field {
-    padding: 0.5rem;
-}
-
 .mat-card-title {
     padding: 1rem;
 }

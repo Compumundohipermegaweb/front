@@ -1,0 +1,35 @@
+<h2 mat-header>Buscar cliente</h2>
+<mat-card>
+    <mat-card-content>
+        <form [formGroup]="form" (ngSubmit)="lookupClients()">
+    
+            <mat-form-field>
+                <mat-label>Nombre</mat-label>
+                <input matInput [formControl]="nameControl">
+            </mat-form-field>
+    
+            <mat-form-field>
+                <mat-label>Documento</mat-label>
+                <input matInput [formControl]="documentControl">
+            </mat-form-field>
+    
+            <button mat-raised-button color="primary" class="submit">
+                <mat-icon>search</mat-icon> Buscar
+            </button>
+        </form>
+
+        <mat-divider></mat-divider>
+        <mat-selection-list #clients [multiple]="false">
+            <h3 mat-subheader>{{ foundClients.length }} clientes encontrados</h3>
+            <mat-list-option *ngFor="let client of foundClients" [value]="client" (dblclick)="selectClient(clients.selectedOptions.selected[0]?.value)">
+                <div mat-line style="font-weight: bold;">
+                    {{ client.firstName }} {{ client.lastName }}      
+                </div>
+                <div mat-line>
+                    {{ client.document }}     
+                </div>
+                <mat-divider></mat-divider>
+            </mat-list-option>
+        </mat-selection-list>
+    </mat-card-content>
+</mat-card>

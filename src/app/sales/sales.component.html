@@ -30,6 +30,16 @@
                     <input matInput type="number" [formControl]="branchControl" required>
                     <mat-hint>Código de sucursal</mat-hint>
                 </mat-form-field>
+
+                <mat-form-field>
+                    <mat-label>Cliente</mat-label>
+                    <input matInput type="number" [formControl]="clientControl" required>
+                    <mat-hint>DNI/CUIT</mat-hint>
+                </mat-form-field>
+
+                <button mat-button (click)="clientLookup()">
+                    <mat-icon>search</mat-icon>
+                </button>
             </form>
             <form [formGroup]="itemForm" (ngSubmit)=addItem()>
                 <div>

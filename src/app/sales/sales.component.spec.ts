@@ -20,6 +20,7 @@ import { LocalCurrencyPipe } from '../pipe/local-currency.pipe';
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { routes } from '../app-routing.module'
 import { Router } from '@angular/router';
+import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA, MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 
 describe('SalesComponent', () => {
   let location: Location;
@@ -44,9 +45,17 @@ describe('SalesComponent', () => {
         MatPaginatorModule,
         MatButtonModule,
         BrowserAnimationsModule,
-        RouterTestingModule.withRoutes(routes)
+        RouterTestingModule.withRoutes(routes),
+        MatDialogModule
       ],
-      providers: [ CurrencyPipe, HttpClient, HttpHandler ]
+      providers: [ 
+        CurrencyPipe, 
+        HttpClient, 
+        HttpHandler,
+        { provide: MatDialogRef, useValue: {} },
+        { provide: MAT_DIALOG_DATA, useValue: {} },
+        { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } }
+      ]
     })
     .compileComponents();
   });
@@ -65,7 +74,7 @@ describe('SalesComponent', () => {
   });
 
   it("should add item", () => {
-    component.constantsForm.setValue({invoice: "A", seller: "COD10", branchId: "SUC03"})
+    component.constantsForm.setValue({invoice: "A", seller: "COD10", branchId: "SUC03", client: 40060441})
     component.itemForm.setValue({id: 1, sku: 1, description: "Details", quantity: 10, price: 110.50})
 
     component.addItem()
@@ -74,7 +83,7 @@ describe('SalesComponent', () => {
   })
 
   it("should clean item form values", () => {
-    component.constantsForm.setValue({invoice: "A", seller: "COD10", branchId: "SUC03"})
+    component.constantsForm.setValue({invoice: "A", seller: "COD10", branchId: "SUC03", client: 40060441})
     component.itemForm.setValue({id: 1, sku: 1, description: "Details", quantity: 10, price: 110.50})
 
     component.addItem()
@@ -87,7 +96,7 @@ describe('SalesComponent', () => {
   })
 
   it("should not add the item if form is not valid", () => {
-    component.constantsForm.setValue({invoice: "A", seller: "COD10", branchId: "SUC03"})
+    component.constantsForm.setValue({invoice: "A", seller: "COD10", branchId: "SUC03", client: 40060441})
     component.itemForm.setValue({id: null, sku: 1, description: "Details", quantity: 10, price: 110.50})
 
     component.addItem()
@@ -96,7 +105,7 @@ describe('SalesComponent', () => {
   })
 
   it("should not clean constant form when adding item", () => {
-    component.constantsForm.setValue({invoice: "A", seller: "COD10", branchId: "SUC03"})
+    component.constantsForm.setValue({invoice: "A", seller: "COD10", branchId: "SUC03", client: 40060441})
     component.itemForm.setValue({id: 1, sku: 1, description: "Details", quantity: 10, price: 110.50})
 
     component.addItem()
@@ -107,7 +116,7 @@ describe('SalesComponent', () => {
   })
 
   it("should fail if constant form is invalid", () => {
-    component.constantsForm.setValue({invoice: "A", seller: null, branchId: null})
+    component.constantsForm.setValue({invoice: "A", seller: null, branchId: "SUC03", client: 40060441})
     component.itemForm.setValue({id: 1, sku: 1, description: "Details", quantity: 10, price: 110.50})
 
     component.addItem()
@@ -116,7 +125,7 @@ describe('SalesComponent', () => {
   })
 
   it("should cancel the sale", () => {
-    component.constantsForm.setValue({invoice: "A", seller: "COD10", branchId: "SUC03"})
+    component.constantsForm.setValue({invoice: "A", seller: "COD10", branchId: "SUC03", client: 40060441})
     component.items = [
       { id: "1", sku: 1, description: "Details", quantity: 10, price: 110.50 }, 
       { id: "2", sku: 22, description: "Details", quantity: 15, price: 25.10 }, 

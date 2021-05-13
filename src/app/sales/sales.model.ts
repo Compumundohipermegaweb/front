@@ -9,7 +9,9 @@ export interface Sale {
 }
 
 export interface Client {
-    name: String;
+    firstName: String;
+    lastName: String;
+    document: String;
 }
 
 export interface Item {
