@@ -1,13 +1,17 @@
-import { ChangeDetectorRef, Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { ClientLookupDialogComponent } from '../client-lookup-dialog/client-lookup-dialog.component';
+
+import { SalesService } from '../service/sale/sales.service';
+import { ClientService } from '../service/client/client.service';
+
+import { Client, Item, Sale } from './sales.model';
+
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { Client, Item, Sale } from './sales.model';
-import { SalesService } from './service/sales.service';
 import Swal  from 'sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
-import { ClientLookupDialogComponent } from '../client-lookup-dialog/client-lookup-dialog.component';
 
 @Component({
   selector: 'app-sales',
@@ -45,6 +49,7 @@ export class SalesComponent implements OnInit {
   constructor(private formBuilder: FormBuilder, 
               private changeDetectorRefs: ChangeDetectorRef, 
               private salesService: SalesService,
+              private clientService: ClientService,
               private router: Router,
               public clientLookupDialog: MatDialog) {
     this.initColumns();
@@ -66,16 +71,16 @@ export class SalesComponent implements OnInit {
 
   initControls() {
     this.invoiceTypeControl = new FormControl("B");
-    this.salesmanControl = new FormControl(0);
-    this.branchControl = new FormControl(0);
-    this.clientControl = new FormControl(0);
-    this.idControl = new FormControl(0);
-    this.skuControl = new FormControl(0);
-    this.descriptionControl = new FormControl("");
-    this.quantityControl = new FormControl("");
-    this.priceControl = new FormControl("");
+    this.salesmanControl = new FormControl();
+    this.branchControl = new FormControl();
+    this.clientControl = new FormControl();
+    this.idControl = new FormControl();
+    this.skuControl = new FormControl();
+    this.descriptionControl = new FormControl();
+    this.quantityControl = new FormControl();
+    this.priceControl = new FormControl();
     this.paymentMethodControl = new FormControl("EFECTIVO")
-    this.paymentAmountControl = new FormControl("");
+    this.paymentAmountControl = new FormControl();
     this.paymentAmountControl.disable()
   }
 
@@ -106,6 +111,32 @@ export class SalesComponent implements OnInit {
   }
 
   clientLookup() {
+    this.fetchingData = true;
+    this.clientService.getClient("", this.clientControl.value)
+      .subscribe(
+        (response) => {
+          this.fetchingData = false;
+          if(response && response.length == 1) {
+            const client = response[0];
+            this.client = {
+              firstName: client.first_name,
+              lastName: client.last_name,
+              document: client.document_number
+            }
+          } else {
+            this.clientControl.setErrors( { "incorrect": true } )
+          }
+        }
+      );
+  }
+
+  getClientErrors(): String {
+    if(this.clientControl.hasError("incorrect")) {
+      return "Cliente inválido"
+    }
+  }
+
+  searchClients() {
     const dialogRef = this.clientLookupDialog.open(ClientLookupDialogComponent, {
       data: { document: this.clientControl.value }
     });
@@ -165,7 +196,6 @@ export class SalesComponent implements OnInit {
   }
 
   private createRequest(): Sale {
-    console.log(this.paymentAmountControl.value)
 
     return {
       invoiceType: this.invoiceTypeControl.value,

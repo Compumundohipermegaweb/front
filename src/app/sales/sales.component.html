@@ -33,11 +33,11 @@
 
                 <mat-form-field>
                     <mat-label>Cliente</mat-label>
-                    <input matInput type="number" [formControl]="clientControl" required>
-                    <mat-hint>DNI/CUIT</mat-hint>
+                    <input matInput type="number" [formControl]="clientControl" (focusout)="clientLookup()" required>
+                    <mat-error *ngIf="clientControl.invalid">{{ getClientErrors() }}</mat-error>
                 </mat-form-field>
 
-                <button mat-button (click)="clientLookup()">
+                <button mat-button (click)="searchClients()">
                     <mat-icon>search</mat-icon>
                 </button>
             </form>

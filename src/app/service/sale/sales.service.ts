@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
 import { Observable } from 'rxjs';
-import { Sale, Item, Payment } from '../sales.model';
+import { Sale, Item, Payment } from '../../sales/sales.model';
 import { SaleRequest, ClientRequest, SaleDetailsRequest, ItemRequest, PaymentRequest } from './sale-request.model';
 import { SaleResponse } from './sale-response.model';
 
@@ -11,19 +11,22 @@ import { SaleResponse } from './sale-response.model';
 })
 export class SalesService {
 
+  host = "http://localhost:8080"
+  salesUrl = "/api/sales"
+
   constructor(private http: HttpClient) { }
 
   postSale(sale: Sale): Observable<SaleResponse> {
     const saleRequest = this.createRequest(sale);
-    return this.http.post<SaleResponse>("https://pp1-hefesto-api-dev.herokuapp.com/api/sales", saleRequest);
+    return this.http.post<SaleResponse>(this.host + this.salesUrl, saleRequest);
   }
 
   createRequest(sale: Sale): SaleRequest {
     const clientRequest: ClientRequest = {
-      document_number: "00000000",
-      first_name: "Cliente",
-      last_name: "Ocacional",
-      sur_name: "",
+      document_number: sale.client.document,
+      first_name: sale.client.firstName,
+      last_name: sale.client.lastName,
+      state: "",
       category: "Sin categoria",
       email: "",
       contact_number: ""

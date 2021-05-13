@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Item } from '../sales/sales.model';
-import { ItemResponse, SaleResponse } from '../sales/service/sale-response.model';
+import { ItemResponse, SaleResponse } from '../service/sale/sale-response.model';
 
 @Component({
   selector: 'app-sale-invoice',
