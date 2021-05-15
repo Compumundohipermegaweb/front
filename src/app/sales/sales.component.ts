@@ -1,4 +1,5 @@
 import { ClientLookupDialogComponent } from '../client-lookup-dialog/client-lookup-dialog.component';
+import { ItemLookupDialogComponent, ItemLookupResponse } from '../item-lookup-dialog/item-lookup-dialog.component';
 
 import { SalesService } from '../service/sale/sales.service';
 import { ClientService } from '../service/client/client.service';
@@ -51,7 +52,8 @@ export class SalesComponent implements OnInit {
               private salesService: SalesService,
               private clientService: ClientService,
               private router: Router,
-              public clientLookupDialog: MatDialog) {
+              public clientLookupDialog: MatDialog,
+              public itemLookupDialog: MatDialog) {
     this.initColumns();
     this.initItems();
     this.initControls();
@@ -149,8 +151,22 @@ export class SalesComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result: Client) => {
       if(result != null) {
         this.clientControl.patchValue(result.document)
+        this.client = result
       }
     });
+  }
+
+  searchItems() {
+    const dialogRef = this.itemLookupDialog.open(ItemLookupDialogComponent, {})
+
+    dialogRef.afterClosed().subscribe((result: ItemLookupResponse) => {
+      if(result) {
+        this.idControl.patchValue(result.id)
+        this.skuControl.patchValue(result.sku)
+        this.descriptionControl.patchValue(result.shortDescription)
+        this.priceControl.patchValue(result.price)
+      }
+    })
   }
 
   addItem() {

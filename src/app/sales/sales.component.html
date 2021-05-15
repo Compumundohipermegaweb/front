@@ -37,7 +37,7 @@
                     <mat-error *ngIf="clientControl.invalid">{{ getClientErrors() }}</mat-error>
                 </mat-form-field>
 
-                <button mat-button (click)="searchClients()">
+                <button mat-icon-button (click)="searchClients()">
                     <mat-icon>search</mat-icon>
                 </button>
             </form>
@@ -70,8 +70,12 @@
                         <span matPrefix>$&nbsp;</span>
                     </mat-form-field>
 
-                    <button mat-icon-button class="sumbit">
+                    <button mat-mini-fab color="primary" class="sumbit" style="justify-content: center;">
                         <mat-icon>add</mat-icon>
+                    </button>
+
+                    <button mat-icon-button (click)="searchItems()">
+                        <mat-icon>search</mat-icon>
                     </button>
                 </div>
             </form>
