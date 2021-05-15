@@ -33,6 +33,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { registerLocaleData } from '@angular/common';
 import localEsAr from "@angular/common/locales/es-AR";
 import { SaleInvoiceComponent } from './sale-invoice/sale-invoice.component';
+import { BranchComponent } from './branch/branch.component'
 
 registerLocaleData(localEsAr)
 
@@ -43,6 +44,7 @@ registerLocaleData(localEsAr)
     SalesComponent,
     LocalCurrencyPipe,
     SaleInvoiceComponent,
+    BranchComponent,
     ClientLookupDialogComponent
   ],
   imports: [
