@@ -126,6 +126,11 @@ export class SalesComponent implements OnInit {
           } else {
             this.clientControl.setErrors( { "incorrect": true } )
           }
+        },
+
+        (error) => {
+          this.clientControl.setErrors( {"incorrect": true} )
+          this.fetchingData = false;
         }
       );
   }
