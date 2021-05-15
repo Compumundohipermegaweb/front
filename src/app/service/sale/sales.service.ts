@@ -11,7 +11,7 @@ import { SaleResponse } from './sale-response.model';
 })
 export class SalesService {
 
-  host = "http://localhost:8080"
+  host = "https://pp1-hefesto-api-dev.herokuapp.com"
   salesUrl = "/api/sales"
 
   constructor(private http: HttpClient) { }

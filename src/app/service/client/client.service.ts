@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class ClientService {
 
-  host = "http://localhost:8080"
+  host = "https://pp1-hefesto-api-dev.herokuapp.com"
   clientsUrl = "/api/clients"
   
 
