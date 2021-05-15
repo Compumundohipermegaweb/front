@@ -1,13 +1,14 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ClientService {
 
-  host = "https://pp1-hefesto-api-dev.herokuapp.com"
+  host = environment.apiHost
   clientsUrl = "/api/clients"
   
 

@@ -3,7 +3,8 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  apiHost: "https://pp1-hefesto-api-dev.herokuapp.com"
 };
 
 /*

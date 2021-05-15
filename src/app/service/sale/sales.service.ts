@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Sale, Item, Payment } from '../../sales/sales.model';
 import { SaleRequest, ClientRequest, SaleDetailsRequest, ItemRequest, PaymentRequest } from './sale-request.model';
 import { SaleResponse } from './sale-response.model';
+import { environment } from 'src/environments/environment';
 
 
 @Injectable({
@@ -11,7 +12,7 @@ import { SaleResponse } from './sale-response.model';
 })
 export class SalesService {
 
-  host = "https://pp1-hefesto-api-dev.herokuapp.com"
+  host = environment.apiHost
   salesUrl = "/api/sales"
 
   constructor(private http: HttpClient) { }
