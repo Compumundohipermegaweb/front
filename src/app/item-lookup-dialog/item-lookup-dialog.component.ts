@@ -10,10 +10,10 @@ import { MatDialogRef } from '@angular/material/dialog';
 export class ItemLookupDialogComponent implements OnInit {
 
   foundItems: ItemLookupResponse[] = [
-    {id: 1, sku: 1, shortDescription: "Martillo", longDescription: "Martillo carpintero mango hickory", category:  "Herramientas", brand: "Redline", imported: false, stock: 999, price: 1200},
-    {id: 2, sku: 2, shortDescription: "Martillo", longDescription: "Martillo mecanico", category:  "Herramientas", brand: "Redline", imported: false, stock: 999, price: 1200},
-    {id: 3, sku: 3, shortDescription: "Martillo", longDescription: "Martillo galponero", category:  "Herramientas", brand: "Gardex", imported: true, stock: 999, price: 1200},
-    {id: 4, sku: 4, shortDescription: "Martillo", longDescription: "Martillo carpintero fibra de vidrio 8 oz", category:  "Herramientass", brand: "Redline", imported: false, stock: 999, price: 1200},
+    {id: 1, short_description: "Martillo", long_description: "Martillo carpintero mango hickory", brand_name: "Redline", imported: false, available_stock: 999, unit_price: 1200},
+    {id: 2, short_description: "Martillo", long_description: "Martillo mecanico", brand_name: "Redline", imported: false, available_stock: 999, unit_price: 1200},
+    {id: 3, short_description: "Martillo", long_description: "Martillo galponero", brand_name: "Gardex", imported: true, available_stock: 999, unit_price: 1200},
+    {id: 4, short_description: "Martillo", long_description: "Martillo carpintero fibra de vidrio 8 oz", brand_name: "Redline", imported: false, available_stock: 999, unit_price: 1200},
   ]
 
   itemCategoryControl: FormControl;
@@ -50,12 +50,10 @@ export class ItemLookupDialogComponent implements OnInit {
 
 export interface ItemLookupResponse {
   id: number;
-  sku: number;
-  shortDescription: String;
-  longDescription: String;
-  category: String;
-  brand: String;
+  short_description: String;
+  long_description: String;
+  brand_name: String;
   imported: Boolean;
-  stock: number;
-  price: number;
+  available_stock: number;
+  unit_price: number;
 }
