@@ -1,5 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -7,13 +8,12 @@ import { environment } from 'src/environments/environment';
 })
 export class StockService {
 
-
   host = environment.apiHost
   url = "/api/branches/{branch_id}/stock"
 
   constructor(private http: HttpClient) { }
 
-  lookupStock(branchId: number, filters: GetStockFilters) {
+  lookupStock(branchId: number, filters: GetStockFilters): Observable<ItemLookupResponse> {
     this.encodeUrl(branchId);
     let requestParams = new HttpParams()
 
@@ -33,7 +33,7 @@ export class StockService {
       requestParams.append("imported", filters.imported.toString());
     }
 
-    return this.http.get(this.host + this.url, { params: requestParams });
+    return this.http.get<ItemLookupResponse>(this.host + this.url, { params: requestParams });
   }
 
   encodeUrl(branchId: number) {
@@ -42,6 +42,10 @@ export class StockService {
 }
 
 export interface ItemLookupResponse {
+  items: ItemStockResponse[]
+}
+
+export interface ItemStockResponse {
   id: number;
   sku: number;
   short_description: String;

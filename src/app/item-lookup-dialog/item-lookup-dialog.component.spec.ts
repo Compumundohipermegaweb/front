@@ -16,6 +16,7 @@ import localEsAr from "@angular/common/locales/es-AR";
 registerLocaleData(localEsAr)
 
 import { ItemLookupDialogComponent } from './item-lookup-dialog.component';
+import { HttpClient, HttpHandler } from '@angular/common/http';
 
 describe('ItemLookupDialogComponent', () => {
   let location: Location;
@@ -39,6 +40,8 @@ describe('ItemLookupDialogComponent', () => {
       ],
       providers: [
         CurrencyPipe,
+        HttpClient,
+        HttpHandler,
         { provide: MatDialogRef, useValue: {} },
         { provide: MAT_DIALOG_DATA, useValue: {} },
         { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },

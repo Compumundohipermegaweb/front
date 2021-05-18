@@ -4,8 +4,15 @@
         <form [formGroup]="filtersForm">
 
             <mat-form-field>
-                <mat-label>Categoria</mat-label>
+                <mat-label>Sucursal</mat-label>
+                <input matInput type="number" [formControl]="branchIdControl" required>
+                <mat-hint>Código de Sucursal</mat-hint>
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Categoría</mat-label>
                 <input matInput [formControl]="itemCategoryControl">
+                <mat-hint>Código de Categoría</mat-hint>
             </mat-form-field>
 
             <mat-form-field>
@@ -16,11 +23,17 @@
             <mat-form-field>
                 <mat-label>Marca</mat-label>
                 <input matInput [formControl]="itemBrandControl">
+                <mat-hint>Código de Marca</mat-hint>
             </mat-form-field>
 
             <mat-checkbox [formControl]="importedControl">
                 Importado
             </mat-checkbox>
+
+            <button mat-raised-button color="primary" (click)="lookupItems()">
+                <mat-icon>search</mat-icon>
+                Buscar
+            </button>
         </form>
 
         <mat-divider></mat-divider>
@@ -29,13 +42,13 @@
             <h3 mat-subheader>{{ foundItems.length }} items encontrados</h3>
             <mat-list-option *ngFor="let item of foundItems" [value]="item" style="height: max-content;" (dblclick)="selectItem(items.selectedOptions.selected[0]?.value)">
                 <mat-line style="font-weight: bold;">
-                    {{ item.shortDescription }} {{ item.brand }} <span *ngIf="item.imported" style="color: red;"> (Importado) </span>
+                    {{ item.short_description }} {{ item.brand }} <span *ngIf="item.imported" style="color: red;"> (Importado) </span>
                 </mat-line>
                 <mat-line>
-                    {{ item.longDescription }} <span style="float: right;">{{ item.stock }} disponibles</span>
+                    {{ item.long_description }} <span style="float: right;">{{ item.available_stock }} disponibles</span>
                 </mat-line>
                 <mat-line>
-                    {{ item.price | localCurrency}}
+                    {{ item.unit_price | localCurrency}}
                 </mat-line>
                 <mat-divider></mat-divider>
             </mat-list-option>

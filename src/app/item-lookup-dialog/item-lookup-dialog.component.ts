@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
-import { ItemLookupResponse } from '../service/stock/stock.service';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { GetStockFilters, ItemLookupResponse, ItemStockResponse, StockService } from '../service/stock/stock.service';
 
 @Component({
   selector: 'app-item-lookup-dialog',
@@ -10,13 +10,9 @@ import { ItemLookupResponse } from '../service/stock/stock.service';
 })
 export class ItemLookupDialogComponent implements OnInit {
 
-  foundItems: ItemLookupResponse[] = [
-    {id: 1, sku: 1, short_description: "Martillo", long_description: "Martillo carpintero mango hickory", brand_name: "Redline", imported: false, available_stock: 999, unit_price: 1200},
-    {id: 2, sku: 2, short_description: "Martillo", long_description: "Martillo mecanico", brand_name: "Redline", imported: false, available_stock: 999, unit_price: 1200},
-    {id: 3, sku: 3, short_description: "Martillo", long_description: "Martillo galponero", brand_name: "Gardex", imported: true, available_stock: 999, unit_price: 1200},
-    {id: 4, sku: 4, short_description: "Martillo", long_description: "Martillo carpintero fibra de vidrio 8 oz", brand_name: "Redline", imported: false, available_stock: 999, unit_price: 1200},
-  ]
+  foundItems: ItemStockResponse[] = [];
 
+  branchIdControl: FormControl;
   itemCategoryControl: FormControl;
   itemDescriptionControl: FormControl;
   itemBrandControl: FormControl;
@@ -26,13 +22,17 @@ export class ItemLookupDialogComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<ItemLookupDialogComponent>,
-    private formBuilder: FormBuilder) {
+    @Inject(MAT_DIALOG_DATA) public data: ItemsStockLookupData,
+    private formBuilder: FormBuilder,
+    private stockService: StockService) {
+      this.branchIdControl = new FormControl(data.branchId);
       this.itemCategoryControl = new FormControl("");
       this.itemDescriptionControl = new FormControl("");
       this.itemBrandControl = new FormControl("");
       this.importedControl = new FormControl(false);
 
       this.filtersForm = formBuilder.group({
+        branchId: this.branchIdControl,
         category: this.itemCategoryControl,
         description: this.itemDescriptionControl,
         brand: this.itemBrandControl,
@@ -43,8 +43,31 @@ export class ItemLookupDialogComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  lookupItems() {
+    let filters: GetStockFilters = {
+      category_id: this.itemCategoryControl.value,
+      description: this.itemDescriptionControl.value,
+      brand_id: this.itemBrandControl.value,
+      imported: this.importedControl.value
+    }
+
+    this.stockService.lookupStock(this.branchIdControl.value, filters).subscribe(
+      (response: ItemLookupResponse) => {
+        this.foundItems = response.items
+      },
+
+      (error) => {
+        
+      }
+    );
+  }
+
   selectItem(item: ItemLookupResponse) {
     this.dialogRef.close(item)
   }
 
+}
+
+export interface ItemsStockLookupData {
+  branchId?: number
 }

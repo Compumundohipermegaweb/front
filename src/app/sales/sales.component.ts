@@ -13,7 +13,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import Swal  from 'sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
-import { ItemLookupResponse } from '../service/stock/stock.service';
+import { ItemStockResponse } from '../service/stock/stock.service';
 
 @Component({
   selector: 'app-sales',
@@ -158,9 +158,11 @@ export class SalesComponent implements OnInit {
   }
 
   searchItems() {
-    const dialogRef = this.itemLookupDialog.open(ItemLookupDialogComponent, {})
+    const dialogRef = this.itemLookupDialog.open(ItemLookupDialogComponent, { data: {
+      branchId: this.branchControl.value
+    }})
 
-    dialogRef.afterClosed().subscribe((result: ItemLookupResponse) => {
+    dialogRef.afterClosed().subscribe((result: ItemStockResponse) => {
       if(result) {
         this.idControl.patchValue(result.id)
         this.skuControl.patchValue(result.sku)
