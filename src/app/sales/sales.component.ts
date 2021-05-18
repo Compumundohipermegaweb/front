@@ -3,6 +3,7 @@ import { ItemLookupDialogComponent } from '../item-lookup-dialog/item-lookup-dia
 
 import { SalesService } from '../service/sale/sales.service';
 import { ClientService } from '../service/client/client.service';
+import { ItemStockResponse, StockService, StockValidationResponse } from '../service/stock/stock.service';
 
 import { Client, Item, Sale } from './sales.model';
 
@@ -13,8 +14,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import Swal  from 'sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
-import { ItemStockResponse, StockService, StockValidationResponse } from '../service/stock/stock.service';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-sales',
@@ -58,6 +57,7 @@ export class SalesComponent implements OnInit {
               private router: Router,
               public clientLookupDialog: MatDialog,
               public itemLookupDialog: MatDialog) {
+    
     this.initColumns();
     this.initItems();
     this.initControls();
@@ -65,6 +65,10 @@ export class SalesComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator
   }
 
   initColumns() {
@@ -112,9 +116,6 @@ export class SalesComponent implements OnInit {
     });
   }
 
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator
-  }
 
   clientLookup() {
     this.fetchingData = true;
@@ -188,6 +189,31 @@ export class SalesComponent implements OnInit {
     }
   }
 
+  deleteItem(item: Item) {
+    Swal.fire({
+      icon: "warning",
+      title: "Seguro desea eliminar",
+      text: item.quantity + "x" + item.description.toString(),
+      showCancelButton: true,
+      confirmButtonText: "Eliminar",
+      confirmButtonColor: "#3f51b5",
+      cancelButtonText: "Cancelar",
+      cancelButtonColor: "#f44336"
+    }).then((result) => {
+      if(result.isConfirmed) {
+        Swal.fire({
+          icon: "success",
+          title: "Item eliminado!",
+          text: "Se ha eliminado " + item.quantity + "x" + item.description
+        });
+
+        this.items = this.items.filter((it: Item) => it.sku != item.sku)
+        this.calculateTotalCost()
+        this.refreshDataSource()
+      }
+    })
+  }
+
   validateStock() {
     let request = {
       branchId: this.branchControl.value,
@@ -227,9 +253,11 @@ export class SalesComponent implements OnInit {
   }
 
   calculateTotalCost() {
-    if(this.items.length > 0) {
+    if(this.items && this.items.length > 0) {
       this.totalCost = this.items.map(i => i.price * i.quantity ).reduce((a, b) => a + b);
-    } else { return 0 }
+    } else { 
+      this.totalCost = 0;
+    }
   }
 
   registerSale() {
