@@ -1,15 +1,15 @@
 export interface SaleResponse {
-    id: number;
-    billingDate: String;
+    invoice_id: String;
+    billing_date: String;
     type: String;
     client: ClientResponse;
-    branchAddress: String;
-    branchContact: String;
+    branch_address: String;
+    branch_contact: String;
     cuit: String;
-    activitySince: String;
-    saleDetails: SaleDetailsResponse;
-    subTotal: number;
-    ivaSubTotal: number;
+    activity_since: String;
+    sale_details: SaleDetailsResponse;
+    subtotal: number;
+    iva_subtotal: number;
     total: number;
   }
   
@@ -17,8 +17,8 @@ export interface SaleResponse {
     document_number: String;
     first_name: String;
     last_name: String;
-    sur_name: String;
-    category: String;
+    state: String;
+    credit_limit: number;
     email: String;
     contact_number: String;
   }
@@ -28,8 +28,8 @@ export interface SaleResponse {
   }
   
   export interface ItemResponse {
-    id: String;
-    desscription: String;
+    id: number;
+    description: String;
     quantity: number;
     unit_price: number;
   }

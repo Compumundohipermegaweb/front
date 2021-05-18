@@ -22,7 +22,7 @@ export interface SaleRequest {
   }
   
   export interface ItemRequest {
-    id: String;
+    id: number;
     description: String;
     quantity: number;
     unit_price: number;

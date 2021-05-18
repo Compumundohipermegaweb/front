@@ -18,19 +18,19 @@ export class StockService {
     let requestParams = new HttpParams()
 
     if(filters.category_id) {
-      requestParams.append("category_id", filters.category_id.toString());
+      requestParams = requestParams.append("category_id", filters.category_id.toString());
     }
     
     if(filters.description) {
-      requestParams.append("description", filters.description.toString());
+      requestParams = requestParams.append("description", filters.description.toString());
     }
 
     if(filters.brand_id) {
-      requestParams.append("brand_id", filters.brand_id.toString());
+      requestParams = requestParams.append("brand_id", filters.brand_id.toString());
     }
 
     if(filters.imported) {
-      requestParams.append("imported", filters.imported.toString());
+      requestParams = requestParams.append("imported", filters.imported.toString());
     }
 
     return this.http.get<ItemLookupResponse>(this.host + this.url, { params: requestParams });

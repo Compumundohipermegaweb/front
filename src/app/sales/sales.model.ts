@@ -15,7 +15,7 @@ export interface Client {
 }
 
 export interface Item {
-    id: String;
+    id: number;
     sku: number;
     description: String;
     quantity: number;
