@@ -15,7 +15,7 @@ import { Router } from '@angular/router';
 import Swal  from 'sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
 
-import Stripe from 'stripe';
+/*import Stripe from 'stripe';*/
 
 @Component({
   selector: 'app-sales',
@@ -318,11 +318,11 @@ export class SalesComponent implements OnInit {
       total: this.totalCost
     }
   }
-  stripe(){
+  /*stripe(){
     const stripe = new Stripe('pk_test_TYooMQauvdEDq54NiTphI7jx', {
       apiVersion: '2020-08-27'
     });
-  }
+  }*/
 
 
 }
