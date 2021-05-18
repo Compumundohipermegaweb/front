@@ -15,11 +15,14 @@ import { Router } from '@angular/router';
 import Swal  from 'sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
 
+import Stripe from 'stripe';
+
 @Component({
   selector: 'app-sales',
   templateUrl: './sales.component.html',
   styleUrls: ['./sales.component.css']
 })
+
 export class SalesComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -49,6 +52,7 @@ export class SalesComponent implements OnInit {
   paymentMethodControl: FormControl;
   paymentAmountControl: FormControl;
 
+
   constructor(private formBuilder: FormBuilder,
               private changeDetectorRefs: ChangeDetectorRef,
               private salesService: SalesService,
@@ -57,11 +61,12 @@ export class SalesComponent implements OnInit {
               private router: Router,
               public clientLookupDialog: MatDialog,
               public itemLookupDialog: MatDialog) {
-    
+
     this.initColumns();
     this.initItems();
     this.initControls();
     this.initForms(formBuilder);
+
   }
 
   ngOnInit(): void {
@@ -255,7 +260,7 @@ export class SalesComponent implements OnInit {
   calculateTotalCost() {
     if(this.items && this.items.length > 0) {
       this.totalCost = this.items.map(i => i.price * i.quantity ).reduce((a, b) => a + b);
-    } else { 
+    } else {
       this.totalCost = 0;
     }
   }
@@ -287,7 +292,7 @@ export class SalesComponent implements OnInit {
 
   seleccionoTarjeta(){
     if(this.paymentMethodControl.value=="TARJETA"){
-      
+
       window.alert("Se selecciono tarjeta");
     }
   }
@@ -313,4 +318,11 @@ export class SalesComponent implements OnInit {
       total: this.totalCost
     }
   }
+  stripe(){
+    const stripe = new Stripe('pk_test_TYooMQauvdEDq54NiTphI7jx', {
+      apiVersion: '2020-08-27'
+    });
+  }
+
+
 }

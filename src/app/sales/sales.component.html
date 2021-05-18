@@ -1,4 +1,6 @@
+<script src="https://js.stripe.com/v3/"></script>
 <mat-card>
+  
     <mat-card-title>
         <mat-icon>sell</mat-icon>
         <span>&nbsp;Ventas</span>
@@ -135,7 +137,7 @@
             </div>
         </mat-step>
         <mat-step [stepControl]="paymentForm">
-            <form [formGroup]="paymentForm" (ngSubmit)=seleccionoTarjeta()>
+            <form [formGroup]="paymentForm">
                 <ng-template matStepLabel>Medio de pago</ng-template>
 
                 <mat-form-field>
@@ -143,6 +145,8 @@
                     <mat-select [formControl]="paymentMethodControl" required>
                         <mat-option value="EFECTIVO">Efectivo</mat-option>
                         <mat-option value="TARJETA">Tarjeta</mat-option>
+                        <mat-option value="MERCADO PAGO">Mercado Pago</mat-option>
+                        <mat-option value="AHORA 12">Ahora 12</mat-option>
                     </mat-select>
                 </mat-form-field>
 
@@ -151,7 +155,6 @@
                     <input matInput type="number" [formControl]="paymentAmountControl" value="{{ totalCost }}" required>
                     <span matPrefix>$&nbsp;</span>
                 </mat-form-field>
-                <button mat-raised-button color="primary"  class="sumbit" >Pagar Ahora (Tarjeta)</button>
             </form>
 
             <button mat-raised-button color="error" matStepperPrevious>Atras</button>
