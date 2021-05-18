@@ -1,5 +1,5 @@
 import { ClientLookupDialogComponent } from '../client-lookup-dialog/client-lookup-dialog.component';
-import { ItemLookupDialogComponent, ItemLookupResponse } from '../item-lookup-dialog/item-lookup-dialog.component';
+import { ItemLookupDialogComponent } from '../item-lookup-dialog/item-lookup-dialog.component';
 
 import { SalesService } from '../service/sale/sales.service';
 import { ClientService } from '../service/client/client.service';
@@ -13,6 +13,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import Swal  from 'sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
+import { ItemLookupResponse } from '../service/stock/stock.service';
 
 @Component({
   selector: 'app-sales',
@@ -163,8 +164,8 @@ export class SalesComponent implements OnInit {
       if(result) {
         this.idControl.patchValue(result.id)
         this.skuControl.patchValue(result.sku)
-        this.descriptionControl.patchValue(result.shortDescription)
-        this.priceControl.patchValue(result.price)
+        this.descriptionControl.patchValue(result.short_description)
+        this.priceControl.patchValue(result.unit_price)
       }
     })
   }
