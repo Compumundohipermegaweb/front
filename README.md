@@ -3,9 +3,22 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.2.11.
 
+## Prerequisitos
+
+* [NPM](https://nodejs.org/en/download/)
+* [Angular CLI](https://angular.io/cli)
+
+## Setup de ambiente de desarrollo
+
+* Clonar el repo
+* Instalar las dependecias con `npm install`
+* Levantar con `ng serve --open`
+
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Correr `ng serve --open` para levantar en local apuntando a la API dev.
+
+Correr `ng serve -c local --open` para levantar en local y apuntar a la API local.
 
 ## Code scaffolding
 
