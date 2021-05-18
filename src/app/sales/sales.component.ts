@@ -23,7 +23,7 @@ import { MatDialog } from '@angular/material/dialog';
 export class SalesComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  
+
   fetchingData = false;
 
   displayedColumns: string[];
@@ -49,8 +49,8 @@ export class SalesComponent implements OnInit {
   paymentMethodControl: FormControl;
   paymentAmountControl: FormControl;
 
-  constructor(private formBuilder: FormBuilder, 
-              private changeDetectorRefs: ChangeDetectorRef, 
+  constructor(private formBuilder: FormBuilder,
+              private changeDetectorRefs: ChangeDetectorRef,
               private salesService: SalesService,
               private clientService: ClientService,
               private stockService: StockService,
@@ -89,7 +89,7 @@ export class SalesComponent implements OnInit {
     this.descriptionControl = new FormControl();
     this.quantityControl = new FormControl();
     this.priceControl = new FormControl();
-    this.paymentMethodControl = new FormControl("EFECTIVO")
+    this.paymentMethodControl = new FormControl()
     this.paymentAmountControl = new FormControl();
     this.paymentAmountControl.disable()
   }
@@ -265,8 +265,8 @@ export class SalesComponent implements OnInit {
     const sale = this.createRequest()
     this.salesService.postSale(sale)
       .subscribe(
-        (response) => { 
-          this.router.navigateByUrl('/sales/invoice', { state: { data: response } }) 
+        (response) => {
+          this.router.navigateByUrl('/sales/invoice', { state: { data: response } })
         },
         (error) => {
           console.log(error)
@@ -285,6 +285,13 @@ export class SalesComponent implements OnInit {
     this.refreshDataSource();
   }
 
+  seleccionoTarjeta(){
+    if(this.paymentMethodControl.value=="TARJETA"){
+      
+      window.alert("Se selecciono tarjeta");
+    }
+  }
+
   private refreshDataSource(){
     this.dataSource.data = this.items
   }
@@ -298,9 +305,9 @@ export class SalesComponent implements OnInit {
       branchCode: this.branchControl.value,
       details: this.items,
       payment: [
-        { 
-          method: this.paymentMethodControl.value, 
-          amount: this.paymentAmountControl.value 
+        {
+          method: this.paymentMethodControl.value,
+          amount: this.paymentAmountControl.value
         }
       ],
       total: this.totalCost

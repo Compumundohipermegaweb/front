@@ -135,13 +135,14 @@
             </div>
         </mat-step>
         <mat-step [stepControl]="paymentForm">
-            <form [formGroup]="paymentForm">
+            <form [formGroup]="paymentForm" (ngSubmit)=seleccionoTarjeta()>
                 <ng-template matStepLabel>Medio de pago</ng-template>
 
                 <mat-form-field>
                     <mat-label>Medio de pago</mat-label>
                     <mat-select [formControl]="paymentMethodControl" required>
                         <mat-option value="EFECTIVO">Efectivo</mat-option>
+                        <mat-option value="TARJETA">Tarjeta</mat-option>
                     </mat-select>
                 </mat-form-field>
 
@@ -150,10 +151,11 @@
                     <input matInput type="number" [formControl]="paymentAmountControl" value="{{ totalCost }}" required>
                     <span matPrefix>$&nbsp;</span>
                 </mat-form-field>
+                <button mat-raised-button color="primary"  class="sumbit" >Pagar Ahora (Tarjeta)</button>
             </form>
-        
+
             <button mat-raised-button color="error" matStepperPrevious>Atras</button>
-            <button mat-raised-button color="primary" matStepperNext>Siguiente</button>
+            <button mat-raised-button color="primary"  class="sumbit" matStepperNext>Siguiente</button>
         </mat-step>
         <mat-step>
             <ng-template matStepLabel>Resumen</ng-template>
@@ -183,32 +185,32 @@
                             <th mat-header-cell *matHeaderCellDef>Nº de ítem</th>
                             <td mat-cell *matCellDef="let item"> {{item.id}} </td>
                         </ng-container>
-    
+
                         <ng-container matColumnDef="sku">
                             <th mat-header-cell *matHeaderCellDef>SKU</th>
                             <td mat-cell *matCellDef="let item"> {{item.sku}} </td>
                         </ng-container>
-    
+
                         <ng-container matColumnDef="description">
                             <th mat-header-cell *matHeaderCellDef>Descripción</th>
                             <td mat-cell *matCellDef="let item"> {{item.description}} </td>
                         </ng-container>
-    
+
                         <ng-container matColumnDef="quantity">
                             <th mat-header-cell *matHeaderCellDef>Cantidad</th>
                             <td mat-cell *matCellDef="let item"> {{item.quantity}} </td>
                         </ng-container>
-    
+
                         <ng-container matColumnDef="price">
                             <th mat-header-cell *matHeaderCellDef>Precio</th>
                             <td mat-cell *matCellDef="let item"> {{item.price}} </td>
                         </ng-container>
-    
+
                         <ng-container matColumnDef="subTotal">
                             <th mat-header-cell *matHeaderCellDef>Sub total</th>
                             <td mat-cell *matCellDef="let item"> {{item.price * item.quantity}} </td>
                         </ng-container>
-    
+
                         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                     </table>
