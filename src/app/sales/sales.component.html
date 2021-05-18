@@ -41,7 +41,7 @@
                     <mat-icon>search</mat-icon>
                 </button>
             </form>
-            <form [formGroup]="itemForm" (ngSubmit)=addItem()>
+            <form [formGroup]="itemForm" (ngSubmit)="validateStock();addItem()">
                 <div>
                     <mat-form-field>
                         <mat-label>Nº de ítem</mat-label>
@@ -60,7 +60,8 @@
 
                     <mat-form-field>
                         <mat-label>Cantidad</mat-label>
-                        <input matInput type="number" [formControl]="quantityControl" required>
+                        <input matInput type="number" [formControl]="quantityControl" (focusout)="validateStock()" required>
+                        <mat-error *ngIf="quantityControl.invalid">{{ getQuantityErrors() }}</mat-error>
                     </mat-form-field>
 
 
@@ -74,7 +75,7 @@
                         <mat-icon>add</mat-icon>
                     </button>
 
-                    <button mat-icon-button (click)="searchItems()">
+                    <button mat-icon-button (click)="$event.preventDefault();searchItems()">
                         <mat-icon>search</mat-icon>
                     </button>
                 </div>

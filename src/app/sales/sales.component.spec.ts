@@ -127,9 +127,9 @@ describe('SalesComponent', () => {
   it("should cancel the sale", () => {
     component.constantsForm.setValue({invoice: "A", seller: "COD10", branchId: "SUC03", client: 40060441})
     component.items = [
-      { id: "1", sku: 1, description: "Details", quantity: 10, price: 110.50 }, 
-      { id: "2", sku: 22, description: "Details", quantity: 15, price: 25.10 }, 
-      { id: "3", sku: 333, description: "Details", quantity: 3, price: 570.00 }
+      { id: 1, sku: 1, description: "Details", quantity: 10, price: 110.50 }, 
+      { id: 2, sku: 22, description: "Details", quantity: 15, price: 25.10 }, 
+      { id: 3, sku: 333, description: "Details", quantity: 3, price: 570.00 }
     ]
 
     component.cancelSale()

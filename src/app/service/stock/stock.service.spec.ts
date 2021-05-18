@@ -1,7 +1,7 @@
 import { HttpClient, HttpHandler, HttpParams } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 
-import { StockService } from './stock.service';
+import { StockService, StockValidationRequest } from './stock.service';
 
 describe('StockService', () => {
   let service: StockService;
@@ -20,11 +20,19 @@ describe('StockService', () => {
     expect(service).toBeTruthy();
   });
 
-  it("should format the url", () => {
+  it("should build stock lookup url", () => {
     let branchId = 1234;
-    service.encodeUrl(branchId)
 
-    expect(service.url).toEqual("/api/branches/1234/stock")
+    expect(service.buildStockLookupUrl(branchId)).toEqual("/api/branches/1234/stock")
+  });
+
+  it("should build stock validation url", () => {
+    let request: StockValidationRequest = {
+      branchId: 1,
+      sku: 12351231
+    }
+
+    expect(service.buildStockValidationUrl(request)).toEqual("/api/branches/1/stock/12351231")
   });
   
 });

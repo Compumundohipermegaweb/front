@@ -13,7 +13,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import Swal  from 'sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
-import { ItemStockResponse } from '../service/stock/stock.service';
+import { ItemStockResponse, StockService, StockValidationResponse } from '../service/stock/stock.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-sales',
@@ -31,6 +32,7 @@ export class SalesComponent implements OnInit {
   items: Item[];
   client: Client;
   totalCost: number;
+  itemStock: StockValidationResponse;
 
   constantsForm: FormGroup;
   itemForm: FormGroup;
@@ -52,6 +54,7 @@ export class SalesComponent implements OnInit {
               private changeDetectorRefs: ChangeDetectorRef, 
               private salesService: SalesService,
               private clientService: ClientService,
+              private stockService: StockService,
               private router: Router,
               public clientLookupDialog: MatDialog,
               public itemLookupDialog: MatDialog) {
@@ -173,14 +176,53 @@ export class SalesComponent implements OnInit {
   }
 
   addItem() {
-    if(this.itemForm.valid && this.constantsForm.valid) {
+    if(this.itemForm.valid && this.constantsForm.valid && this.quantityControl.valid) {
       this.items.push(this.itemForm.value)
       this.itemForm.reset()
       this.refreshDataSource();
       this.calculateTotalCost();
       this.paymentAmountControl.patchValue(this.totalCost);
+      this.itemForm.reset()
     } else {
       this.constantsForm.markAllAsTouched()
+    }
+  }
+
+  validateStock() {
+    let request = {
+      branchId: this.branchControl.value,
+      sku: this.skuControl.value
+    }
+
+    if(!request.branchId || !request.sku) {
+      this.quantityControl.setErrors({"required": true})
+      return;
+    }
+
+    this.stockService.validateStock(request)
+      .subscribe(
+        (response: StockValidationResponse) => {
+          this.itemStock = response;
+          if(response.available_stock == 0) {
+            this.quantityControl.setErrors({"unavailable": true});
+          } else if(response.available_stock < this.quantityControl.value) {
+            this.quantityControl.setErrors({"unavailable": true});
+          } else {
+            this.quantityControl.setErrors(null);
+          }
+        },
+
+        (error) => {
+          this.quantityControl.setErrors({"unavailable": true});
+        }
+      );
+  }
+
+  getQuantityErrors() {
+    if(this.quantityControl.hasError("unavailable")) {
+      return "Stock insuficiente. Disponible: " + this.itemStock.available_stock;
+    } else if(this.quantityControl.hasError("required")) {
+      return "Ingrese Sucursal y SKU"
     }
   }
 

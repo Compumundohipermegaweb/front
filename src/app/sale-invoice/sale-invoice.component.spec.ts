@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 
 import { SaleInvoiceComponent } from './sale-invoice.component';
 
@@ -8,40 +10,17 @@ describe('SaleInvoiceComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SaleInvoiceComponent ]
+      declarations: [ SaleInvoiceComponent ],
+      imports: [ RouterTestingModule ],
+      providers: [
+        { provide: Router, useClass: RouterStub}
+      ]
     })
     .compileComponents();
+    
   });
 
   beforeEach(() => {
-    history.replaceState({data: {
-      id: 1234,
-      billingDate: "String",
-      type: "B",
-      branchAddress: "Calle falsa 123",
-      branchContact: "String",
-      cuit: "String",
-      activitySince: "String",
-      client: {
-        document_number: "String",
-        first_name: "String",
-        last_name: "String",
-        sur_name: "String",
-        category: "String",
-        email: "String",
-        contact_number: "String",
-      },
-      saleDetails: {
-        sale_details: [
-          { id: "1", sku: 1, desscription: "Martillo", quantity: 1, unit_price: 850 },
-          { id: "2", sku: 2, desscription: "Pinza de mano", quantity: 1, unit_price: 700 },
-          { id: "3", sku: 3, desscription: "Clavos", quantity: 50, unit_price: 0.5 }
-        ]
-      },
-      subTotal: 0,
-      ivaSubTotal: 0,
-      total: 1575,
-    } }, "")
     fixture = TestBed.createComponent(SaleInvoiceComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -51,3 +30,46 @@ describe('SaleInvoiceComponent', () => {
     expect(component).toBeTruthy();
   });
 });
+
+class RouterStub {
+  
+  getCurrentNavigation() {
+    return {
+      extras: {
+        state: {
+          data: {
+            invoice_id: "String",
+            billing_date: "",
+            type: "String",
+            client: {
+              document_number: "String",
+              first_name: "String",
+              last_name: "String",
+              state: "String",
+              credit_limit: 100,
+              email: "String",
+              contact_number: "String"
+            },
+            branch_address: "String",
+            branch_contact: "String",
+            cuit: "String",
+            activity_since: "String",
+            sale_details: {
+              sale_details: [
+                {
+                  id: 1,
+                  description: "String",
+                  quantity: 10,
+                  unit_price: 1
+                }
+              ]
+            },
+            subtotal: 100,
+            iva_subtotal: 100,
+            total: 100
+          }
+        }
+      }
+    }
+  }
+}
