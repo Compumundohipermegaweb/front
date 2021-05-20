@@ -30,16 +30,21 @@
                 Importado
             </mat-checkbox>
 
-            <button mat-raised-button color="primary" (click)="lookupItems()">
-                <mat-icon>search</mat-icon>
-                Buscar
-            </button>
+            <div *ngIf="searchingItems">
+                <mat-progress-spinner color="primary" mode="indeterminate" #loading></mat-progress-spinner>
+            </div>
+            <div *ngIf="!searchingItems">
+                <button mat-raised-button color="primary" (click)="lookupItems()" #searchButton>
+                    <mat-icon>search</mat-icon>
+                    Buscar
+                </button>
+            </div>
         </form>
 
         <mat-divider></mat-divider>
 
         <mat-selection-list #items [multiple]="false">
-            <h3 mat-subheader>{{ foundItems.length }} items encontrados</h3>
+            <h3 *ngIf="hasSearched" mat-subheader>{{ foundItems.length }} items encontrados</h3>
             <mat-list-option *ngFor="let item of foundItems" [value]="item" style="height: max-content;" (dblclick)="selectItem(items.selectedOptions.selected[0]?.value)">
                 <mat-line style="font-weight: bold;">
                     {{ item.short_description }} {{ item.brand }} <span *ngIf="item.imported" style="color: red;"> (Importado) </span>

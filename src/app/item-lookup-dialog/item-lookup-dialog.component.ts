@@ -10,6 +10,9 @@ import { GetStockFilters, ItemLookupResponse, ItemStockResponse, StockService } 
 })
 export class ItemLookupDialogComponent implements OnInit {
 
+  searchingItems: Boolean = false;
+  hasSearched: Boolean = false;
+
   foundItems: ItemStockResponse[] = [];
 
   branchIdControl: FormControl;
@@ -44,6 +47,7 @@ export class ItemLookupDialogComponent implements OnInit {
   }
 
   lookupItems() {
+    this.searchingItems = true;
     let filters: GetStockFilters = {
       category_id: this.itemCategoryControl.value,
       description: this.itemDescriptionControl.value,
@@ -53,11 +57,13 @@ export class ItemLookupDialogComponent implements OnInit {
 
     this.stockService.lookupStock(this.branchIdControl.value, filters).subscribe(
       (response: ItemLookupResponse) => {
+        this.searchingItems = false;
         this.foundItems = response.items
+        this.hasSearched = true;
       },
 
       (error) => {
-        
+        this.searchingItems = false;
       }
     );
   }
