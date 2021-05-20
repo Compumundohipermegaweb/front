@@ -320,24 +320,5 @@ export class SalesComponent implements OnInit {
       total: this.totalCost
     }
   }
-
-  eleccionDePago(){
-
-    if(this.paymentMethodControl.value == "TARJETA"){
-      document.getElementById("nt").removeAttribute('disabled');
-      document.getElementById("ct").removeAttribute('disabled');
-      document.getElementById("vt").removeAttribute('disabled');
-    }else{
-      document.getElementById("nt").setAttribute('disabled','disabled');
-      document.getElementById("ct").setAttribute('disabled','disabled');
-      document.getElementById("vt").setAttribute('disabled','disabled');
-    }
-  }
-
-
-  addPaymentMethod() {
-    this.paymentMethodDialog.open(AddPaymentMethodComponent, {
-      data: { document:  this.paymentMethodControl.value}
-    });
-  }
+  
 }

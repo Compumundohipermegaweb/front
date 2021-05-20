@@ -142,42 +142,41 @@
 
                 <mat-form-field>
                     <mat-label>Medio de pago</mat-label>
-                    <mat-select [formControl]="paymentMethodControl" (focusout)="eleccionDePago()"  required>
+                    <mat-select [formControl]="paymentMethodControl" required>
                         <mat-option value="EFECTIVO">Efectivo</mat-option>
-                        <mat-option value="TARJETA">Tarjeta de Credito</mat-option>
+                        <mat-option value="CREDITO">Tarjeta de Credito</mat-option>
+                        <mat-option value="DEBITO">Tarjeta Debito</mat-option>
                         <mat-option value="MERCADO PAGO">Mercado Pago</mat-option>
-                        <mat-option value="TARJETA">Tarjeta Debito</mat-option>
                     </mat-select>
                 </mat-form-field>
-
+                
                 <mat-form-field>
                     <mat-label>Monto</mat-label>
-                    <input matInput type="number" [formControl]="paymentAmountControl" value="{{ totalCost }}" required>
+                    <input matInput type="number" [formControl]="paymentAmountControl" required>
                     <span matPrefix>$&nbsp;</span>
                 </mat-form-field>
 
-                <mat-form-field>
-                  <mat-label>N°Cupon</mat-label>
-                  <input matInput type="number"  required>
+                <mat-form-field *ngIf="paymentMethodControl.value == 'CREDITO' || paymentMethodControl.value == 'DEBITO'">
+                    <mat-label>Tipo</mat-label>
+                    <mat-select>
+                        <mat-option value="0">Visa</mat-option>
+                        <mat-option value="1">AMEX</mat-option>
+                        <mat-option value="2">Master Card</mat-option>
+                        <mat-option value="3">Cabal</mat-option>
+                    </mat-select>
                 </mat-form-field>
 
-                <mat-form-field>
-                  <mat-label>Numero de Tarjeta</mat-label>
-                  <input matInput type="number" id="nt" disabled>
+                <mat-form-field *ngIf="paymentMethodControl.value == 'CREDITO' || paymentMethodControl.value == 'DEBITO'">
+                  <mat-label>Ultimos 4 digitos</mat-label>
+                  <input matInput type="number" maxlength="4">
                 </mat-form-field>
 
-                <mat-form-field>
-                  <mat-label>Vencimiento</mat-label>
-                  <input matInput type="text" id="vt" disabled>
-                </mat-form-field>
-
-                <mat-form-field>
-                  <mat-label>Codigo de Seguridad</mat-label>
-                  <input matInput type="number" id="ct" disabled>
+                <mat-form-field *ngIf="paymentMethodControl.value == 'MERCADO PAGO'">
+                  <mat-label>Email</mat-label>
+                  <input matInput type="email">
                 </mat-form-field>
 
             </form>
-            <button mat-raised-button color="warn" (click)="addPaymentMethod()">Añadir Metodo de Pago</button>
             <button mat-raised-button color="error" matStepperPrevious>Atras</button>
             <button mat-raised-button color="primary"   matStepperNext>Siguiente</button>
         </mat-step>
