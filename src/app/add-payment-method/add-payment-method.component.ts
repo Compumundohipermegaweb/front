@@ -12,13 +12,15 @@ export class AddPaymentMethodComponent implements OnInit {
   form: FormGroup;
 
   constructor(public dialogRef: MatDialogRef<AddPaymentMethodComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: PaymentMethodDialogData) { }
+              @Inject(MAT_DIALOG_DATA) public data: PaymentMethodDialogData) {
+              
+               }
 
   ngOnInit(): void {
   }
 
   addNewPaymentMethod(){
-    
+
   }
 }
 

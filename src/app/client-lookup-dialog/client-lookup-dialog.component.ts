@@ -9,7 +9,10 @@ import { ClientResponse, ClientService } from '../service/client/client.service'
   templateUrl: './client-lookup-dialog.component.html',
   styleUrls: ['./client-lookup-dialog.component.css']
 })
-export class ClientLookupDialogComponent implements OnInit { 
+export class ClientLookupDialogComponent implements OnInit {
+
+  searchingClients: boolean = false;
+
 
   form: FormGroup;
   nameControl: FormControl;
@@ -23,7 +26,7 @@ export class ClientLookupDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: ClientLookupDialogData,
     private formBuilder: FormBuilder,
     private clientService: ClientService
-  ) { 
+  ) {
     this.nameControl = new FormControl("")
     this.documentControl = new FormControl("")
 
@@ -38,14 +41,20 @@ export class ClientLookupDialogComponent implements OnInit {
   }
 
   lookupClients() {
+    this.searchingClients = true;
     this.clientService.getClient(this.nameControl.value, this.documentControl.value)
       .subscribe(
         (response) => {
+          this.searchingClients = false;
           if(response) {
             this.foundClients =  response.map((it: ClientResponse) => this.toClient(it) )
           } else {
             this.foundClients = []
           }
+
+        },
+        (error) => {
+          this.searchingClients = false;
         }
       );
   }

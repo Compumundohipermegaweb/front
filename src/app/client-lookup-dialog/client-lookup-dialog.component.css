@@ -1,0 +1,5 @@
+mat-selection-list{
+  overflow: auto;
+  max-height: 600px;
+  min-height: auto;
+}
