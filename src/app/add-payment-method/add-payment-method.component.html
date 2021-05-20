@@ -1,0 +1,14 @@
+<h2 mat-header>Nuevo Metodo de Pago</h2>
+<mat-card>
+    <mat-card-content>
+        <form [formGroup]="form" (ngSubmit)="addNewPaymentMethod()">
+
+            <mat-form-field>
+                <mat-label>Nombre</mat-label>
+                <input matInput [formControl]="">
+            </mat-form-field>
+
+            <button mat-raised-button color="primary" class="submit">
+                <mat-icon>add</mat-icon> Añadir
+            </button>
+        </form>

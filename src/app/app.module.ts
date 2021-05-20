@@ -36,6 +36,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { registerLocaleData } from '@angular/common';
 import localEsAr from "@angular/common/locales/es-AR";
 import { SaleInvoiceComponent } from './sale-invoice/sale-invoice.component';
+import { AddPaymentMethodComponent } from './add-payment-method/add-payment-method.component';
 
 registerLocaleData(localEsAr)
 
@@ -48,7 +49,8 @@ registerLocaleData(localEsAr)
     SaleInvoiceComponent,
     BranchComponent,
     ClientLookupDialogComponent,
-    ItemLookupDialogComponent
+    ItemLookupDialogComponent,
+    AddPaymentMethodComponent
   ],
   imports: [
     BrowserModule,

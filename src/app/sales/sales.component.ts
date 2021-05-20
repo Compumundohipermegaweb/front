@@ -1,5 +1,6 @@
 import { ClientLookupDialogComponent } from '../client-lookup-dialog/client-lookup-dialog.component';
 import { ItemLookupDialogComponent } from '../item-lookup-dialog/item-lookup-dialog.component';
+import { AddPaymentMethodComponent } from '../add-payment-method/add-payment-method.component';
 
 import { SalesService } from '../service/sale/sales.service';
 import { ClientService } from '../service/client/client.service';
@@ -15,7 +16,7 @@ import { Router } from '@angular/router';
 import Swal  from 'sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
 
-/*import Stripe from 'stripe';*/
+
 
 @Component({
   selector: 'app-sales',
@@ -60,7 +61,8 @@ export class SalesComponent implements OnInit {
               private stockService: StockService,
               private router: Router,
               public clientLookupDialog: MatDialog,
-              public itemLookupDialog: MatDialog) {
+              public itemLookupDialog: MatDialog,
+              public paymentMethodDialog: MatDialog) {
 
     this.initColumns();
     this.initItems();
@@ -318,11 +320,24 @@ export class SalesComponent implements OnInit {
       total: this.totalCost
     }
   }
-  /*stripe(){
-    const stripe = new Stripe('pk_test_TYooMQauvdEDq54NiTphI7jx', {
-      apiVersion: '2020-08-27'
+
+  eleccionDePago(){
+
+    if(this.paymentMethodControl.value == "TARJETA"){
+      document.getElementById("nt").removeAttribute('disabled');
+      document.getElementById("ct").removeAttribute('disabled');
+      document.getElementById("vt").removeAttribute('disabled');
+    }else{
+      document.getElementById("nt").setAttribute('disabled','disabled');
+      document.getElementById("ct").setAttribute('disabled','disabled');
+      document.getElementById("vt").setAttribute('disabled','disabled');
+    }
+  }
+
+
+  addPaymentMethod() {
+    this.paymentMethodDialog.open(AddPaymentMethodComponent, {
+      data: { document:  this.paymentMethodControl.value}
     });
-  }*/
-
-
+  }
 }

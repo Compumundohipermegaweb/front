@@ -10,6 +10,7 @@ import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
+
 export class SalesService {
 
   host = environment.apiHost
