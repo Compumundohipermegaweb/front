@@ -67,7 +67,8 @@ export class ClientLookupDialogComponent implements OnInit {
     return {
       firstName: clientResponse.first_name,
       lastName: clientResponse.last_name,
-      document: clientResponse.document_number
+      document: clientResponse.document_number,
+      id: clientResponse.id
     }
   }
 

@@ -139,7 +139,8 @@ export class SalesComponent implements OnInit {
             this.client = {
               firstName: client.first_name,
               lastName: client.last_name,
-              document: client.document_number
+              document: client.document_number,
+              id: client.id
             }
           } else {
             this.clientControl.setErrors( { "incorrect": true } )
@@ -311,7 +312,7 @@ export class SalesComponent implements OnInit {
 
     return {
       invoiceType: this.invoiceTypeControl.value,
-      client: { firstName: this.client.firstName, lastName: this.client.lastName, document: this.client.document },
+      client: {id: this.client.id, firstName: this.client.firstName, lastName: this.client.lastName, document: this.client.document},
       salesmanCode: this.salesmanControl.value,
       branchCode: this.branchControl.value,
       details: this.items,

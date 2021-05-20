@@ -21,6 +21,7 @@ export interface SaleResponse {
     credit_limit: number;
     email: String;
     contact_number: String;
+    id: number;
   }
   
   export interface SaleDetailsResponse {

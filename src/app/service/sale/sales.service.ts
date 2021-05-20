@@ -25,6 +25,7 @@ export class SalesService {
 
   createRequest(sale: Sale): SaleRequest {
     const clientRequest: ClientRequest = {
+      id: sale.client.id,
       document_number: sale.client.document,
       first_name: sale.client.firstName,
       last_name: sale.client.lastName,

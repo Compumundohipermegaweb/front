@@ -29,6 +29,7 @@ export interface GetClientsParameters {
 
 
 export interface ClientResponse {
+  id: number;
   document_number: String;
   first_name: String;
   last_name: String;
