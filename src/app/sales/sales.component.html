@@ -73,7 +73,7 @@
                         <span matPrefix>$&nbsp;</span>
                     </mat-form-field>
 
-                    <button mat-mini-fab color="primary" class="sumbit" style="justify-content: center;">
+                    <button mat-mini-fab color="primary" class="sumbit">
                         <mat-icon>add</mat-icon>
                     </button>
 
@@ -176,7 +176,37 @@
                   <input matInput type="email">
                 </mat-form-field>
 
+                <button mat-mini-fab color="primary">
+                    <mat-icon>add</mat-icon>
+                </button>
+
             </form>
+
+            <table mat-table [dataSource]="paymentMethodDataSource">
+                <tr mat-header-row *matHeaderRowDef="paymentMethodColumns"></tr>
+                <tr mat-row *matRowDef="let paymentMethods; columns: paymentMethodColumns;"></tr>
+                
+                <ng-container matColumnDef="method">
+                    <th mat-header-cell *matHeaderCellDef>Metodo de Pago</th>
+                    <td mat-cell *matCellDef="let payment"> {{payment.method}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="amount">
+                    <th mat-header-cell *matHeaderCellDef>Monto</th>
+                    <td mat-cell *matCellDef="let payment"> {{payment.amount}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="type">
+                    <th mat-header-cell *matHeaderCellDef>Tipo</th>
+                    <td mat-cell *matCellDef="let payment"> {{payment.type}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="lastDigits">
+                    <th mat-header-cell *matHeaderCellDef>Ultimos 4 Digitos</th>
+                    <td mat-cell *matCellDef="let payment"> {{payment.lastDigits}} </td>
+                </ng-container>
+            </table>
+
             <button mat-raised-button color="error" matStepperPrevious>Atras</button>
             <button mat-raised-button color="primary"   matStepperNext>Siguiente</button>
         </mat-step>

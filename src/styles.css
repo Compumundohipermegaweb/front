@@ -19,3 +19,7 @@ button.mat-primary {
 .mat-form-field {
     padding: 0.5rem;
 }
+
+.mat-mini-fab {
+    justify-content: center;
+}

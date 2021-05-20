@@ -53,6 +53,9 @@ export class SalesComponent implements OnInit {
   paymentMethodControl: FormControl;
   paymentAmountControl: FormControl;
 
+  paymentMethodDataSource = new MatTableDataSource()
+  paymentMethodColumns: string[];
+
 
   constructor(private formBuilder: FormBuilder,
               private changeDetectorRefs: ChangeDetectorRef,
@@ -69,6 +72,7 @@ export class SalesComponent implements OnInit {
     this.initControls();
     this.initForms(formBuilder);
 
+    this.paymentMethodColumns = ["method", "amount", "type", "lastDigits"];
   }
 
   ngOnInit(): void {
