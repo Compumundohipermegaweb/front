@@ -3,7 +3,7 @@ import { CurrencyPipe } from '@angular/common';
 
 /*
  * Formatea un valor de la manera que anotamos los precios en Argentina.
- * Por ejemplo: 
+ * Por ejemplo:
  * Dado valor = 6899.55 retorna $6.899,55
 */
 @Pipe({name: 'localCurrency'})

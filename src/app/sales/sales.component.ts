@@ -303,9 +303,16 @@ export class SalesComponent implements OnInit {
   calculateTotalCost() {
     if(this.items && this.items.length > 0) {
       this.totalCost = this.items.map(i => i.price * i.quantity ).reduce((a, b) => a + b);
+      this.totalCost = this.acotarDecimal(this.totalCost);
     } else {
       this.totalCost = 0;
     }
+  }
+
+  acotarDecimal(x) {
+    var fixeado = Number.parseFloat(x).toFixed(2);
+    var numero: number = +fixeado;
+    return numero;
   }
 
   registerSale() {
