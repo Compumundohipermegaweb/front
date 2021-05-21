@@ -146,7 +146,7 @@
                         <mat-option *ngFor="let paymentMethod of paymentMethods" [value]="paymentMethod.id"> {{ paymentMethod.name }} </mat-option>
                     </mat-select>
                 </mat-form-field>
-                
+
                 <mat-form-field>
                     <mat-label>Monto</mat-label>
                     <input matInput type="number" [formControl]="paymentAmountControl" required>
@@ -155,11 +155,8 @@
 
                 <mat-form-field *ngIf="isCardPaymentMethod()">
                     <mat-label>Tipo</mat-label>
-                    <mat-select [formControl]="paymentTypeControl">
-                        <mat-option value="0">Visa</mat-option>
-                        <mat-option value="1">AMEX</mat-option>
-                        <mat-option value="2">Master Card</mat-option>
-                        <mat-option value="3">Cabal</mat-option>
+                    <mat-select [formControl]="paymentTypeControl" (selectionChange)="selectPaymentType($event)" >
+                        <mat-option *ngFor="let paymentType of paymentTypes" [value]="paymentType.id"> {{ paymentType.name }} </mat-option>
                     </mat-select>
                 </mat-form-field>
 
@@ -182,7 +179,7 @@
             <table mat-table [dataSource]="paymentMethodDataSource">
                 <tr mat-header-row *matHeaderRowDef="paymentMethodColumns"></tr>
                 <tr mat-row *matRowDef="let paymentMethods; columns: paymentMethodColumns;"></tr>
-                
+
                 <ng-container matColumnDef="method">
                     <th mat-header-cell *matHeaderCellDef>Metodo de Pago</th>
                     <td mat-cell *matCellDef="let payment"> {{payment.methodName}} </td>
@@ -195,13 +192,19 @@
 
                 <ng-container matColumnDef="type">
                     <th mat-header-cell *matHeaderCellDef>Tipo</th>
-                    <td mat-cell *matCellDef="let payment"> {{payment.type}} </td>
+                    <td mat-cell *matCellDef="let payment"> {{payment.typeName}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="lastDigits">
                     <th mat-header-cell *matHeaderCellDef>Ultimos 4 Digitos</th>
                     <td mat-cell *matCellDef="let payment"> {{payment.lastDigits}} </td>
                 </ng-container>
+
+                <ng-container matColumnDef="email">
+                  <th mat-header-cell *matHeaderCellDef>Email</th>
+                  <td mat-cell *matCellDef="let payment"> {{payment.email}} </td>
+              </ng-container>
+
             </table>
 
             <button mat-raised-button color="error" matStepperPrevious>Atras</button>

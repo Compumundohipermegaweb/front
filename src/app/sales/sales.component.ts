@@ -35,6 +35,13 @@ export class SalesComponent implements OnInit {
     {id: 5, name: "Cuenta corriente"}
   ]
 
+  paymentTypes = [
+    {id:0, name: "Visa"},
+    {id:1, name: "AMEX"},
+    {id:2, name: "Master Card"},
+    {id:3, name: "Cabal"}
+  ]
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   fetchingData = false;
@@ -73,6 +80,8 @@ export class SalesComponent implements OnInit {
 
   selectedPaymentMethod: PaymentMethod;
 
+  selectedPaymentType: PaymentType;
+
 
   constructor(private formBuilder: FormBuilder,
               private changeDetectorRefs: ChangeDetectorRef,
@@ -88,8 +97,8 @@ export class SalesComponent implements OnInit {
     this.initItems();
     this.initControls();
     this.initForms(formBuilder);
-    this.initClientPaymentMethods();            
-    this.paymentMethodColumns = ["method", "amount", "type", "lastDigits"];
+    this.initClientPaymentMethods();
+    this.paymentMethodColumns = ["method", "amount", "type", "lastDigits", "email"];
   }
 
   ngOnInit(): void {
@@ -329,13 +338,18 @@ export class SalesComponent implements OnInit {
       methodId: this.selectedPaymentMethod.id,
       methodName: this.selectedPaymentMethod.name,
       amount: this.paymentAmountControl.value,
-      type: this.paymentTypeControl.value,
+      typeId: this.selectedPaymentType.id,
+      typeName: this.selectedPaymentType.name,
       lastDigits: this.paymentLastDigitsControl.value,
       email: this.paymentEmailControl.value
     }
 
     this.clientPaymentMethods.push(payment);
     this.paymentMethodDataSource.data = this.clientPaymentMethods;
+
+    this.paymentForm.reset();
+    this.selectPaymentType = null;
+    this.selectPaymentMethod = null;
   }
 
   selectPaymentMethod(event) {
@@ -343,7 +357,15 @@ export class SalesComponent implements OnInit {
       id: event.value,
       name: event.source.triggerValue
     }
-    Swal.fire(this.selectedPaymentMethod.name.toString())
+    this.selectedPaymentType = null;
+  }
+
+
+  selectPaymentType(event) {
+    this.selectedPaymentType = {
+      id: event.value,
+      name: event.source.triggerValue
+    }
   }
 
   isCardPaymentMethod() {
@@ -377,19 +399,26 @@ export class SalesComponent implements OnInit {
       total: this.totalCost
     }
   }
-  
+
 }
 
 export interface Payment {
   methodId: number;
   methodName: String;
   amount: number;
-  type?: String;
+  typeId?: number;
+  typeName?: String;
   lastDigits?: number;
   email?: String;
 }
 
 export interface PaymentMethod {
+  id: number;
+  name: String;
+}
+
+export interface PaymentType
+{
   id: number;
   name: String;
 }
