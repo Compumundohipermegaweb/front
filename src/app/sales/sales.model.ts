@@ -24,6 +24,22 @@ export interface Item {
 }
 
 export interface Payment {
-    method: String;
-    amount: number;
+  methodId: number;
+  methodName: String;
+  amount: number;
+  typeId?: number;
+  typeName?: String;
+  lastDigits?: number;
+  email?: String;
+}
+
+export interface PaymentMethod {
+  id: number;
+  name: String;
+}
+
+export interface PaymentType
+{
+  id: number;
+  name: String;
 }

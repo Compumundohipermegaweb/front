@@ -136,9 +136,11 @@
                 <button mat-raised-button color="primary" matStepperNext>Siguiente</button>
             </div>
         </mat-step>
-        <mat-step [stepControl]="paymentForm">
-            <form [formGroup]="paymentForm" (submit)="addPayment()">
-                <ng-template matStepLabel>Medio de pago</ng-template>
+        <mat-step>
+            <h3 mat-subheader> Total: {{ totalCost | localCurrency }} </h3>
+            <h3 mat-subheader> Falta: {{ totalCost - calculateCurrentSubtotal() | localCurrency}}</h3>
+            <form [formGroup]="paymentForm">
+                <ng-template matStepLabel>Medios de pago</ng-template>
 
                 <mat-form-field>
                     <mat-label>Medio de pago</mat-label>
@@ -149,8 +151,9 @@
 
                 <mat-form-field>
                     <mat-label>Monto</mat-label>
-                    <input matInput type="number" [formControl]="paymentAmountControl" required>
+                    <input matInput type="number" [formControl]="paymentAmountControl" (change)="validatePaymentAmount()" required>
                     <span matPrefix>$&nbsp;</span>
+                    <mat-error *ngIf="paymentAmountControl.invalid">Monto invalido</mat-error>
                 </mat-form-field>
 
                 <mat-form-field *ngIf="isCardPaymentMethod()">
@@ -173,64 +176,70 @@
                   <mat-error *ngIf="paymentEmailControl.invalid">Requerido</mat-error>
                 </mat-form-field>
 
-                <button mat-mini-fab color="primary" class="submit">
+                <button mat-mini-fab color="primary" (click)="addPayment()">
                     <mat-icon>add</mat-icon>
                 </button>
-
             </form>
+
 
             <table mat-table [dataSource]="paymentMethodDataSource">
                 <tr mat-header-row *matHeaderRowDef="paymentMethodColumns"></tr>
                 <tr mat-row *matRowDef="let paymentMethods; columns: paymentMethodColumns;"></tr>
+                <tr mat-footer-row *matFooterRowDef="paymentMethodColumns"></tr>
 
                 <ng-container matColumnDef="method">
                     <th mat-header-cell *matHeaderCellDef>Metodo de Pago</th>
                     <td mat-cell *matCellDef="let payment"> {{payment.methodName}} </td>
+                    <td mat-footer-cell *matFooterCellDef></td>
                 </ng-container>
 
                 <ng-container matColumnDef="amount">
                     <th mat-header-cell *matHeaderCellDef>Monto</th>
                     <td mat-cell *matCellDef="let payment"> {{payment.amount | localCurrency}} </td>
+                    <td mat-footer-cell *matFooterCellDef></td>
                 </ng-container>
 
                 <ng-container matColumnDef="type">
                     <th mat-header-cell *matHeaderCellDef>Tipo</th>
                     <td mat-cell *matCellDef="let payment"> {{payment.typeName}} </td>
+                    <td mat-footer-cell *matFooterCellDef></td>
                 </ng-container>
 
                 <ng-container matColumnDef="lastDigits">
                     <th mat-header-cell *matHeaderCellDef>Ultimos 4 Digitos</th>
                     <td mat-cell *matCellDef="let payment"> {{payment.lastDigits}} </td>
+                    <td mat-footer-cell *matFooterCellDef>Sub total</td>
                 </ng-container>
 
                 <ng-container matColumnDef="email">
                   <th mat-header-cell *matHeaderCellDef>Email</th>
                   <td mat-cell *matCellDef="let payment"> {{payment.email}} </td>
+                  <td mat-footer-cell *matFooterCellDef> {{ calculateCurrentSubtotal() | localCurrency }} </td>
               </ng-container>
 
             </table>
 
-            <button mat-raised-button color="error" matStepperPrevious>Atras</button>
-            <button mat-raised-button color="primary"   matStepperNext>Siguiente</button>
+            <button mat-raised-button color="error"  matStepperPrevious>Atras</button>
+            <button mat-raised-button color="primary" (click)="checkout(stepper)">Siguiente</button>
         </mat-step>
         <mat-step>
-            <ng-template matStepLabel>Resumen</ng-template>
+            <ng-template matStepLabel>Verificación</ng-template>
             <mat-card style="margin-top: 0.5rem;">
                 <mat-card-title>
                     <span>Factura tipo {{ invoiceTypeControl.value }}</span>
                 </mat-card-title>
                 <mat-card-subtitle>
-                    <span>{{ salesmanControl.value }} / Sucursal {{ branchControl.value }}</span>
+                    <span>Vendedor/a: {{ salesmanControl.value }}</span>
+                    <span>Sucursal {{ branchControl.value }}</span>
                 </mat-card-subtitle>
-                <mat-card-content>
-                    <div class="detail">
-                        <span>Medio de pago: {{ paymentMethodControl.value }}</span>
+                <mat-card-content *ngIf="client != null">
+                    <h2 mat-header>Datos del cliente</h2>
+                    <div>
+                        <span>Nombre: {{ client.firstName }} {{ client.lastName }} </span>
                     </div>
-                    <mat-divider></mat-divider>
-                    <div class="detail">
-                        <span>Pago a realizar: {{ totalCost | localCurrency }}</span>
+                    <div>
+                        <span>Documento: {{ client.document }} </span>
                     </div>
-                    <mat-divider></mat-divider>
                 </mat-card-content>
                 <mat-card-title>
                     <span>Detalle de la venta</span>

@@ -1,12 +1,11 @@
 import { ClientLookupDialogComponent } from '../client-lookup-dialog/client-lookup-dialog.component';
 import { ItemLookupDialogComponent } from '../item-lookup-dialog/item-lookup-dialog.component';
-import { AddPaymentMethodComponent } from '../add-payment-method/add-payment-method.component';
 
 import { SalesService } from '../service/sale/sales.service';
 import { ClientService } from '../service/client/client.service';
 import { ItemStockResponse, StockService, StockValidationResponse } from '../service/stock/stock.service';
 
-import { Client, Item, Sale } from './sales.model';
+import { Client, Item, Sale, Payment, PaymentType, PaymentMethod } from './sales.model';
 
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
@@ -15,7 +14,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import Swal  from 'sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
-
+import { MatStepper } from '@angular/material/stepper';
 
 
 @Component({
@@ -347,6 +346,8 @@ export class SalesComponent implements OnInit {
       amount: this.paymentAmountControl.value
     }
 
+    this.validatePaymentAmount()
+
     if(this.isCardPaymentMethod()) {
       this.validateCardFields()
 
@@ -374,11 +375,53 @@ export class SalesComponent implements OnInit {
       this.paymentMethodDataSource.data = this.clientPaymentMethods;
   
       this.paymentForm.reset();
+      if(this.totalCost == this.calculateCurrentSubtotal()) {
+        this.paymentForm.setErrors(null)
+      }
+    }
+  }
+
+  validatePaymentAmount() {
+    let currentSubTotal = this.calculateCurrentSubtotal() + this.paymentAmountControl.value
+
+    if(this.paymentAmountControl.value == 0) {
+      this.paymentAmountControl.setErrors({"invalid": true});
+    }
+
+    if(currentSubTotal > this.totalCost) {
+      this.paymentAmountControl.setErrors({"exceeded": true});
+    }
+  }
+
+  calculateCurrentSubtotal(): number {
+    if(this.clientPaymentMethods && this.clientPaymentMethods.length > 0) {
+      return this.clientPaymentMethods.map((it: Payment) => it.amount).reduce((a, b) => a + b)
+    } else {
+      return 0
+    }
+  }
+
+  validatePayments() {
+    if(this.totalCost != this.calculateCurrentSubtotal()) {
+      this.paymentForm.setErrors({"mismatch": true});
+    } else {
+      this.paymentForm.setErrors(null);
+    }
+  }
+
+  checkout(stepper: MatStepper) {
+    if(this.totalCost == this.calculateCurrentSubtotal()) {
+      stepper.next()
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "Pago insuficiente"
+      });
     }
   }
 
   private validateCardFields() {
-    if(!this.paymentTypeControl.value) {
+    if(this.paymentTypeControl.value == null || this.paymentTypeControl.value == undefined) {
       this.paymentTypeControl.setErrors({"required": true});
     }
     
@@ -433,35 +476,9 @@ export class SalesComponent implements OnInit {
       salesmanCode: this.salesmanControl.value,
       branchCode: this.branchControl.value,
       details: this.items,
-      payment: [
-        {
-          method: this.paymentMethodControl.value,
-          amount: this.paymentAmountControl.value
-        }
-      ],
+      payment: this.clientPaymentMethods,
       total: this.totalCost
     }
   }
 
-}
-
-export interface Payment {
-  methodId: number;
-  methodName: String;
-  amount: number;
-  typeId?: number;
-  typeName?: String;
-  lastDigits?: number;
-  email?: String;
-}
-
-export interface PaymentMethod {
-  id: number;
-  name: String;
-}
-
-export interface PaymentType
-{
-  id: number;
-  name: String;
 }
