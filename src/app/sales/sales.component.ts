@@ -341,19 +341,49 @@ export class SalesComponent implements OnInit {
     }
 
     if(this.isCardPaymentMethod()) {
-      payment.typeId = this.selectedPaymentType.id;
-      payment.typeName = this.selectedPaymentType.name;
-      payment.lastDigits = this.paymentLastDigitsControl.value;
+      this.validateCardFields()
+
+      if(this.paymentTypeControl.valid) {
+        payment.typeId = this.selectedPaymentType.id;
+        payment.typeName = this.selectedPaymentType.name;
+        payment.lastDigits = this.paymentLastDigitsControl.value;
+      }
     }
 
     if(this.isMercadoPagoPaymentMethod()) {
-      payment.email = this.paymentEmailControl.value;
+      this.validateMercadoPagoFields()
+
+      if(this.paymentEmailControl.valid) {
+        payment.email = this.paymentEmailControl.value;
+      }
     }
 
-    this.clientPaymentMethods.push(payment);
-    this.paymentMethodDataSource.data = this.clientPaymentMethods;
+    if(this.isCheckingAccount()) {
+      //TODO: Chequear saldo disponible
+    }
 
-    this.paymentForm.reset();
+    if(this.paymentForm.valid) {
+      this.clientPaymentMethods.push(payment);
+      this.paymentMethodDataSource.data = this.clientPaymentMethods;
+  
+      this.paymentForm.reset();
+    }
+  }
+
+  private validateCardFields() {
+    if(!this.paymentTypeControl.value) {
+      this.paymentTypeControl.setErrors({"required": true});
+    }
+    
+    if(!this.paymentLastDigitsControl.value) {
+      this.paymentLastDigitsControl.setErrors({"required": true});
+    }
+  }
+
+  private validateMercadoPagoFields() {
+    if(!this.paymentEmailControl.value) {
+      this.paymentEmailControl.setErrors({"required": true})
+    }
   }
 
   selectPaymentMethod(event) {
@@ -378,6 +408,10 @@ export class SalesComponent implements OnInit {
 
   isMercadoPagoPaymentMethod() {
     return this.paymentMethodControl.value == 3;
+  }
+
+  isCheckingAccount() {
+    return this.paymentMethodControl.value == 5;
   }
 
   private refreshDataSource() {

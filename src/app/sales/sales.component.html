@@ -158,16 +158,19 @@
                     <mat-select [formControl]="paymentTypeControl" (selectionChange)="selectPaymentType($event)" >
                         <mat-option *ngFor="let paymentType of paymentTypes" [value]="paymentType.id"> {{ paymentType.name }} </mat-option>
                     </mat-select>
+                    <mat-error *ngIf="paymentTypeControl.invalid">Seleccione el tipo</mat-error>
                 </mat-form-field>
 
                 <mat-form-field *ngIf="isCardPaymentMethod()">
                   <mat-label>Ultimos 4 digitos</mat-label>
-                  <input matInput type="number" maxlength="4" [formControl]="paymentLastDigitsControl">
+                  <input matInput type="number" minlength="4" maxlength="4" [formControl]="paymentLastDigitsControl">
+                  <mat-error *ngIf="paymentLastDigitsControl.invalid">Requerido</mat-error>
                 </mat-form-field>
 
                 <mat-form-field *ngIf="isMercadoPagoPaymentMethod()">
                   <mat-label>Email</mat-label>
                   <input matInput type="email" [formControl]="paymentEmailControl">
+                  <mat-error *ngIf="paymentEmailControl.invalid">Requerido</mat-error>
                 </mat-form-field>
 
                 <button mat-mini-fab color="primary" class="submit">
