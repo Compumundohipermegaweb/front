@@ -137,16 +137,13 @@
             </div>
         </mat-step>
         <mat-step [stepControl]="paymentForm">
-            <form [formGroup]="paymentForm">
+            <form [formGroup]="paymentForm" (submit)="addPayment()">
                 <ng-template matStepLabel>Medio de pago</ng-template>
 
                 <mat-form-field>
                     <mat-label>Medio de pago</mat-label>
-                    <mat-select [formControl]="paymentMethodControl" required>
-                        <mat-option value="EFECTIVO">Efectivo</mat-option>
-                        <mat-option value="CREDITO">Tarjeta de Credito</mat-option>
-                        <mat-option value="DEBITO">Tarjeta Debito</mat-option>
-                        <mat-option value="MERCADO PAGO">Mercado Pago</mat-option>
+                    <mat-select [formControl]="paymentMethodControl" (selectionChange)="selectPaymentMethod($event)" required>
+                        <mat-option *ngFor="let paymentMethod of paymentMethods" [value]="paymentMethod.id"> {{ paymentMethod.name }} </mat-option>
                     </mat-select>
                 </mat-form-field>
                 
@@ -156,9 +153,9 @@
                     <span matPrefix>$&nbsp;</span>
                 </mat-form-field>
 
-                <mat-form-field *ngIf="paymentMethodControl.value == 'CREDITO' || paymentMethodControl.value == 'DEBITO'">
+                <mat-form-field *ngIf="isCardPaymentMethod()">
                     <mat-label>Tipo</mat-label>
-                    <mat-select>
+                    <mat-select [formControl]="paymentTypeControl">
                         <mat-option value="0">Visa</mat-option>
                         <mat-option value="1">AMEX</mat-option>
                         <mat-option value="2">Master Card</mat-option>
@@ -166,17 +163,17 @@
                     </mat-select>
                 </mat-form-field>
 
-                <mat-form-field *ngIf="paymentMethodControl.value == 'CREDITO' || paymentMethodControl.value == 'DEBITO'">
+                <mat-form-field *ngIf="isCardPaymentMethod()">
                   <mat-label>Ultimos 4 digitos</mat-label>
-                  <input matInput type="number" maxlength="4">
+                  <input matInput type="number" maxlength="4" [formControl]="paymentLastDigitsControl">
                 </mat-form-field>
 
-                <mat-form-field *ngIf="paymentMethodControl.value == 'MERCADO PAGO'">
+                <mat-form-field *ngIf="isMercadoPagoPaymentMethod()">
                   <mat-label>Email</mat-label>
-                  <input matInput type="email">
+                  <input matInput type="email" [formControl]="paymentEmailControl">
                 </mat-form-field>
 
-                <button mat-mini-fab color="primary">
+                <button mat-mini-fab color="primary" class="submit">
                     <mat-icon>add</mat-icon>
                 </button>
 
@@ -188,12 +185,12 @@
                 
                 <ng-container matColumnDef="method">
                     <th mat-header-cell *matHeaderCellDef>Metodo de Pago</th>
-                    <td mat-cell *matCellDef="let payment"> {{payment.method}} </td>
+                    <td mat-cell *matCellDef="let payment"> {{payment.methodName}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="amount">
                     <th mat-header-cell *matHeaderCellDef>Monto</th>
-                    <td mat-cell *matCellDef="let payment"> {{payment.amount}} </td>
+                    <td mat-cell *matCellDef="let payment"> {{payment.amount | localCurrency}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="type">

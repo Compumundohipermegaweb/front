@@ -26,6 +26,15 @@ import { MatDialog } from '@angular/material/dialog';
 
 export class SalesComponent implements OnInit {
 
+  paymentMethods = [
+    {id: 0, name: "Efectivo"},
+    {id: 1, name: "Tarjeta de credito"},
+    {id: 2, name: "Tarjeta de debito"},
+    {id: 3, name: "Mercado pago"},
+    {id: 4, name: "Ahora 12"},
+    {id: 5, name: "Cuenta corriente"}
+  ]
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   fetchingData = false;
@@ -50,11 +59,19 @@ export class SalesComponent implements OnInit {
   descriptionControl: FormControl;
   quantityControl: FormControl;
   priceControl: FormControl;
+
   paymentMethodControl: FormControl;
   paymentAmountControl: FormControl;
+  paymentTypeControl: FormControl;
+  paymentLastDigitsControl: FormControl;
+  paymentEmailControl: FormControl;
 
   paymentMethodDataSource = new MatTableDataSource()
   paymentMethodColumns: string[];
+
+  clientPaymentMethods: Payment[]
+
+  selectedPaymentMethod: PaymentMethod;
 
 
   constructor(private formBuilder: FormBuilder,
@@ -71,7 +88,7 @@ export class SalesComponent implements OnInit {
     this.initItems();
     this.initControls();
     this.initForms(formBuilder);
-
+    this.initClientPaymentMethods();            
     this.paymentMethodColumns = ["method", "amount", "type", "lastDigits"];
   }
 
@@ -90,6 +107,10 @@ export class SalesComponent implements OnInit {
     this.items = [];
   }
 
+  initClientPaymentMethods() {
+    this.clientPaymentMethods =[];
+  }
+
   initControls() {
     this.invoiceTypeControl = new FormControl("B");
     this.salesmanControl = new FormControl();
@@ -100,9 +121,12 @@ export class SalesComponent implements OnInit {
     this.descriptionControl = new FormControl();
     this.quantityControl = new FormControl();
     this.priceControl = new FormControl();
-    this.paymentMethodControl = new FormControl()
+    this.paymentMethodControl = new FormControl();
     this.paymentAmountControl = new FormControl();
-    this.paymentAmountControl.disable()
+    this.paymentTypeControl = new FormControl();
+    this.paymentLastDigitsControl = new FormControl();
+    this.paymentEmailControl= new FormControl();
+
   }
 
   initForms(formBuilder: FormBuilder) {
@@ -122,8 +146,11 @@ export class SalesComponent implements OnInit {
     });
 
     this.paymentForm = formBuilder.group({
-      paymentMethod: this.paymentMethodControl,
-      amount: this.paymentAmountControl
+      method: this.paymentMethodControl,
+      amount: this.paymentAmountControl,
+      type: this.paymentTypeControl,
+      lastDigits: this.paymentLastDigitsControl,
+      email: this.paymentEmailControl
     });
   }
 
@@ -297,14 +324,39 @@ export class SalesComponent implements OnInit {
     this.refreshDataSource();
   }
 
-  seleccionoTarjeta(){
-    if(this.paymentMethodControl.value=="TARJETA"){
-
-      window.alert("Se selecciono tarjeta");
+  addPayment() {
+    let payment: Payment = {
+      methodId: this.selectedPaymentMethod.id,
+      methodName: this.selectedPaymentMethod.name,
+      amount: this.paymentAmountControl.value,
+      type: this.paymentTypeControl.value,
+      lastDigits: this.paymentLastDigitsControl.value,
+      email: this.paymentEmailControl.value
     }
+
+    this.clientPaymentMethods.push(payment);
+    this.paymentMethodDataSource.data = this.clientPaymentMethods;
   }
 
-  private refreshDataSource(){
+  selectPaymentMethod(event) {
+    this.selectedPaymentMethod = {
+      id: event.value,
+      name: event.source.triggerValue
+    }
+    Swal.fire(this.selectedPaymentMethod.name.toString())
+  }
+
+  isCardPaymentMethod() {
+    return this.paymentMethodControl.value == 1 ||
+            this.paymentMethodControl.value == 2 ||
+            this.paymentMethodControl.value == 4;
+  }
+
+  isMercadoPagoPaymentMethod() {
+    return this.paymentMethodControl.value == 3;
+  }
+
+  private refreshDataSource() {
     this.dataSource.data = this.items
   }
 
@@ -326,4 +378,18 @@ export class SalesComponent implements OnInit {
     }
   }
   
+}
+
+export interface Payment {
+  methodId: number;
+  methodName: String;
+  amount: number;
+  type?: String;
+  lastDigits?: number;
+  email?: String;
+}
+
+export interface PaymentMethod {
+  id: number;
+  name: String;
 }
