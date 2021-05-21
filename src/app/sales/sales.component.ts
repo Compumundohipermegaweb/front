@@ -337,19 +337,23 @@ export class SalesComponent implements OnInit {
     let payment: Payment = {
       methodId: this.selectedPaymentMethod.id,
       methodName: this.selectedPaymentMethod.name,
-      amount: this.paymentAmountControl.value,
-      typeId: this.selectedPaymentType.id,
-      typeName: this.selectedPaymentType.name,
-      lastDigits: this.paymentLastDigitsControl.value,
-      email: this.paymentEmailControl.value
+      amount: this.paymentAmountControl.value
+    }
+
+    if(this.isCardPaymentMethod()) {
+      payment.typeId = this.selectedPaymentType.id;
+      payment.typeName = this.selectedPaymentType.name;
+      payment.lastDigits = this.paymentLastDigitsControl.value;
+    }
+
+    if(this.isMercadoPagoPaymentMethod()) {
+      payment.email = this.paymentEmailControl.value;
     }
 
     this.clientPaymentMethods.push(payment);
     this.paymentMethodDataSource.data = this.clientPaymentMethods;
 
     this.paymentForm.reset();
-    this.selectPaymentType = null;
-    this.selectPaymentMethod = null;
   }
 
   selectPaymentMethod(event) {
@@ -357,9 +361,7 @@ export class SalesComponent implements OnInit {
       id: event.value,
       name: event.source.triggerValue
     }
-    this.selectedPaymentType = null;
   }
-
 
   selectPaymentType(event) {
     this.selectedPaymentType = {
