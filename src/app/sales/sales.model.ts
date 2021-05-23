@@ -34,7 +34,7 @@ export interface Payment {
 
 export interface PaymentMethod {
   id: number;
-  name: String;
+  description: String;
   type: String;
 }
 

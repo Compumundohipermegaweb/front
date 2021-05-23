@@ -60,17 +60,10 @@ export class SalesComponent implements OnInit {
   paymentMethodDataSource = new MatTableDataSource()
   paymentMethodColumns: string[];
 
-  clientPaymentMethods: Payment[]
+  clientPayments: Payment[]
   clientCheckingAccount: CheckingAccountResponse;
 
-  paymentMethods = [
-    {id: 0, name: "Efectivo", type: "EFECTIVO"},
-    {id: 1, name: "Tarjeta de credito", type: "TARJETA"},
-    {id: 2, name: "Tarjeta de debito", type: "TARJETA"},
-    {id: 3, name: "Mercado pago", type: "ONLINE"},
-    {id: 4, name: "Ahora 12", type: "TARJETA"},
-    {id: 5, name: "Cuenta corriente", type: "CUENTA_CORRIENTE"}
-  ]
+  paymentMethods: PaymentMethod[];
   selectedPaymentMethod: PaymentMethod;
 
   cardTypes: CardResponse[] = []
@@ -91,7 +84,7 @@ export class SalesComponent implements OnInit {
     this.initItems();
     this.initControls();
     this.initForms(formBuilder);
-    this.initClientPaymentMethods();
+    this.initClientPayments();
     this.initCardTypes();
   }
 
@@ -111,8 +104,8 @@ export class SalesComponent implements OnInit {
     this.items = [];
   }
 
-  initClientPaymentMethods() {
-    this.clientPaymentMethods =[];
+  initClientPayments() {
+    this.clientPayments = [];
   }
 
   initControls() {
@@ -156,6 +149,19 @@ export class SalesComponent implements OnInit {
       lastDigits: this.paymentLastDigitsControl,
       email: this.paymentEmailControl
     });
+  }
+
+  loadAvailablePaymentMethods() {
+    this.clientService.getClientPaymentMethods(this.client.id)
+      .subscribe(
+        (response) => {
+          if(response == null) {
+            //error
+          } else {
+            this.paymentMethods = response.payment_methods;
+          }
+        }
+      );
   }
 
   initCardTypes() {
@@ -212,7 +218,8 @@ export class SalesComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result: Client) => {
       if(result != null) {
         this.clientControl.patchValue(result.document)
-        this.client = result
+        this.client = result;
+        this.loadAvailablePaymentMethods();
       }
     });
   }
@@ -399,8 +406,8 @@ export class SalesComponent implements OnInit {
     }
 
     if(this.paymentForm.valid) {
-      this.clientPaymentMethods.push(payment);
-      this.paymentMethodDataSource.data = this.clientPaymentMethods;
+      this.clientPayments.push(payment);
+      this.paymentMethodDataSource.data = this.clientPayments;
   
       this.paymentForm.reset();
       if(this.totalCost == this.calculateCurrentSubtotal()) {
@@ -440,8 +447,8 @@ export class SalesComponent implements OnInit {
   }
 
   calculateCurrentSubtotal(): number {
-    if(this.clientPaymentMethods && this.clientPaymentMethods.length > 0) {
-      return this.clientPaymentMethods.map((it: Payment) => it.amount).reduce((a, b) => a + b)
+    if(this.clientPayments && this.clientPayments.length > 0) {
+      return this.clientPayments.map((it: Payment) => it.amount).reduce((a, b) => a + b)
     } else {
       return 0
     }
@@ -518,7 +525,7 @@ export class SalesComponent implements OnInit {
       salesmanCode: this.salesmanControl.value,
       branchCode: this.branchControl.value,
       details: this.items,
-      payment: this.clientPaymentMethods,
+      payment: this.clientPayments,
       total: this.totalCost
     }
   }

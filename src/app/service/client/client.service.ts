@@ -1,6 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { PaymentMethod } from 'src/app/sales/sales.model';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -9,8 +10,9 @@ import { environment } from 'src/environments/environment';
 export class ClientService {
 
   host = environment.apiHost
-  clientsUrl = "/api/clients"
-  checkingAccountBalanceUrl = "/api/clients/{client_id}/checking-account/balance"
+  clientsUrl = "/api/clients";
+  checkingAccountBalanceUrl = "/api/clients/{client_id}/checking-account/balance";
+  paymentMethodsUrl = "/api/clients/{client_id}/payment-methods";
   
 
   constructor(private http: HttpClient) { }
@@ -24,10 +26,17 @@ export class ClientService {
     return this.http.get<CheckingAccountResponse>(this.host + this.buildCheckingAccountUrl(clientId))
   }
 
-  buildCheckingAccountUrl(clientId: number): String {
-    return this.checkingAccountBalanceUrl.replace(/{client_id}/gi, clientId.toString())
+  getClientPaymentMethods(clientId: number): Observable<PaymentMethodResponse> {
+    return this.http.get<PaymentMethodResponse>(this.host + this.buildPaymentMethodsUrl(clientId));
   }
 
+  buildCheckingAccountUrl(clientId: number): String {
+    return this.checkingAccountBalanceUrl.replace(/{client_id}/gi, clientId.toString());
+  }
+
+  buildPaymentMethodsUrl(clientId: number): String {
+    return this.paymentMethodsUrl.replace(/{client_id}/gi, clientId.toString());
+  }
 }
 
 export interface GetClientsParameters {
@@ -49,4 +58,8 @@ export interface ClientResponse {
 export interface CheckingAccountResponse {
   id: number;
   balance: number;
+}
+
+export interface PaymentMethodResponse {
+  payment_methods: PaymentMethod[];
 }

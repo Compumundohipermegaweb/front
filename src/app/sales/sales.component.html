@@ -145,7 +145,7 @@
                 <mat-form-field>
                     <mat-label>Medio de pago</mat-label>
                     <mat-select [formControl]="paymentMethodControl" (selectionChange)="selectPaymentMethod($event)" required>
-                        <mat-option *ngFor="let paymentMethod of paymentMethods" [value]="paymentMethod.type"> {{ paymentMethod.name }} </mat-option>
+                        <mat-option *ngFor="let paymentMethod of paymentMethods" [value]="paymentMethod.type"> {{ paymentMethod.description }} </mat-option>
                     </mat-select>
                 </mat-form-field>
 
