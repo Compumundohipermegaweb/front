@@ -24,8 +24,7 @@ export interface Item {
 }
 
 export interface Payment {
-  methodId: number;
-  methodName: String;
+  method: PaymentMethod;
   amount: number;
   typeId?: number;
   typeName?: String;
@@ -36,6 +35,7 @@ export interface Payment {
 export interface PaymentMethod {
   id: number;
   name: String;
+  type: String;
 }
 
 export interface PaymentType

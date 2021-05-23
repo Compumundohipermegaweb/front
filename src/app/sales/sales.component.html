@@ -145,7 +145,7 @@
                 <mat-form-field>
                     <mat-label>Medio de pago</mat-label>
                     <mat-select [formControl]="paymentMethodControl" (selectionChange)="selectPaymentMethod($event)" required>
-                        <mat-option *ngFor="let paymentMethod of paymentMethods" [value]="paymentMethod.id"> {{ paymentMethod.name }} </mat-option>
+                        <mat-option *ngFor="let paymentMethod of paymentMethods" [value]="paymentMethod.type"> {{ paymentMethod.name }} </mat-option>
                     </mat-select>
                 </mat-form-field>
 
@@ -153,7 +153,7 @@
                     <mat-label>Monto</mat-label>
                     <input matInput type="number" [formControl]="paymentAmountControl" (change)="validatePaymentAmount()" required>
                     <span matPrefix>$&nbsp;</span>
-                    <mat-error *ngIf="paymentAmountControl.invalid">Monto invalido</mat-error>
+                    <mat-error *ngIf="paymentAmountControl.invalid"> {{ getPaymentAmountErrors() }} </mat-error>
                 </mat-form-field>
 
                 <mat-form-field *ngIf="isCardPaymentMethod()">
@@ -189,7 +189,7 @@
 
                 <ng-container matColumnDef="method">
                     <th mat-header-cell *matHeaderCellDef>Metodo de Pago</th>
-                    <td mat-cell *matCellDef="let payment"> {{payment.methodName}} </td>
+                    <td mat-cell *matCellDef="let payment"> {{payment.method.name}} </td>
                     <td mat-footer-cell *matFooterCellDef></td>
                 </ng-container>
 

@@ -10,6 +10,7 @@ export class ClientService {
 
   host = environment.apiHost
   clientsUrl = "/api/clients"
+  checkingAccountBalanceUrl = "/api/clients/{client_id}/checking-account/balance"
   
 
   constructor(private http: HttpClient) { }
@@ -17,6 +18,14 @@ export class ClientService {
   getClient(name: string, document: string): Observable<ClientResponse[]> {
     const requestParams = new HttpParams().set("name", name).set("document", document);
     return this.http.get<ClientResponse[]>(this.host + this.clientsUrl, { params: requestParams });
+  }
+
+  getClientBalance(clientId: number): Observable<CheckingAccountResponse> {
+    return this.http.get<CheckingAccountResponse>(this.host + this.buildCheckingAccountUrl(clientId))
+  }
+
+  buildCheckingAccountUrl(clientId: number): String {
+    return this.checkingAccountBalanceUrl.replace(/{client_id}/gi, clientId.toString())
   }
 
 }
@@ -35,4 +44,9 @@ export interface ClientResponse {
   credit_limit: number;
   email: String;
   contact_number: String;
+}
+
+export interface CheckingAccountResponse {
+  id: number;
+  balance: number;
 }

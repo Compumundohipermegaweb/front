@@ -2,7 +2,7 @@ import { ClientLookupDialogComponent } from '../client-lookup-dialog/client-look
 import { ItemLookupDialogComponent } from '../item-lookup-dialog/item-lookup-dialog.component';
 
 import { SalesService } from '../service/sale/sales.service';
-import { ClientService } from '../service/client/client.service';
+import { CheckingAccountResponse, ClientService } from '../service/client/client.service';
 import { ItemStockResponse, StockService, StockValidationResponse } from '../service/stock/stock.service';
 import { CardResponse, CardService } from '../service/card/card.service';
 
@@ -61,14 +61,15 @@ export class SalesComponent implements OnInit {
   paymentMethodColumns: string[];
 
   clientPaymentMethods: Payment[]
+  clientCheckingAccount: CheckingAccountResponse;
 
   paymentMethods = [
-    {id: 0, name: "Efectivo"},
-    {id: 1, name: "Tarjeta de credito"},
-    {id: 2, name: "Tarjeta de debito"},
-    {id: 3, name: "Mercado pago"},
-    {id: 4, name: "Ahora 12"},
-    {id: 5, name: "Cuenta corriente"}
+    {id: 0, name: "Efectivo", type: "EFECTIVO"},
+    {id: 1, name: "Tarjeta de credito", type: "TARJETA"},
+    {id: 2, name: "Tarjeta de debito", type: "TARJETA"},
+    {id: 3, name: "Mercado pago", type: "ONLINE"},
+    {id: 4, name: "Ahora 12", type: "TARJETA"},
+    {id: 5, name: "Cuenta corriente", type: "CUENTA_CORRIENTE"}
   ]
   selectedPaymentMethod: PaymentMethod;
 
@@ -349,8 +350,7 @@ export class SalesComponent implements OnInit {
 
   addPayment() {
     let payment: Payment = {
-      methodId: this.selectedPaymentMethod.id,
-      methodName: this.selectedPaymentMethod.name,
+      method: this.selectedPaymentMethod,
       amount: this.paymentAmountControl.value
     }
 
@@ -375,7 +375,27 @@ export class SalesComponent implements OnInit {
     }
 
     if(this.isCheckingAccount()) {
-      //TODO: Chequear saldo disponible
+      debugger;
+      this.clientService.getClientBalance(this.client.id)
+        .subscribe(
+          (response) => {
+            if(response == null) {
+              this.invalidCheckingAccountMessage()
+              this.paymentAmountControl.setErrors( { "invalid": true } )
+            } else {
+              if(response.balance < payment.amount) {
+                this.paymentAmountControl.setErrors( { "insuficientFounds": true } )
+              } else {
+                this.paymentAmountControl.setErrors(null);
+                this.clientCheckingAccount = response;
+              }
+            }
+          },
+
+          (error) => {
+            this.invalidCheckingAccountMessage()
+          }
+        );
     }
 
     if(this.paymentForm.valid) {
@@ -389,6 +409,14 @@ export class SalesComponent implements OnInit {
     }
   }
 
+  invalidCheckingAccountMessage() {
+    Swal.fire({
+      icon: "error",
+      title: "Cuenta invalida",
+      text: "No se pudo encontrar la cuenta del cliente, por favor eliga otro medio de pago"
+    })
+  }
+
   validatePaymentAmount() {
     let currentSubTotal = this.calculateCurrentSubtotal() + this.paymentAmountControl.value
 
@@ -398,6 +426,16 @@ export class SalesComponent implements OnInit {
 
     if(currentSubTotal > this.totalCost) {
       this.paymentAmountControl.setErrors({"exceeded": true});
+    }
+  }
+
+  getPaymentAmountErrors() {
+    if(this.paymentAmountControl.hasError("invalid")) {
+      return "Monto inválido";
+    } else if(this.paymentAmountControl.hasError("exceeded")) {
+      return "El monto exede el total"
+    } else if(this.paymentAmountControl.hasError("insuficientFounds")) {
+      return "Fondos insuficientes. Disponible: " + this.clientCheckingAccount.balance;
     }
   }
 
@@ -445,10 +483,8 @@ export class SalesComponent implements OnInit {
   }
 
   selectPaymentMethod(event) {
-    this.selectedPaymentMethod = {
-      id: event.value,
-      name: event.source.triggerValue
-    }
+    let methodType = event.value;
+    this.selectedPaymentMethod = this.paymentMethods.filter((it) => it.type == methodType)[0]
   }
 
   selectPaymentType(event) {
@@ -459,17 +495,15 @@ export class SalesComponent implements OnInit {
   }
 
   isCardPaymentMethod() {
-    return this.paymentMethodControl.value == 1 ||
-            this.paymentMethodControl.value == 2 ||
-            this.paymentMethodControl.value == 4;
+    return this.paymentMethodControl.value == "TARJETA";
   }
 
   isMercadoPagoPaymentMethod() {
-    return this.paymentMethodControl.value == 3;
+    return this.paymentMethodControl.value == "ONLIE";
   }
 
   isCheckingAccount() {
-    return this.paymentMethodControl.value == 5;
+    return this.paymentMethodControl.value == "CUENTA_CORRIENTE";
   }
 
   private refreshDataSource() {
