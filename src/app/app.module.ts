@@ -31,12 +31,14 @@ import { CurrencyPipe } from '@angular/common'
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import {MatTabsModule} from '@angular/material/tabs';
 
 
 import { registerLocaleData } from '@angular/common';
 import localEsAr from "@angular/common/locales/es-AR";
 import { SaleInvoiceComponent } from './sale-invoice/sale-invoice.component';
 import { AddPaymentMethodComponent } from './add-payment-method/add-payment-method.component';
+import { StockComponent } from './stock/stock.component';
 
 registerLocaleData(localEsAr)
 
@@ -50,7 +52,8 @@ registerLocaleData(localEsAr)
     BranchComponent,
     ClientLookupDialogComponent,
     ItemLookupDialogComponent,
-    AddPaymentMethodComponent
+    AddPaymentMethodComponent,
+    StockComponent
   ],
   imports: [
     BrowserModule,
@@ -76,7 +79,8 @@ registerLocaleData(localEsAr)
     MatStepperModule,
     MatProgressSpinnerModule,
     MatDialogModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatTabsModule
   ],
   providers: [CurrencyPipe],
   bootstrap: [AppComponent, NavBarComponent]
