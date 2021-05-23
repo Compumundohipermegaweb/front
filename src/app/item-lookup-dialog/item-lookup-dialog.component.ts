@@ -47,6 +47,10 @@ export class ItemLookupDialogComponent implements OnInit {
   }
 
   lookupItems() {
+    if(this.branchIdControl.invalid) {
+      return;
+    }
+    
     this.searchingItems = true;
     let filters: GetStockFilters = {
       category_id: this.itemCategoryControl.value,
