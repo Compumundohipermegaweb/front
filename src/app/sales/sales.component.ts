@@ -4,6 +4,7 @@ import { ItemLookupDialogComponent } from '../item-lookup-dialog/item-lookup-dia
 import { SalesService } from '../service/sale/sales.service';
 import { ClientService } from '../service/client/client.service';
 import { ItemStockResponse, StockService, StockValidationResponse } from '../service/stock/stock.service';
+import { CardResponse, CardService } from '../service/card/card.service';
 
 import { Client, Item, Sale, Payment, PaymentType, PaymentMethod } from './sales.model';
 
@@ -24,22 +25,6 @@ import { MatStepper } from '@angular/material/stepper';
 })
 
 export class SalesComponent implements OnInit {
-
-  paymentMethods = [
-    {id: 0, name: "Efectivo"},
-    {id: 1, name: "Tarjeta de credito"},
-    {id: 2, name: "Tarjeta de debito"},
-    {id: 3, name: "Mercado pago"},
-    {id: 4, name: "Ahora 12"},
-    {id: 5, name: "Cuenta corriente"}
-  ]
-
-  paymentTypes = [
-    {id:0, name: "Visa"},
-    {id:1, name: "AMEX"},
-    {id:2, name: "Master Card"},
-    {id:3, name: "Cabal"}
-  ]
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -77,16 +62,25 @@ export class SalesComponent implements OnInit {
 
   clientPaymentMethods: Payment[]
 
+  paymentMethods = [
+    {id: 0, name: "Efectivo"},
+    {id: 1, name: "Tarjeta de credito"},
+    {id: 2, name: "Tarjeta de debito"},
+    {id: 3, name: "Mercado pago"},
+    {id: 4, name: "Ahora 12"},
+    {id: 5, name: "Cuenta corriente"}
+  ]
   selectedPaymentMethod: PaymentMethod;
 
+  cardTypes: CardResponse[] = []
   selectedPaymentType: PaymentType;
-
 
   constructor(private formBuilder: FormBuilder,
               private changeDetectorRefs: ChangeDetectorRef,
               private salesService: SalesService,
               private clientService: ClientService,
               private stockService: StockService,
+              private cardService: CardService,
               private router: Router,
               public clientLookupDialog: MatDialog,
               public itemLookupDialog: MatDialog,
@@ -97,7 +91,7 @@ export class SalesComponent implements OnInit {
     this.initControls();
     this.initForms(formBuilder);
     this.initClientPaymentMethods();
-    this.paymentMethodColumns = ["method", "amount", "type", "lastDigits", "email"];
+    this.initCardTypes();
   }
 
   ngOnInit(): void {
@@ -109,6 +103,7 @@ export class SalesComponent implements OnInit {
 
   initColumns() {
     this.displayedColumns = ["id", "sku", "description", "quantity", "price", "subTotal"]
+    this.paymentMethodColumns = ["method", "amount", "type", "lastDigits", "email"];
   }
 
   initItems() {
@@ -160,6 +155,15 @@ export class SalesComponent implements OnInit {
       lastDigits: this.paymentLastDigitsControl,
       email: this.paymentEmailControl
     });
+  }
+
+  initCardTypes() {
+    this.cardService.getActiveCards()
+    .subscribe(
+      (response) => {
+        this.cardTypes = response.cards
+      }
+    );
   }
 
 
