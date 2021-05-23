@@ -23,3 +23,7 @@ button.mat-primary {
 .mat-mini-fab {
     justify-content: center;
 }
+
+.full-width-table {
+    width: 100%;
+}

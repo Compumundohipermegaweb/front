@@ -57,66 +57,7 @@
       </mat-tab>
 
       <mat-tab label="Maestro De Items">
-        <table  mat-table [dataSource]="dataSourceMI"  class="full-width-table" matSort aria-label="Elements">
-
-          <ng-container matColumnDef="id">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Id</th>
-            <td mat-cell *matCellDef="let row">{{row.id}}</td>
-          </ng-container>
-
-
-          <ng-container matColumnDef="sku">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Sku</th>
-            <td mat-cell *matCellDef="let row">{{row.sku}}</td>
-          </ng-container>
-
-          <ng-container matColumnDef="descripcionL">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Descripcion Larga</th>
-            <td mat-cell *matCellDef="let row">{{row.descripcionL}}</td>
-          </ng-container>
-
-          <ng-container matColumnDef="descripcionC">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Descripcion Corta</th>
-            <td mat-cell *matCellDef="let row">{{row.descripcionC}}</td>
-          </ng-container>
-
-          <ng-container matColumnDef="costo">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Costo</th>
-            <td mat-cell *matCellDef="let row">{{row.costo}}</td>
-          </ng-container>
-
-          <ng-container matColumnDef="precio">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Precio</th>
-            <td mat-cell *matCellDef="let row">{{row.precio}}</td>
-          </ng-container>
-
-          <ng-container matColumnDef="estado">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th>
-            <td mat-cell *matCellDef="let row">{{row.estado}}</td>
-          </ng-container>
-
-          <!-- No aparece el boton para eliminar -->
-
-          <ng-container matColumnDef="">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
-            <td mat-cell *matCellDef="let row">
-              <button mat-mini-fab color="warn" style="float: right;">
-                <mat-icon>delete</mat-icon>
-            </button>
-            </td>
-          </ng-container>
-
-          <tr mat-header-row *matHeaderRowDef="displayedColumnsMI"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumnsMI;"></tr>
-      </table>
-
-        <mat-paginator #paginator
-            [length]="dataSource?.data?.length"
-            [pageIndex]="0"
-            [pageSize]="10"
-            [pageSizeOptions]="[5, 10, 20]">
-        </mat-paginator>
-
+        <app-item-master></app-item-master>
       </mat-tab>
 
     </mat-tab-group>

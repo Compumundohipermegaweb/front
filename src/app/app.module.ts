@@ -39,6 +39,7 @@ import localEsAr from "@angular/common/locales/es-AR";
 import { SaleInvoiceComponent } from './sale-invoice/sale-invoice.component';
 import { AddPaymentMethodComponent } from './add-payment-method/add-payment-method.component';
 import { StockComponent } from './stock/stock.component';
+import { ItemMasterComponent } from './item-master/item-master.component';
 
 registerLocaleData(localEsAr)
 
@@ -53,7 +54,8 @@ registerLocaleData(localEsAr)
     ClientLookupDialogComponent,
     ItemLookupDialogComponent,
     AddPaymentMethodComponent,
-    StockComponent
+    StockComponent,
+    ItemMasterComponent
   ],
   imports: [
     BrowserModule,
