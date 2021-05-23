@@ -21,12 +21,10 @@ export class ClientService {
 
 }
 
-
 export interface GetClientsParameters {
   name?: string;
   document?: string;
 }
-
 
 export interface ClientResponse {
   id: number;

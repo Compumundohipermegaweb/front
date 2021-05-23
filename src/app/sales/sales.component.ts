@@ -161,7 +161,11 @@ export class SalesComponent implements OnInit {
     this.cardService.getActiveCards()
     .subscribe(
       (response) => {
-        this.cardTypes = response.cards
+        this.cardTypes = response.cards;
+      },
+
+      (error) => {
+        this.cardTypes = []
       }
     );
   }
