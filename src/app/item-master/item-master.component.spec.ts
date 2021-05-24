@@ -1,4 +1,3 @@
-import { CurrencyPipe } from '@angular/common';
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 

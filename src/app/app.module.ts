@@ -31,7 +31,8 @@ import { CurrencyPipe } from '@angular/common'
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import {MatTabsModule} from '@angular/material/tabs';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 
 import { registerLocaleData } from '@angular/common';
@@ -82,7 +83,8 @@ registerLocaleData(localEsAr)
     MatProgressSpinnerModule,
     MatDialogModule,
     MatCheckboxModule,
-    MatTabsModule
+    MatTabsModule,
+    MatSlideToggleModule
   ],
   providers: [CurrencyPipe],
   bootstrap: [AppComponent, NavBarComponent]

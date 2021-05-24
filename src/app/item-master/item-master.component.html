@@ -19,6 +19,11 @@
         <td mat-cell *matCellDef="let row">{{ row.price | localCurrency }}</td>
     </ng-container>
 
+    <ng-container matColumnDef="cost">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Costo</th>
+        <td mat-cell *matCellDef="let row">{{ row.cost | localCurrency }}</td>
+    </ng-container>
+
     <ng-container matColumnDef="uom">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Unidad de medida</th>
         <td mat-cell *matCellDef="let row">{{row.uom_sale}}</td>

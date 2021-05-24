@@ -13,7 +13,7 @@ export class ItemMasterComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  columns = ["sku", "description", "price", "uom", "imported", "state"]
+  columns = ["sku", "description", "price", "cost", "uom", "imported", "state"]
   items = new MatTableDataSource<MasterItem>();
 
   constructor(private itemService: ItemService) {
