@@ -41,11 +41,12 @@ import { SaleInvoiceComponent } from './sale-invoice/sale-invoice.component';
 import { AddPaymentMethodComponent } from './add-payment-method/add-payment-method.component';
 import { StockComponent } from './stock/stock.component';
 import { ItemMasterComponent } from './item-master/item-master.component';
+import { ItemsStockComponent } from './items-stock/items-stock.component';
 
 registerLocaleData(localEsAr)
 
 @NgModule({
-  declarations: [
+  declarations: [	
     AppComponent,
     NavBarComponent,
     SalesComponent,
@@ -56,8 +57,9 @@ registerLocaleData(localEsAr)
     ItemLookupDialogComponent,
     AddPaymentMethodComponent,
     StockComponent,
-    ItemMasterComponent
-  ],
+    ItemMasterComponent,
+    ItemsStockComponent
+   ],
   imports: [
     BrowserModule,
     HttpClientModule,
