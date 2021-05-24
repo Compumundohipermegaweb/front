@@ -391,7 +391,7 @@ export class SalesComponent implements OnInit {
     }
 
     if(this.isCheckingAccount()) {
-      debugger;
+      
       this.clientService.getClientBalance(this.client.id)
         .subscribe(
           (response) => {
