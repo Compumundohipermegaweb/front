@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import Swal from 'sweetalert2';
+import { ItemService } from '../service/item/item.service';
 
 @Component({
   selector: 'app-item-master',
@@ -11,15 +13,11 @@ export class ItemMasterComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  EXAMPLE_DATA: MasterItem[] = [
-    {id: 98, sku: 315, long_description: 'Destornillador Phillips Grueso', short_description: 'Destornillador Phillips', cost: 250, price: 500, state: 'no hay'}
-  ]
-
-  columns = ["id", "sku", "long_description", "short_description", "cost", "price", "state"]
+  columns = ["sku", "description", "price", "uom", "imported", "state"]
   items = new MatTableDataSource<MasterItem>();
 
-  constructor() {
-    this.items.data = this.EXAMPLE_DATA;
+  constructor(private itemService: ItemService) {
+    this.loadItems();
   }
 
   ngOnInit() { }
@@ -28,19 +26,46 @@ export class ItemMasterComponent implements OnInit {
     this.items.paginator = this.paginator;
   }
 
-  addItem() {
-    this.EXAMPLE_DATA.push({id: 98, sku: 315, long_description: 'Destornillador Phillips Grueso', short_description: 'Destornillador Phillips', cost: 250, price: 500, state: 'no hay'});
-    this.items.data = this.EXAMPLE_DATA;
+  loadItems() {
+    this.itemService.getMaster()
+      .subscribe(
+        (response) => {
+          this.items.data = response.found_items;
+        },
+
+        (error) => {
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "No se pudo cargar el maestro de items"
+          });
+        }
+      );
+  }
+
+  formatImported(imported): String {
+    if(imported) {
+      return "SI";
+    } else {
+      return "NO";
+    }
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.items.filter = filterValue.trim().toLowerCase();
   }
 
 }
 
 export interface MasterItem {
-  id: number;
   sku: number;
-  long_description: String;
+  description: String;
   short_description: String;
-  cost: number;
   price: number;
+  cost: number;
   state: String;
+  category_id: number;
+  uom_sale: String;
+  imported: boolean;
 }

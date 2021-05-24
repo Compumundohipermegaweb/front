@@ -1,3 +1,5 @@
+import { CurrencyPipe } from '@angular/common';
+import { HttpClient, HttpHandler } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ItemMasterComponent } from './item-master.component';
@@ -8,7 +10,11 @@ describe('ItemMasterComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ItemMasterComponent ]
+      declarations: [ ItemMasterComponent ],
+      providers: [
+        HttpClient,
+        HttpHandler
+      ]
     })
     .compileComponents();
   });
