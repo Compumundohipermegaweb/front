@@ -156,7 +156,9 @@ export class SalesComponent implements OnInit {
       .subscribe(
         (response) => {
           if(response == null) {
-            //error
+            this.paymentMethods = [
+              { id: 0, description: "Efectivo", type: "EFECTIVO" }
+            ]
           } else {
             this.paymentMethods = response.payment_methods;
           }
