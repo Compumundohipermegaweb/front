@@ -242,13 +242,13 @@ export class SalesComponent implements OnInit {
   }
 
   addItem() {
-    if(this.itemForm.valid && this.constantsForm.valid && this.quantityControl.valid) {
+
+    if(this.itemForm.valid && this.constantsForm.valid) {
       this.items.push(this.itemForm.value)
       this.itemForm.reset()
       this.refreshDataSource();
       this.calculateTotalCost();
-      this.paymentAmountControl.patchValue(this.totalCost);
-      this.itemForm.reset()
+      this.paymentAmountControl.patchValue(this.totalCost)
     } else {
       this.constantsForm.markAllAsTouched()
     }
@@ -284,6 +284,11 @@ export class SalesComponent implements OnInit {
       branchId: this.branchControl.value,
       sku: this.skuControl.value
     }
+    
+    if(this.quantityControl.value == null || this.quantityControl.value <= 0) {
+      this.quantityControl.setErrors({"invalid": true});
+      return;
+    }
 
     if(!request.branchId || !request.sku) {
       this.quantityControl.setErrors({"required": true})
@@ -312,8 +317,10 @@ export class SalesComponent implements OnInit {
   getQuantityErrors() {
     if(this.quantityControl.hasError("unavailable")) {
       return "Stock insuficiente. Disponible: " + this.itemStock.available_stock;
+    } else if(this.quantityControl.hasError("invalid")){
+      return "Cantidad inválida";
     } else if(this.quantityControl.hasError("required")) {
-      return "Ingrese Sucursal y SKU"
+      return "Ingrese Sucursal y SKU";
     }
   }
 
@@ -516,7 +523,7 @@ export class SalesComponent implements OnInit {
   }
 
   private refreshDataSource() {
-    this.dataSource.data = this.items
+    this.dataSource.data = this.items;
   }
 
   private createRequest(): Sale {
