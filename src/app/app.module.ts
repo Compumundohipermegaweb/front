@@ -42,6 +42,7 @@ import { AddPaymentMethodComponent } from './add-payment-method/add-payment-meth
 import { StockComponent } from './stock/stock.component';
 import { ItemMasterComponent } from './item-master/item-master.component';
 import { ItemsStockComponent } from './items-stock/items-stock.component';
+import { NewItemDialogComponent } from './new-item-dialog/new-item-dialog.component';
 
 registerLocaleData(localEsAr)
 
@@ -58,8 +59,9 @@ registerLocaleData(localEsAr)
     AddPaymentMethodComponent,
     StockComponent,
     ItemMasterComponent,
-    ItemsStockComponent
-   ],
+    ItemsStockComponent,
+    NewItemDialogComponent
+  ],
   imports: [
     BrowserModule,
     HttpClientModule,

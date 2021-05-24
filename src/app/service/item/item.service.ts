@@ -10,15 +10,43 @@ import { environment } from 'src/environments/environment';
 export class ItemService {
 
   host = environment.apiHost;
-  getAllUrl = "/api/items/all"
+  postItemUrl = "/api/items";
+  getAllUrl = "/api/items/all";
 
   constructor(private http: HttpClient) { }
 
   getMaster(): Observable<GetAllItemsResponse> {
     return this.http.get<GetAllItemsResponse>(this.host + this.getAllUrl);
   }
+
+  createItem(postItemRequest: PostItemRequest): Observable<MasterItem> {
+    return this.http.post<MasterItem>(this.host + this.postItemUrl, postItemRequest);
+  }
 }
 
 export interface GetAllItemsResponse {
   found_items: MasterItem[];
+}
+
+
+export interface PostItemRequest {
+  sku: String;
+  short_description: String;
+  description: String;
+  brand_id: number;
+  category_id: number;
+  uom_sale: String;
+  price: number;
+  cost: number;
+  imported: Boolean;
+  state: String;
+  supplier: SupplierRequest;
+}
+
+export interface SupplierRequest {
+  organization: String;
+  contact_name: String;
+  contact_number: String;
+  email: String;
+  cuit: String;
 }

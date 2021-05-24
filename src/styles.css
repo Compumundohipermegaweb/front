@@ -27,3 +27,9 @@ button.mat-primary {
 .full-width-table {
     width: 100%;
 }
+
+.center-fixed {
+    position: fixed; 
+    top: 50%;
+    left: 50%;
+}

@@ -1,0 +1,107 @@
+<h3>Nuevo item</h3>
+<mat-card>
+    <mat-card-content>
+        <form [formGroup]="itemForm">
+            <div>
+                <mat-form-field appearance="outline">
+                    <mat-label>SKU</mat-label>
+                    <input matInput type="text" [formControl]="skuControl" required>
+                </mat-form-field>
+            </div>
+            <h2 mat-header>Descripción</h2>
+            <div>
+                <mat-form-field>
+                    <mat-label>Descripción larga</mat-label>
+                    <textarea matInput type="text" [formControl]="longDescriptionControl" required></textarea>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Descripción corta</mat-label>
+                    <input matInput type="text" [formControl]="shortDescriptionControl" required>
+                </mat-form-field>
+            </div>
+            <h2 mat-header>Detalles</h2>
+            <div>
+                <mat-checkbox [formControl]="stateControl" color="primary" style="padding: 0.5rem;">Activo</mat-checkbox>
+            </div>
+            <div>
+                <mat-checkbox [formControl]="importedControl" color="primary" style="padding: 0.5rem;">Importado</mat-checkbox>
+            </div>
+            <div>
+                <mat-form-field>
+                    <mat-label>Marca</mat-label>
+                    <mat-select [formControl]="brandControl" required>
+                        <mat-option value="0">Marca 1</mat-option>
+                        <mat-option value="1">Marca 2</mat-option>
+                        <mat-option value="2">Marca 3</mat-option>
+                        <mat-option value="3">Marca 4</mat-option>
+                    </mat-select>
+                </mat-form-field>
+    
+                <mat-form-field>
+                    <mat-label>Categoria</mat-label>
+                    <mat-select [formControl]="categoryControl" required>
+                        <mat-option value="0">Categoria 1</mat-option>
+                        <mat-option value="1">Categoria 2</mat-option>
+                        <mat-option value="2">Categoria 3</mat-option>
+                        <mat-option value="3">Categoria 4</mat-option>
+                        <mat-option value="4">Categoria 5</mat-option>
+                    </mat-select>
+                </mat-form-field>
+    
+                <mat-form-field>
+                    <mat-label>Unidad de medida</mat-label>
+                    <input matInput type="text" [formControl]="uomControl" required>
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field>
+                    <mat-label>Precio</mat-label>
+                    <input matInput type="number" [formControl]="priceControl" required>
+                    <span matPrefix>$&nbsp;</span>
+                </mat-form-field>
+    
+                <mat-form-field>
+                    <mat-label>Costo</mat-label>
+                    <input matInput type="number" [formControl]="costControl" required>
+                    <span matPrefix>$&nbsp;</span>
+                </mat-form-field>
+
+                
+            </div>
+            <div>
+                <h2 mat-header>Proveedor</h2>
+                <mat-form-field>
+                    <mat-label>Proveedor</mat-label>
+                    <input matInput type="text" [formControl]="supplierControl" required>
+                </mat-form-field>
+    
+                <mat-form-field>
+                    <mat-label>Nombre de contacto</mat-label>
+                    <input matInput type="text" [formControl]="contactNameControl" required>
+                </mat-form-field>
+    
+                <mat-form-field>
+                    <mat-label>Telefono de contacto</mat-label>
+                    <input matInput type="text" [formControl]="contactPhoneControl" required>
+                </mat-form-field>
+    
+                <mat-form-field>
+                    <mat-label>email</mat-label>
+                    <input matInput type="text" [formControl]="emailControl" required>
+                </mat-form-field>
+    
+                <mat-form-field>
+                    <mat-label>CUIT</mat-label>
+                    <input matInput type="text" [formControl]="cuitControl" required>
+                </mat-form-field>
+            </div>
+
+        </form>
+        
+        <button mat-raised-button color="primary" (click)="createItem()">Confirmar</button>
+        <button mat-raised-button color="warn" (click)="close()">Cancelar</button>
+    </mat-card-content>
+</mat-card>
+<div *ngIf="creatingItem" class="center-fixed">
+    <mat-progress-spinner color="primary" mode="indeterminate"></mat-progress-spinner>
+</div>

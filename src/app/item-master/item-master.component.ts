@@ -1,7 +1,9 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatTable, MatTableDataSource } from '@angular/material/table';
 import Swal from 'sweetalert2';
+import { NewItemDialogComponent } from '../new-item-dialog/new-item-dialog.component';
 import { ItemService } from '../service/item/item.service';
 
 @Component({
@@ -16,7 +18,11 @@ export class ItemMasterComponent implements OnInit {
   columns = ["sku", "description", "price", "cost", "uom", "imported", "state"]
   items = new MatTableDataSource<MasterItem>();
 
-  constructor(private itemService: ItemService) {
+  constructor(
+    private itemService: ItemService, 
+    public newItemDialog: MatDialog,
+    public changeDetectorRef: ChangeDetectorRef
+  ) {
     this.loadItems();
   }
 
@@ -56,6 +62,21 @@ export class ItemMasterComponent implements OnInit {
     this.items.filter = filterValue.trim().toLowerCase();
   }
 
+  newItem() {
+    const dialogRef = this.newItemDialog.open(NewItemDialogComponent, { });
+
+    dialogRef.afterClosed()
+      .subscribe(
+        (result: MasterItem[]) => {
+          if(result != null && result.length > 0) {
+            result.forEach(element => {
+              this.items.data.push(element);
+            });
+            this.changeDetectorRef.detectChanges();
+          }
+        }
+      );
+  }
 }
 
 export interface MasterItem {
