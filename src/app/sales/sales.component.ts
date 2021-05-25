@@ -243,6 +243,14 @@ export class SalesComponent implements OnInit {
 
   addItem() {
 
+    if(this.itemExists()){
+      Swal.fire({
+        icon: "error",
+        title: "Este item ya esta agregado",
+      })
+      return
+    }
+
     if(this.itemForm.valid && this.constantsForm.valid) {
       this.items.push(this.itemForm.value)
       this.itemForm.reset()
@@ -252,6 +260,11 @@ export class SalesComponent implements OnInit {
     } else {
       this.constantsForm.markAllAsTouched()
     }
+  
+  }
+
+  itemExists(){
+    return this.items.some((it) => it.id == this.itemForm.value.id)
   }
 
   deleteItem(item: Item) {
