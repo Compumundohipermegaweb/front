@@ -436,7 +436,7 @@ export class SalesComponent implements OnInit {
         this.appendPaymentMethod(payment)
       }
       this.paymentMethodDataSource.data = this.clientPayments;
-  
+
       this.paymentForm.reset();
       if(this.totalCost == this.calculateCurrentSubtotal()) {
         this.paymentForm.setErrors(null)
@@ -513,7 +513,7 @@ export class SalesComponent implements OnInit {
     if(this.paymentTypeControl.value == null || this.paymentTypeControl.value == undefined) {
       this.paymentTypeControl.setErrors({"required": true});
     }
-    
+
     if(!this.paymentLastDigitsControl.value) {
       this.paymentLastDigitsControl.setErrors({"required": true});
     }
