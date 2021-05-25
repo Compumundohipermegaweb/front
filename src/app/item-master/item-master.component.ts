@@ -77,6 +77,44 @@ export class ItemMasterComponent implements OnInit {
         }
       );
   }
+
+  delete(item: MasterItem){
+    
+    Swal.fire({
+      icon: "question",
+      title: "Seguro desea eliminar",
+      text: item.description.toString(),
+      showCancelButton: true,
+      confirmButtonText: "Eliminar",
+      confirmButtonColor: "#3f51b5",
+      cancelButtonText: "Cancelar",
+      cancelButtonColor: "#f44336"
+    }).then((result) => {
+      if(result.isConfirmed) {
+        this.itemService.deleteItem(item.sku.toString())
+          .subscribe(
+            (response) => {
+              Swal.fire({
+                icon: "success",
+                title: "Item eliminado!",
+                text: "Se ha eliminado " + item.description
+              });
+
+              this.items.data = this.items.data.filter((it) => it.sku != item.sku);
+              this.changeDetectorRef.detectChanges();
+            },
+
+            (error) => {
+              Swal.fire({
+                icon: "error",
+                title: "No se pudo eliminar",
+                text: "Intentelo nuevamente, si el error persiste contacte un administrador"
+              });
+            }
+          );
+      }
+    });
+  }
 }
 
 export interface MasterItem {

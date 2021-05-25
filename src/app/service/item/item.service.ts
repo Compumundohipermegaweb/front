@@ -10,7 +10,7 @@ import { environment } from 'src/environments/environment';
 export class ItemService {
 
   host = environment.apiHost;
-  postItemUrl = "/api/items";
+  itemUrl = "/api/items";
   getAllUrl = "/api/items/all";
 
   constructor(private http: HttpClient) { }
@@ -20,7 +20,11 @@ export class ItemService {
   }
 
   createItem(postItemRequest: PostItemRequest): Observable<MasterItem> {
-    return this.http.post<MasterItem>(this.host + this.postItemUrl, postItemRequest);
+    return this.http.post<MasterItem>(this.host + this.itemUrl, postItemRequest);
+  }
+
+  deleteItem(sku: String): Observable<String>{
+    return this.http.delete<String>(this.host + this.itemUrl + "/" + sku)
   }
 }
 

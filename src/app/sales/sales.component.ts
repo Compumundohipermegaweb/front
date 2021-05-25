@@ -256,7 +256,7 @@ export class SalesComponent implements OnInit {
 
   deleteItem(item: Item) {
     Swal.fire({
-      icon: "warning",
+      icon: "question",
       title: "Seguro desea eliminar",
       text: item.quantity + "x" + item.description.toString(),
       showCancelButton: true,
