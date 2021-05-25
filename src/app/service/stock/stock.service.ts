@@ -2,6 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { Stock } from 'src/app/items-stock/items-stock.component';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +12,7 @@ export class StockService {
   host = environment.apiHost
   stockLooupUrl = "/api/branches/{branch_id}/stock"
   stockValidationUrl = "/api/branches/{branch_id}/stock/{sku}"
+  getAllstockUrl = "/api/branches/{branch_id}/stock/all"
 
   constructor(private http: HttpClient) { }
 
@@ -37,7 +39,7 @@ export class StockService {
   }
 
   validateStock(request: StockValidationRequest): Observable<StockValidationResponse> {
-    return this.http.get<StockValidationResponse>(this.host + this.buildStockValidationUrl(request), )
+    return this.http.get<StockValidationResponse>(this.host + this.buildStockValidationUrl(request) )
   }
 
   buildStockLookupUrl(branchId: number) {
@@ -49,6 +51,18 @@ export class StockService {
                   .replace(/{branch_id}/gi, request.branchId.toString())
                   .replace(/{sku}/gi, request.sku.toString())
   }
+
+  buildStockAllUrl(branchId: number) {
+    return this.getAllstockUrl.replace(/{branch_id}/gi, branchId.toString())
+  }
+
+  getStock(branchId: number): Observable<GetAllStockResponse> {
+    return this.http.get<GetAllStockResponse>(this.host + this.buildStockAllUrl(branchId));
+  }
+}
+
+export interface GetAllStockResponse {
+  stocks: Stock[];
 }
 
 export interface ItemLookupResponse {

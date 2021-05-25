@@ -34,5 +34,11 @@ describe('StockService', () => {
 
     expect(service.buildStockValidationUrl(request)).toEqual("/api/branches/1/stock/12351231")
   });
+
+  it("should build stock all url", () => {
+    let branchId = 1;
+
+    expect(service.buildStockAllUrl(branchId)).toEqual("/api/branches/1/stock/all")
+  });
   
 });

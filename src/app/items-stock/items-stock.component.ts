@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild ,ChangeDetectorRef} from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { StockService } from '../service/stock/stock.service';
 import { MatSort } from '@angular/material/sort';
-
+import { StockService } from '../service/stock/stock.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-items-stock',
@@ -15,29 +15,50 @@ export class ItemsStockComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  EXAMPLE_DATA: Stock[] = [
-    {id: 15, descripcion: 'Marillo', cantidad: 99}
-  ]
-
-  columns = ['id', 'descripcion', 'cantidad'];
+  columns = ['sku','description', 'stock_total', 'minimum_stock', 'security_stock','editar'];
   stock = new MatTableDataSource<Stock>()
 
-  constructor(private changeDetectorRefs: ChangeDetectorRef) {
-    this.stock.data = this.EXAMPLE_DATA;
+  constructor(
+    private stockService: StockService,
+    public changeDetectorRefs: ChangeDetectorRef
+  ) {
+    this.loadStock(); 
   }
 
   ngOnInit() {
   }
 
   ngAfterViewInit(): void {
+    
+    this.stock.paginator = this.paginator; 
     this.stock.sort = this.sort;
-    this.stock.paginator = this.paginator;
+  }
+
+  loadStock() {
+    this.stockService.getStock(1)
+      .subscribe(
+        (response) => {
+          this.stock.data = response.stocks;
+        },
+
+        (error) => {
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "No se pudo cargar el Stock de la Sucursal"
+          });
+        }
+      );
   }
 
 }
 
-export interface Stock{
+export interface Stock{  
   id: number;
-  descripcion : String;
-  cantidad: number;
+  sku: String;
+//  description: String;
+  stock_total: number;
+  minimum_stock: number;
+  security_stock: number;
+
 }
