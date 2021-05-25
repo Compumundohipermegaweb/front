@@ -415,7 +415,13 @@ export class SalesComponent implements OnInit {
     }
 
     if(this.paymentForm.valid) {
-      this.clientPayments.push(payment);
+      let alreadyUsedPaymentMethod = this.clientPayments.some((it) => it.method.id == payment.method.id && it.typeId == payment.typeId );
+
+      if(!alreadyUsedPaymentMethod) {
+        this.addNewPaymentMethod(payment)
+      } else {
+        this.appendPaymentMethod(payment)
+      }
       this.paymentMethodDataSource.data = this.clientPayments;
   
       this.paymentForm.reset();
@@ -423,6 +429,14 @@ export class SalesComponent implements OnInit {
         this.paymentForm.setErrors(null)
       }
     }
+  }
+
+  addNewPaymentMethod(payment) {
+    this.clientPayments.push(payment);
+  }
+
+  appendPaymentMethod(payment) {
+    this.clientPayments.find((it) => it.method.id == payment.method.id && it.typeId == payment.typeId).amount += payment.amount;
   }
 
   invalidCheckingAccountMessage() {
