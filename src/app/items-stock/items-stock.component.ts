@@ -1,9 +1,10 @@
-import { Component, OnInit, ViewChild ,ChangeDetectorRef} from '@angular/core';
+import { Component, OnInit, ViewChild ,Inject,ChangeDetectorRef} from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatSort } from '@angular/material/sort';
 import { StockService } from '../service/stock/stock.service';
 import Swal from 'sweetalert2';
+import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { EditStockDialogComponent } from '../edit-stock-dialog/edit-stock-dialog.component';
 
 @Component({
   selector: 'app-items-stock',
@@ -13,14 +14,15 @@ import Swal from 'sweetalert2';
 export class ItemsStockComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
 
   columns = ['sku','description', 'stock_total', 'minimum_stock', 'security_stock','editar'];
   stock = new MatTableDataSource<Stock>()
 
   constructor(
     private stockService: StockService,
-    public changeDetectorRefs: ChangeDetectorRef
+    public changeDetectorRef: ChangeDetectorRef,
+    public editStockDialog: MatDialog,
+    //@Inject(MAT_DIALOG_DATA) public data: EditStockDialogData,
   ) {
     this.loadStock(); 
   }
@@ -31,7 +33,6 @@ export class ItemsStockComponent implements OnInit {
   ngAfterViewInit(): void {
     
     this.stock.paginator = this.paginator; 
-    this.stock.sort = this.sort;
   }
 
   loadStock() {
@@ -51,14 +52,22 @@ export class ItemsStockComponent implements OnInit {
       );
   }
 
+  editStockbyItem() {
+     const dialogRef = this.editStockDialog.open(EditStockDialogComponent, {});
+  }
+
 }
 
 export interface Stock{  
   id: number;
   sku: String;
-//  description: String;
+  description: String;
   stock_total: number;
   minimum_stock: number;
   security_stock: number;
+
+}
+
+export interface EditStockDialogData {
 
 }

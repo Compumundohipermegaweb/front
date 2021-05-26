@@ -2,6 +2,8 @@
 import { HttpClient,HttpHandler } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ItemsStockComponent } from './items-stock.component';
+import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA, MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
+
 
 describe('ItemsStockComponent', () => {
   let component: ItemsStockComponent;
@@ -9,8 +11,18 @@ describe('ItemsStockComponent', () => {
 
   beforeEach(async() => {
     TestBed.configureTestingModule({
-      declarations: [ ItemsStockComponent ],
-        providers: [HttpClient, HttpHandler]
+      declarations: [  ItemsStockComponent], 
+      imports: [
+        MatDialogModule
+      ],
+        providers: [
+          HttpClient, 
+          HttpHandler, 
+          { provide: MatDialogRef, useValue: {} },
+          { provide: MAT_DIALOG_DATA, useValue: {} },
+          { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false }}
+        ]
+          
     })
     .compileComponents();
   });

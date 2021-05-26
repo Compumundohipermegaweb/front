@@ -1,0 +1,23 @@
+<h2 mat-header>Editar Stock</h2>
+<p>
+    Sku: {{ sku }}   
+</p> 
+<p>
+    Stock Actual: {{ stockTotal }}
+</p>
+<mat-radio-group aria-label="Select an option"  color="primary">
+    <mat-radio-button value="1" [checked]="true" >Merma</mat-radio-button>
+    <mat-radio-button value="2">Incremento</mat-radio-button>
+</mat-radio-group>
+<mat-form-field class="quantity-input">
+    <mat-label>Ingrese la cantidad:</mat-label>
+    <input matInput type="number" min=1 pattern="^[0-9]+">
+    <mat-hint>Unidades</mat-hint>
+</mat-form-field>
+<p>
+    <button type="submit" mat-flat-button color="primary">Guardar</button>
+</p>
+
+  
+  
+

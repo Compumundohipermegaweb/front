@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Stock } from 'src/app/items-stock/items-stock.component';
+import { BooleanInput } from '@angular/cdk/coercion';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,8 @@ export class StockService {
   stockLooupUrl = "/api/branches/{branch_id}/stock"
   stockValidationUrl = "/api/branches/{branch_id}/stock/{sku}"
   getAllstockUrl = "/api/branches/{branch_id}/stock/all"
+  reduceStockUrl = "/api/stock/reduce-all?branch_id={branch_id}"
+  increaseStockUrl = "/api/stock/increase-all?branch_id={branch_id}"
 
   constructor(private http: HttpClient) { }
 
@@ -55,10 +58,26 @@ export class StockService {
   buildStockAllUrl(branchId: number) {
     return this.getAllstockUrl.replace(/{branch_id}/gi, branchId.toString())
   }
+  
+  buildIncreaseStockUrl(branchId: number) {
+    return this.increaseStockUrl.replace(/{branch_id}/gi, branchId.toString())
+  }
+
+  buildReduceStockUrl(branchId: number) {
+    return this.reduceStockUrl.replace(/{branch_id}/gi, branchId.toString())
+  }
+
 
   getStock(branchId: number): Observable<GetAllStockResponse> {
     return this.http.get<GetAllStockResponse>(this.host + this.buildStockAllUrl(branchId));
   }
+
+  
+  // reduceStock(stockToModifyRequest: StockToModifyRequest,branchId: number): Observable<ReduceAll> {
+  //   return this.http.post<>(this.host + this.buildReduceStockUrl(branchId));
+  // }
+
+
 }
 
 export interface GetAllStockResponse {
@@ -96,3 +115,16 @@ export interface StockValidationResponse {
   sku: number;
   available_stock: number;
 }
+
+export interface StockToModifyRequest{
+  item_id: number,
+  amount: number
+}
+export interface ReduceAll {
+  modify_all: StockToModifyRequest[];
+}
+
+export interface increaseAll {
+  modify_all: StockToModifyRequest[];
+}
+

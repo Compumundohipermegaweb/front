@@ -33,7 +33,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-
+import { MatRadioModule} from '@angular/material/radio'; 
 
 import { registerLocaleData } from '@angular/common';
 import localEsAr from "@angular/common/locales/es-AR";
@@ -43,6 +43,7 @@ import { StockComponent } from './stock/stock.component';
 import { ItemMasterComponent } from './item-master/item-master.component';
 import { ItemsStockComponent } from './items-stock/items-stock.component';
 import { NewItemDialogComponent } from './new-item-dialog/new-item-dialog.component';
+import { EditStockDialogComponent } from './edit-stock-dialog/edit-stock-dialog.component';
 
 registerLocaleData(localEsAr)
 
@@ -60,7 +61,8 @@ registerLocaleData(localEsAr)
     StockComponent,
     ItemMasterComponent,
     ItemsStockComponent,
-    NewItemDialogComponent
+    NewItemDialogComponent,
+    EditStockDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -88,7 +90,8 @@ registerLocaleData(localEsAr)
     MatDialogModule,
     MatCheckboxModule,
     MatTabsModule,
-    MatSlideToggleModule
+    MatSlideToggleModule, 
+    MatRadioModule,
   ],
   providers: [CurrencyPipe],
   bootstrap: [AppComponent, NavBarComponent]
