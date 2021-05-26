@@ -77,7 +77,7 @@ export class StockService {
   }
 
   increaseStock(request: IncreaseAllRequest,branchId: number): Observable<String> {
-    return this.http.post<String>(this.host + this.buildDecreaseStockUrl(branchId), request);
+    return this.http.post<String>(this.host + this.buildIncreaseStockUrl(branchId), request);
   }
 
 }

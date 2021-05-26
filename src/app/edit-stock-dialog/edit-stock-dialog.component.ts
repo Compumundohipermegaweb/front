@@ -53,8 +53,8 @@ export class EditStockDialogComponent implements OnInit {
     );
   }
 
-  increaseStockItem(itemStockModified :DecreaseAllRequest){
-    this.stockService.decreaseStock(itemStockModified,1)
+  increaseStockItem(itemStockModified :IncreaseAllRequest){
+    this.stockService.increaseStock(itemStockModified,1)
     .subscribe(
       (response) => {
       
@@ -100,7 +100,7 @@ export class EditStockDialogComponent implements OnInit {
 
       empList.push(stockToModified); 
 
-      if(this.selectControl.value==1) {
+      if(this.selectControl.value=="1") {
         //Merma
         let decreaseAllRequest: DecreaseAllRequest = {
           modify_all : empList
@@ -108,7 +108,7 @@ export class EditStockDialogComponent implements OnInit {
         this.reduceStockItem(decreaseAllRequest)
       } else {
           //Incremento
-          let increaseAllRequest: DecreaseAllRequest = {
+          let increaseAllRequest: IncreaseAllRequest = {
             modify_all : empList
         }
 
