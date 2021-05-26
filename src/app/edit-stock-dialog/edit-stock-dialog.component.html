@@ -1,22 +1,41 @@
 <h2 mat-header>Editar Stock</h2>
-<p>
-    Sku: {{ sku }}   
-</p> 
-<p>
-    Stock Actual: {{ stockTotal }}
-</p>
-<mat-radio-group aria-label="Select an option"  color="primary">
-    <mat-radio-button value="1" [checked]="true" >Merma</mat-radio-button>
-    <mat-radio-button value="2">Incremento</mat-radio-button>
-</mat-radio-group>
-<mat-form-field class="quantity-input">
-    <mat-label>Ingrese la cantidad:</mat-label>
-    <input matInput type="number" min=1 pattern="^[0-9]+">
-    <mat-hint>Unidades</mat-hint>
-</mat-form-field>
-<p>
-    <button type="submit" mat-flat-button color="primary">Guardar</button>
-</p>
+<mat-card>
+    <mat-card-content>
+        <div>
+            <p>
+                Sku: {{selectedItemStock.sku }}   
+            </p> 
+            <p>
+                Stock Actual: {{ selectedItemStock.stock_total }}
+            </p>
+        </div>
+        <p>____________________________________________________</p>
+        <div>
+            <p></p>
+            <mat-label>Seleccione una opción: </mat-label>
+            <p></p>
+            <mat-radio-group aria-label="Seleccione una opción"  color="primary" [formControl]="selectControl" required>
+                <mat-radio-button value="1">Merma</mat-radio-button>
+                <mat-radio-button value="2">Incremento</mat-radio-button>
+            </mat-radio-group>
+                
+        </div>
+        <p></p>
+        <div>
+            <mat-form-field class="quantity-input">
+                <mat-label>Ingrese la cantidad:</mat-label>
+                <input matInput type="number" [formControl]="quantityControl" required min=1 pattern="^[0-9]+">
+                <mat-hint>Unidades</mat-hint>
+            </mat-form-field> 
+        </div>
+        <p></p>
+        <p></p>
+
+
+        <button mat-raised-button color="primary" (click)="guardarCambios(selectedItemStock)">Guardar</button>
+        <button mat-raised-button color="warn" (click)="close()">Cancelar</button>
+    </mat-card-content>
+</mat-card>
 
   
   

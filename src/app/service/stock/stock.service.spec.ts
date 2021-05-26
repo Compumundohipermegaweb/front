@@ -40,13 +40,13 @@ describe('StockService', () => {
   it("should build reduce stock all url", () => {
     let branchId = 1;
 
-    expect(service.buildReduceStockUrl(branchId)).toEqual("/api/stock/reduce-all?branch_id=1")
+    expect(service.buildDecreaseStockUrl(branchId)).toEqual("/api/branches/1/stock/decrease")
   });
 
   it("should build increase stock all url", () => {
     let branchId = 1;
 
-    expect(service.buildIncreaseStockUrl(branchId)).toEqual("/api/stock/increase-all?branch_id=1")
+    expect(service.buildIncreaseStockUrl(branchId)).toEqual("/api/branches/1/stock/increase")
   });
 
 });

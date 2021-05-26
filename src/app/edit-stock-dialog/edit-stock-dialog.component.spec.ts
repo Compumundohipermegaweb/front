@@ -1,4 +1,6 @@
+import { HttpClient, HttpHandler } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA, MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 import { EditStockDialogComponent } from './edit-stock-dialog.component';
 
 describe('EditStockDialogComponent', () => {
@@ -7,7 +9,17 @@ describe('EditStockDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EditStockDialogComponent ]
+      declarations: [ EditStockDialogComponent ],
+      imports: [
+        MatDialogModule
+      ],
+        providers: [
+          HttpClient, 
+          HttpHandler, 
+          { provide: MatDialogRef, useValue: {} },
+          { provide: MAT_DIALOG_DATA, useValue: {} },
+          { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false }}
+        ]
     })
     .compileComponents();
   });

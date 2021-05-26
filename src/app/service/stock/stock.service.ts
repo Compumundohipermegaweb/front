@@ -2,8 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { Stock } from 'src/app/items-stock/items-stock.component';
-import { BooleanInput } from '@angular/cdk/coercion';
+import { Stock } from 'src/app/items-stock/items-stock.component'; 
 
 @Injectable({
   providedIn: 'root'
@@ -14,8 +13,8 @@ export class StockService {
   stockLooupUrl = "/api/branches/{branch_id}/stock"
   stockValidationUrl = "/api/branches/{branch_id}/stock/{sku}"
   getAllstockUrl = "/api/branches/{branch_id}/stock/all"
-  reduceStockUrl = "/api/stock/reduce-all?branch_id={branch_id}"
-  increaseStockUrl = "/api/stock/increase-all?branch_id={branch_id}"
+  reduceStockUrl = "/api/branches/{branch_id}/stock/decrease"
+  increaseStockUrl = "/api/branches/{branch_id}/stock/increase"
 
   constructor(private http: HttpClient) { }
 
@@ -63,7 +62,7 @@ export class StockService {
     return this.increaseStockUrl.replace(/{branch_id}/gi, branchId.toString())
   }
 
-  buildReduceStockUrl(branchId: number) {
+  buildDecreaseStockUrl(branchId: number) {
     return this.reduceStockUrl.replace(/{branch_id}/gi, branchId.toString())
   }
 
@@ -73,10 +72,13 @@ export class StockService {
   }
 
   
-  // reduceStock(stockToModifyRequest: StockToModifyRequest,branchId: number): Observable<ReduceAll> {
-  //   return this.http.post<>(this.host + this.buildReduceStockUrl(branchId));
-  // }
+  decreaseStock(request: DecreaseAllRequest,branchId: number): Observable<String> {
+    return this.http.post<String>(this.host + this.buildDecreaseStockUrl(branchId), request);
+  }
 
+  increaseStock(request: IncreaseAllRequest,branchId: number): Observable<String> {
+    return this.http.post<String>(this.host + this.buildDecreaseStockUrl(branchId), request);
+  }
 
 }
 
@@ -116,15 +118,15 @@ export interface StockValidationResponse {
   available_stock: number;
 }
 
+export interface DecreaseAllRequest {
+  modify_all: StockToModifyRequest[];
+}
+
+export interface IncreaseAllRequest {
+  modify_all: StockToModifyRequest[];
+}
+
 export interface StockToModifyRequest{
   item_id: number,
   amount: number
 }
-export interface ReduceAll {
-  modify_all: StockToModifyRequest[];
-}
-
-export interface increaseAll {
-  modify_all: StockToModifyRequest[];
-}
-
