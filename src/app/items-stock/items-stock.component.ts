@@ -54,6 +54,11 @@ export class ItemsStockComponent implements OnInit {
 
   editStockbyItem(stock: Stock) {
      const dialogRef = this.editStockDialog.open(EditStockDialogComponent, { data: stock});
+     dialogRef.afterClosed().subscribe(stock => {
+      if (stock != undefined)
+        this.stock.data=null; 
+        this.loadStock(); 
+    });
   }
 
 }
