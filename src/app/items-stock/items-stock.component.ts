@@ -61,6 +61,11 @@ export class ItemsStockComponent implements OnInit {
     });
   }
 
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.stock.filter = filterValue.trim().toLowerCase();
+  }
+
 }
 
 export interface Stock{  
