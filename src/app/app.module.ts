@@ -45,6 +45,7 @@ import { ItemsStockComponent } from './items-stock/items-stock.component';
 import { NewItemDialogComponent } from './new-item-dialog/new-item-dialog.component';
 import { EditStockDialogComponent } from './edit-stock-dialog/edit-stock-dialog.component';
 import { CashComponent } from './cash/cash.component';
+import { MdmComponent } from './mdm/mdm.component';
 
 registerLocaleData(localEsAr)
 
@@ -64,7 +65,8 @@ registerLocaleData(localEsAr)
     ItemsStockComponent,
     NewItemDialogComponent,
     EditStockDialogComponent,
-    CashComponent
+    CashComponent,
+    MdmComponent
   ],
   imports: [
     BrowserModule,
