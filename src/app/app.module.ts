@@ -44,6 +44,7 @@ import { ItemMasterComponent } from './item-master/item-master.component';
 import { ItemsStockComponent } from './items-stock/items-stock.component';
 import { NewItemDialogComponent } from './new-item-dialog/new-item-dialog.component';
 import { EditStockDialogComponent } from './edit-stock-dialog/edit-stock-dialog.component';
+import { CashComponent } from './cash/cash.component';
 
 registerLocaleData(localEsAr)
 
@@ -62,7 +63,8 @@ registerLocaleData(localEsAr)
     ItemMasterComponent,
     ItemsStockComponent,
     NewItemDialogComponent,
-    EditStockDialogComponent
+    EditStockDialogComponent,
+    CashComponent
   ],
   imports: [
     BrowserModule,
