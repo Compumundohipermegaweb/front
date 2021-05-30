@@ -1,6 +1,14 @@
 <mat-list>
 
   <mat-list-item>
+    <button mat-button class="nav-button" routerLink="/cash" routerLinkActive="active">
+      <mat-icon>point_of_sale</mat-icon> Caja
+    </button>
+  </mat-list-item>
+
+  <mat-divider></mat-divider>
+
+  <mat-list-item>
     <button mat-button class="nav-button" routerLink="/sales" routerLinkActive="active">
       <mat-icon>sell</mat-icon> Ventas
     </button>
@@ -17,8 +25,8 @@
   <mat-divider></mat-divider>
 
   <mat-list-item>
-    <button mat-button class="nav-button" routerLink="/cash" routerLinkActive="active">
-      <mat-icon>point_of_sale</mat-icon> Caja
+    <button mat-button class="nav-button" routerLink="/branch" routerLinkActive="active">
+      <mat-icon>home</mat-icon> Sucursales
     </button>
   </mat-list-item>
 
@@ -27,14 +35,6 @@
   <mat-list-item>
     <button mat-button class="nav-button" routerLink="/mdm" routerLinkActive="active">
       <mat-icon>settings</mat-icon> Datos Maestros
-    </button>
-  </mat-list-item>
-
-  <mat-divider></mat-divider>
-
-  <mat-list-item>
-    <button mat-button class="nav-button" routerLink="/branch" routerLinkActive="active">
-      <mat-icon>home</mat-icon> Sucursales
     </button>
   </mat-list-item>
 
