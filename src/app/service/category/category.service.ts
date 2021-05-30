@@ -21,6 +21,10 @@ export class CategoryService {
   findAll(): Observable<FindAllCategoriesResponse> {
     return this.http.get<FindAllCategoriesResponse>(this.host + this.baseUrl)
   }
+
+  delete(categoryId: number) {
+    return this.http.delete(this.host + this.baseUrl + "/" + categoryId.toString())
+  }
 }
 
 export interface CreateCategoryRequest {

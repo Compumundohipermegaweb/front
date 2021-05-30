@@ -73,6 +73,44 @@ export class CategoriesComponent implements OnInit {
       )
   }
 
+  delete(category: Category) {
+    
+    Swal.fire({
+      icon: "question",
+      title: "Seguro desea eliminar",
+      text: category.name.toString(),
+      showCancelButton: true,
+      confirmButtonText: "Eliminar",
+      confirmButtonColor: "#3f51b5",
+      cancelButtonText: "Cancelar",
+      cancelButtonColor: "#f44336"
+    }).then((result) => {
+      if(result.isConfirmed) {
+        this.categoryService.delete(category.id)
+          .subscribe(
+            (response) => {
+              Swal.fire({
+                icon: "success",
+                title: "Item eliminado!",
+                text: "Se ha eliminado " + category.name
+              });
+
+              this.categoriesDatasource.data = this.categoriesDatasource.data.filter((it) => it.id != category.id);
+              this.changeDetectorRef.detectChanges();
+            },
+
+            (error) => {
+              Swal.fire({
+                icon: "error",
+                title: "No se pudo eliminar",
+                text: "Intentelo nuevamente, si el error persiste contacte un administrador"
+              });
+            }
+          );
+      }
+    });
+  }
+
 }
 
 export interface Category {
