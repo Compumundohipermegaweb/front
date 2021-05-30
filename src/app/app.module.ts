@@ -49,7 +49,8 @@ import { MdmComponent } from './mdm/mdm.component';
 import { CashIncomeComponent } from './cash-income/cash-income.component';
 import { CashExpenseComponent } from './cash-expense/cash-expense.component';
 import { CashSummaryComponent } from './cash-summary/cash-summary.component';
-
+import { CategoriesComponent } from './categories/categories.component';
+import { AddCategoryDialogComponent } from './add-category-dialog/add-category-dialog.component';
 
 registerLocaleData(localEsAr)
 
@@ -73,7 +74,9 @@ registerLocaleData(localEsAr)
     MdmComponent,
     CashIncomeComponent,
     CashExpenseComponent,
-    CashSummaryComponent
+    CashSummaryComponent,
+    CategoriesComponent,
+    AddCategoryDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -102,7 +105,7 @@ registerLocaleData(localEsAr)
     MatCheckboxModule,
     MatTabsModule,
     MatSlideToggleModule, 
-    MatRadioModule,
+    MatRadioModule
   ],
   providers: [CurrencyPipe],
   bootstrap: [AppComponent, NavBarComponent]
