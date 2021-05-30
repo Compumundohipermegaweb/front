@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import Swal from 'sweetalert2';
 import { AddCategoryDialogComponent } from '../add-category-dialog/add-category-dialog.component';
+import { CategoryService } from '../service/category/category.service';
 
 @Component({
   selector: 'app-categories',
@@ -11,23 +12,34 @@ import { AddCategoryDialogComponent } from '../add-category-dialog/add-category-
 })
 export class CategoriesComponent implements OnInit {
 
-  EXAMPLE_DATA: Category[] = [
-    { id: 0, name: "Pintureria", description: "Productos de pintureria"},
-    { id: 0, name: "Electronica", description: "Cables, transistores, leds, lamparitas, etc."},
-    { id: 0, name: "Carpinteria", description: "Clavos, martillos, lijas, etc."},
-    { id: 0, name: "Pintureria", description: "Productos de pintureria"},
-    { id: 0, name: "Pintureria", description: "Productos de pintureria"}
-  ]
-
   categoriesDatasource: MatTableDataSource<Category>
   displayedColumns: String[]
 
-  constructor(private addCategoryDialog: MatDialog) {
+  constructor(private addCategoryDialog: MatDialog, private categoryService: CategoryService, public changeDetectorRef: ChangeDetectorRef) {
+    this.initDataSource()
     this.displayedColumns = ["name", "description", "actions"]
-    this.categoriesDatasource = new MatTableDataSource<Category>(this.EXAMPLE_DATA)
-   }
+  }
 
   ngOnInit(): void {
+  }
+
+  initDataSource() {
+    this.categoriesDatasource = new MatTableDataSource()
+
+    this.categoryService.findAll()
+      .subscribe(
+        (response) => {
+          this.categoriesDatasource.data = response.categories
+        },
+
+        (error) => {
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "No se pudieron cargar las categorías"
+          })
+        }
+      )
   }
 
   applyFilter(event: Event) {
@@ -40,8 +52,15 @@ export class CategoriesComponent implements OnInit {
 
     dialogRef.afterClosed()
       .subscribe(
-        (result: Category) => {
-          this.categoriesDatasource.data.push(result)
+        (result: Category[]) => {
+          if(result && result.length > 0) {
+            this.categoriesDatasource.data.forEach(
+              (category: Category) => {
+                result.push(category)
+              }
+            )
+            this.categoriesDatasource.data = result
+          }
         },
 
         (error) => {
