@@ -1,4 +1,6 @@
+import { ThisReceiver } from '@angular/compiler';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import Swal from 'sweetalert2';
@@ -12,10 +14,15 @@ import { CategoryService } from '../service/category.service';
 })
 export class CategoriesComponent implements OnInit {
 
+  nameControl: FormControl
+  descriptionControl: FormControl
+
   categoriesDatasource: MatTableDataSource<Category>
   displayedColumns: String[]
 
   constructor(private addCategoryDialog: MatDialog, private categoryService: CategoryService, public changeDetectorRef: ChangeDetectorRef) {
+    this.nameControl = new FormControl()
+    this.descriptionControl = new FormControl()
     this.initDataSource()
     this.displayedColumns = ["name", "description", "actions"]
   }
@@ -111,10 +118,55 @@ export class CategoriesComponent implements OnInit {
     });
   }
 
+  toggleEdit(category: Category) {
+    category.editing = !category.editing
+  }
+
+  saveChanges(category: Category) {
+    debugger;
+    let changes = {
+      name: this.nameControl.value,
+      description: this.descriptionControl.value
+    }
+
+    if(changes.name == null && changes.description == null) {
+      return;
+    }
+
+    if(changes.name) {
+      category.name = changes.name
+    }
+
+    if(changes.description) {
+      category.description = changes.description
+    }
+
+    this.categoryService.save(category)
+      .subscribe(
+        (response) => {
+          Swal.fire({
+            icon: 'success',
+            title: "¡Cambios guardados!"
+          })
+          this.nameControl.setValue(null)
+          this.descriptionControl.setValue(null)
+        },
+
+        (error) => {
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "No se pudieron guardar los cambios"
+          })
+        }
+      )
+  }
+
 }
 
 export interface Category {
   id: number;
   name: String;
   description: String;
+  editing?: boolean;
 }

@@ -25,6 +25,10 @@ export class CategoryService {
   delete(categoryId: number) {
     return this.http.delete(this.host + this.baseUrl + "/" + categoryId.toString())
   }
+
+  save(category: Category): Observable<Category> {
+    return this.http.put<Category>(this.host + this.baseUrl, category)
+  }
 }
 
 export interface CreateCategoryRequest {

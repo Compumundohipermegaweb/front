@@ -16,12 +16,27 @@
           
             <ng-container matColumnDef="name">
               <th mat-header-cell *matHeaderCellDef> Nombre </th>
-              <td mat-cell *matCellDef="let category"> {{category.name}} </td>
+              <td mat-cell *matCellDef="let category">
+
+                <span *ngIf="!category.editing">{{category.name}}</span>
+
+                <mat-form-field *ngIf="category.editing" style="padding: 0%;">
+                  <input matInput [formControl]="nameControl" placeholder="{{category.name}}">
+                </mat-form-field>
+
+              </td>
             </ng-container>
 
             <ng-container matColumnDef="description">
               <th mat-header-cell *matHeaderCellDef> Descripcion </th>
-              <td mat-cell *matCellDef="let category"> {{category.description}}</td>
+              <td mat-cell *matCellDef="let category">
+
+                <span *ngIf="!category.editing">{{category.description}}</span>
+
+                <mat-form-field *ngIf="category.editing" style="padding: 0%;">
+                  <input matInput [formControl]="descriptionControl" placeholder="{{category.description}}">
+                </mat-form-field>
+              </td>
             </ng-container>
 
             <ng-container matColumnDef="actions">
@@ -31,9 +46,13 @@
                 <button mat-mini-fab color="warn" (click)="delete(category)">
                     <mat-icon>delete</mat-icon>
                 </button>
-        
-                <button mat-mini-fab color="primary">
+
+                <button *ngIf="!category.editing" mat-mini-fab color="primary" (click)="toggleEdit(category)">
                     <mat-icon>edit</mat-icon>
+                </button>
+
+                <button *ngIf="category.editing" mat-mini-fab color="primary" (click)="toggleEdit(category);saveChanges(category)">
+                  <mat-icon>save</mat-icon>
                 </button>
               </td>
             </ng-container>
