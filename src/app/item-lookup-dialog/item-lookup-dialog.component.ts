@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { GetStockFilters, ItemLookupResponse, ItemStockResponse, StockService } from '../service/stock/stock.service';
+import { GetStockFilters, ItemLookupResponse, ItemStockResponse, StockService } from '../service/stock.service';
 
 @Component({
   selector: 'app-item-lookup-dialog',

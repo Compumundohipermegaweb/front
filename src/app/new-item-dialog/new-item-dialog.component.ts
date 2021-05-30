@@ -3,7 +3,7 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
 import { MasterItem } from '../item-master/item-master.component';
-import { ItemService, PostItemRequest } from '../service/item/item.service';
+import { ItemService, PostItemRequest } from '../service/item.service';
 
 @Component({
   selector: 'app-new-item-dialog',

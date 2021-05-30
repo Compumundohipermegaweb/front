@@ -3,7 +3,7 @@ import { FormControl } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Stock } from 'src/app/items-stock/items-stock.component';
 import Swal from 'sweetalert2';
-import { StockToModifyRequest, IncreaseAllRequest, DecreaseAllRequest, StockService } from '../service/stock/stock.service';
+import { StockToModifyRequest, IncreaseAllRequest, DecreaseAllRequest, StockService } from '../service/stock.service';
 
 @Component({
   selector: 'app-edit-stock-dialog',

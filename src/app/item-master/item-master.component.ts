@@ -4,7 +4,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import Swal from 'sweetalert2';
 import { NewItemDialogComponent } from '../new-item-dialog/new-item-dialog.component';
-import { ItemService } from '../service/item/item.service';
+import { ItemService } from '../service/item.service';
 
 @Component({
   selector: 'app-item-master',

@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild ,Inject,ChangeDetectorRef} from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { StockService } from '../service/stock/stock.service';
+import { StockService } from '../service/stock.service';
 import Swal from 'sweetalert2';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { EditStockDialogComponent } from '../edit-stock-dialog/edit-stock-dialog.component';

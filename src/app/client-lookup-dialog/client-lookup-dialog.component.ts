@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Client } from '../sales/sales.model';
-import { ClientResponse, ClientService } from '../service/client/client.service';
+import { ClientResponse, ClientService } from '../service/client.service';
 
 @Component({
   selector: 'app-client-lookup-dialog',

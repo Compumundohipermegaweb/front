@@ -2,9 +2,9 @@ import { ClientLookupDialogComponent } from '../client-lookup-dialog/client-look
 import { ItemLookupDialogComponent } from '../item-lookup-dialog/item-lookup-dialog.component';
 
 import { SalesService } from '../service/sale/sales.service';
-import { CheckingAccountResponse, ClientService } from '../service/client/client.service';
-import { ItemStockResponse, StockService, StockValidationResponse } from '../service/stock/stock.service';
-import { CardResponse, CardService } from '../service/card/card.service';
+import { CheckingAccountResponse, ClientService } from '../service/client.service';
+import { ItemStockResponse, StockService, StockValidationResponse } from '../service/stock.service';
+import { CardResponse, CardService } from '../service/card.service';
 
 import { Client, Item, Sale, Payment, PaymentType, PaymentMethod } from './sales.model';
 

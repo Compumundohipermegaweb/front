@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import Swal from 'sweetalert2';
 import { AddCategoryDialogComponent } from '../add-category-dialog/add-category-dialog.component';
-import { CategoryService } from '../service/category/category.service';
+import { CategoryService } from '../service/category.service';
 
 @Component({
   selector: 'app-categories',

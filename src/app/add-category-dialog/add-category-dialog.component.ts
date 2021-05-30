@@ -3,7 +3,7 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
 import { Category } from '../categories/categories.component';
-import { CategoryService } from '../service/category/category.service';
+import { CategoryService } from '../service/category.service';
 
 @Component({
   selector: 'app-add-category-dialog',
