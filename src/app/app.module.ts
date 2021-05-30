@@ -46,6 +46,10 @@ import { NewItemDialogComponent } from './new-item-dialog/new-item-dialog.compon
 import { EditStockDialogComponent } from './edit-stock-dialog/edit-stock-dialog.component';
 import { CashComponent } from './cash/cash.component';
 import { MdmComponent } from './mdm/mdm.component';
+import { CashIncomeComponent } from './cash-income/cash-income.component';
+import { CashExpenseComponent } from './cash-expense/cash-expense.component';
+import { CashSummaryComponent } from './cash-summary/cash-summary.component';
+
 
 registerLocaleData(localEsAr)
 
@@ -66,7 +70,10 @@ registerLocaleData(localEsAr)
     NewItemDialogComponent,
     EditStockDialogComponent,
     CashComponent,
-    MdmComponent
+    MdmComponent,
+    CashIncomeComponent,
+    CashExpenseComponent,
+    CashSummaryComponent
   ],
   imports: [
     BrowserModule,

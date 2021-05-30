@@ -1,0 +1,29 @@
+.mat-card-title{
+    padding: 1rem;
+  }
+  
+  .mat-divider{
+    padding: 1rem;
+  }
+  
+  .mat-card-content{
+    margin: 5px;
+  }
+
+  .mgt1 {
+    /* background: rgb(21, 174, 212); */
+    color: #616161;
+    background-color: #fafafa;
+    font-weight: 500; 
+    text-align: left;
+    text-orientation: sideways;
+  }
+
+  .mgt2 {
+    /* background: rgb(21, 174, 212); */
+    color: #616161;
+    background-color: #fafafa;
+    font-weight: 500; 
+    text-align: left;
+  }
+  
