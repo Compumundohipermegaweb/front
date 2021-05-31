@@ -51,6 +51,7 @@ import { CashExpenseComponent } from './cash-expense/cash-expense.component';
 import { CashSummaryComponent } from './cash-summary/cash-summary.component';
 import { CategoriesComponent } from './categories/categories.component';
 import { AddCategoryDialogComponent } from './add-category-dialog/add-category-dialog.component';
+import { BrandsComponent } from './brands/brands.component';
 
 registerLocaleData(localEsAr)
 
@@ -76,7 +77,8 @@ registerLocaleData(localEsAr)
     CashExpenseComponent,
     CashSummaryComponent,
     CategoriesComponent,
-    AddCategoryDialogComponent
+    AddCategoryDialogComponent,
+    BrandsComponent
   ],
   imports: [
     BrowserModule,
