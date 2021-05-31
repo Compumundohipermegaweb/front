@@ -3,29 +3,13 @@
       <mat-card-title>
         <mat-icon>point_of_sale</mat-icon>
         <span>&nbsp;Arqueo de Caja</span>
-      </mat-card-title>
-    <!--  -->
-    <mat-grid-list cols="4" rowHeight="7:1">
-        <mat-grid-tile class="mgt2">
-            Caja: #001
-            <br>
-            Responsable: 1200 - Juan Lopez
-        </mat-grid-tile>
-        <mat-grid-tile class="mgt2">
-            Sucursal: SUC01
-            <br>
-            Punto de venta: 1234
-        </mat-grid-tile>
-        <mat-grid-tile class="mgt1">
-            <button mat-raised-button color="primary" >Abrir Caja</button>
-            <button mat-raised-button color="primary" >Cerrar Caja</button>
-        </mat-grid-tile>
-       
-    </mat-grid-list>   
-    <!--  -->
+      </mat-card-title> 
       <mat-card-content>
-  
         <mat-tab-group>
+          
+          <mat-tab label="Estado de Caja">
+            <app-cash-summary></app-cash-summary>
+          </mat-tab>
   
           <mat-tab label="Ingresos">
             <app-cash-income></app-cash-income>
@@ -35,9 +19,7 @@
             <app-cash-expense></app-cash-expense>
           </mat-tab>
 
-          <mat-tab label="Resumen de Caja">
-            <app-cash-summary></app-cash-summary>
-          </mat-tab>
+
   
         </mat-tab-group>
   

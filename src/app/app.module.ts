@@ -34,6 +34,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatRadioModule} from '@angular/material/radio';
+import { MatAutocompleteModule} from '@angular/material/autocomplete'
+
 
 import { registerLocaleData } from '@angular/common';
 import localEsAr from "@angular/common/locales/es-AR";
@@ -110,8 +112,9 @@ registerLocaleData(localEsAr)
     MatDialogModule,
     MatCheckboxModule,
     MatTabsModule,
-    MatSlideToggleModule,
-    MatRadioModule
+    MatSlideToggleModule, 
+    MatRadioModule,
+    MatAutocompleteModule
   ],
   providers: [CurrencyPipe],
   bootstrap: [AppComponent, NavBarComponent]

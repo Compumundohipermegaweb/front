@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-cash-income',
@@ -7,9 +9,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CashIncomeComponent implements OnInit {
 
-  constructor() { }
 
-  ngOnInit(): void {
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
+  columns = ['id','date','transaction','reference', 'payment','amount'];
+  incomes = new MatTableDataSource<String>()
+
+  constructor(
+    public changeDetectorRef: ChangeDetectorRef,
+  ) { }
+
+  ngOnInit() {
   }
+
+  ngAfterViewInit(): void {   
+    this.incomes.paginator = this.paginator; 
+  }
+  
 
 }

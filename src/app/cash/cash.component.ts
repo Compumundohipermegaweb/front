@@ -13,3 +13,11 @@ export class CashComponent implements OnInit {
   }
 
 }
+
+export interface Cash{
+  cash_id: number,
+  branch_id: number,
+  point_of_sale: number,
+  status: String
+}
+

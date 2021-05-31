@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 import { CashSummaryComponent } from './cash-summary.component';
 
@@ -8,7 +9,8 @@ describe('CashSummaryComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CashSummaryComponent ]
+      declarations: [ CashSummaryComponent ],
+      imports: [MatAutocompleteModule],
     })
     .compileComponents();
   });
