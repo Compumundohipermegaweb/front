@@ -8,6 +8,7 @@ import { SaleInvoiceComponent } from './sale-invoice/sale-invoice.component';
 import { ClientLookupDialogComponent } from './client-lookup-dialog/client-lookup-dialog.component';
 import { CashComponent } from './cash/cash.component';
 import { MdmComponent } from './mdm/mdm.component';
+import { LoginComponent } from './login/login.component';
 
 
 export const routes: Routes = [
@@ -17,7 +18,8 @@ export const routes: Routes = [
   { path: "client-lookup-dialog", component: ClientLookupDialogComponent},
   { path: "stock", component: StockComponent},
   { path: "cash", component: CashComponent},
-  { path: "mdm", component: MdmComponent}
+  { path: "mdm", component: MdmComponent},
+  { path: "login", component: LoginComponent}
 ]
 
 @NgModule({

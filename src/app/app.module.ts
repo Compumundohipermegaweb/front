@@ -56,7 +56,11 @@ import { AddCategoryDialogComponent } from './add-category-dialog/add-category-d
 import { BrandsComponent } from './brands/brands.component';
 import { AddUnitDialogComponent } from './add-unit-dialog/add-unit-dialog.component';
 import { MeasurementUnitsComponent } from './measurement-units/measurement-units.component';
-import { AddBrandDialogComponent } from './add-brand-dialog/add-brand-dialog.component'
+import { AddBrandDialogComponent } from './add-brand-dialog/add-brand-dialog.component';
+import { LoginComponent } from './login/login.component'
+import { ServiceWorkerModule } from '@angular/service-worker';
+import {environment} from '../environments/environment';
+import { HomeComponent } from './home/home.component';
 
 registerLocaleData(localEsAr)
 
@@ -86,7 +90,9 @@ registerLocaleData(localEsAr)
     BrandsComponent,
     AddUnitDialogComponent,
     MeasurementUnitsComponent,
-    AddBrandDialogComponent
+    AddBrandDialogComponent,
+    LoginComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
@@ -114,9 +120,10 @@ registerLocaleData(localEsAr)
     MatDialogModule,
     MatCheckboxModule,
     MatTabsModule,
-    MatSlideToggleModule, 
+    MatSlideToggleModule,
     MatRadioModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [CurrencyPipe],
   bootstrap: [AppComponent, NavBarComponent]
