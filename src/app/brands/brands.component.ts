@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import Swal from 'sweetalert2';
 import { BrandService } from '../service/brand.service';
@@ -14,7 +14,8 @@ export class BrandsComponent implements OnInit {
   brandsDatasource: MatTableDataSource<Brand>
 
   constructor(
-    private brandService: BrandService
+    private brandService: BrandService,
+    private changeDetectorRef: ChangeDetectorRef
   ) {
     this.displayedColumns = ["name", "actions"]
     this.initDataSource()
@@ -52,7 +53,41 @@ export class BrandsComponent implements OnInit {
   }
 
   delete(brand: Brand) {
+    
+    Swal.fire({
+      icon: "question",
+      title: "Seguro desea eliminar",
+      text: brand.name.toString(),
+      showCancelButton: true,
+      confirmButtonText: "Eliminar",
+      confirmButtonColor: "#3f51b5",
+      cancelButtonText: "Cancelar",
+      cancelButtonColor: "#f44336"
+    }).then((result) => {
+      if(result.isConfirmed) {
+        this.brandService.delete(brand.id)
+          .subscribe(
+            (response) => {
+              Swal.fire({
+                icon: "success",
+                title: "Item eliminado!",
+                text: "Se ha eliminado " + brand.name
+              });
 
+              this.brandsDatasource.data = this.brandsDatasource.data.filter((it) => it.id != brand.id)
+              this.changeDetectorRef.detectChanges()
+            },
+
+            (error) => {
+              Swal.fire({
+                icon: "error",
+                title: "No se pudo eliminar",
+                text: "Intentelo nuevamente, si el error persiste contacte un administrador"
+              })
+            }
+          )
+      }
+    })
   }
 
   toggleEdit(brand: Brand) {

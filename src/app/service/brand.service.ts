@@ -17,6 +17,10 @@ export class BrandService {
   findAll(): Observable<FindAllBrandsResponse> {
     return this.http.get<FindAllBrandsResponse>(this.host + this.baseUrl)
   }
+
+  delete(brandId: number) {
+    return this.http.delete(this.host + this.baseUrl + "/" + brandId.toString())
+  }
 }
 
 export interface FindAllBrandsResponse {
