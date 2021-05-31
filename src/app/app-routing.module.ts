@@ -9,6 +9,7 @@ import { ClientLookupDialogComponent } from './client-lookup-dialog/client-looku
 import { CashComponent } from './cash/cash.component';
 import { MdmComponent } from './mdm/mdm.component';
 import { LoginComponent } from './login/login.component';
+import { HomeComponent } from './home/home.component';
 
 
 export const routes: Routes = [
@@ -19,7 +20,8 @@ export const routes: Routes = [
   { path: "stock", component: StockComponent},
   { path: "cash", component: CashComponent},
   { path: "mdm", component: MdmComponent},
-  { path: "login", component: LoginComponent}
+  { path: "login", component: LoginComponent},
+  { path: "home", component: HomeComponent}
 ]
 
 @NgModule({

@@ -6,7 +6,9 @@
  import {Session} from "./session.model";
  import {User} from "./user.model";
 
- @Injectable()
+ @Injectable({
+   providedIn: 'root'
+ })
  export class StorageService {
 
    private localStorageService;

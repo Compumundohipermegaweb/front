@@ -7,19 +7,21 @@ import { environment } from 'src/environments/environment';
 /**
  * Created by xavi on 5/16/17.
  */
-@Injectable()
+@Injectable({
+   providedIn: 'root'
+})
 export class AuthenticationService {
 
   constructor(private http: HttpClient) {}
 
-  apiHost = environment.apiHost;
+  /*private host = environment.apiHost*/
   private basePath = '/api/authenticate/';
 
   login(loginObj: LoginObject): Observable<Session> {
-    return this.http.post<Session>(this.apiHost + this.basePath + 'login', loginObj);
+    return this.http.post<Session>(/*this.host +*/ this.basePath + 'login', loginObj);
   }
 
   logout(): Observable<Boolean> {
-    return this.http.post<Boolean>(this.apiHost + this.basePath + 'logout', {});
+    return this.http.post<Boolean>(/*this.host +*/ this.basePath + 'logout', {});
   }
 }
