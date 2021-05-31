@@ -55,7 +55,8 @@ import { CategoriesComponent } from './categories/categories.component';
 import { AddCategoryDialogComponent } from './add-category-dialog/add-category-dialog.component';
 import { BrandsComponent } from './brands/brands.component';
 import { AddUnitDialogComponent } from './add-unit-dialog/add-unit-dialog.component';
-import { MeasurementUnitsComponent } from './measurement-units/measurement-units.component'
+import { MeasurementUnitsComponent } from './measurement-units/measurement-units.component';
+import { AddBrandDialogComponent } from './add-brand-dialog/add-brand-dialog.component'
 
 registerLocaleData(localEsAr)
 
@@ -84,7 +85,8 @@ registerLocaleData(localEsAr)
     AddCategoryDialogComponent,
     BrandsComponent,
     AddUnitDialogComponent,
-    MeasurementUnitsComponent
+    MeasurementUnitsComponent,
+    AddBrandDialogComponent
   ],
   imports: [
     BrowserModule,

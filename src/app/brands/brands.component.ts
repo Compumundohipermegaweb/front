@@ -1,6 +1,8 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import Swal from 'sweetalert2';
+import { AddBrandDialogComponent } from '../add-brand-dialog/add-brand-dialog.component';
 import { BrandService } from '../service/brand.service';
 
 @Component({
@@ -15,7 +17,8 @@ export class BrandsComponent implements OnInit {
 
   constructor(
     private brandService: BrandService,
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
+    private addBrandDialog: MatDialog
   ) {
     this.displayedColumns = ["name", "actions"]
     this.initDataSource()
@@ -49,7 +52,29 @@ export class BrandsComponent implements OnInit {
   }
 
   add() {
+    const dialogRef = this.addBrandDialog.open(AddBrandDialogComponent, { });
 
+    dialogRef.afterClosed()
+      .subscribe(
+        (result: Brand[]) => {
+          if(result && result.length > 0) {
+            this.brandsDatasource.data.forEach(
+              (category: Brand) => {
+                result.push(category)
+              }
+            )
+            this.brandsDatasource.data = result
+          }
+        },
+
+        (error) => {
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "No se pudo crear la categoria"
+          })
+        }
+      )
   }
 
   delete(brand: Brand) {

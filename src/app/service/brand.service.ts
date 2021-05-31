@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -21,8 +21,19 @@ export class BrandService {
   delete(brandId: number) {
     return this.http.delete(this.host + this.baseUrl + "/" + brandId.toString())
   }
+
+  create(brand: CreateBrandRequest): Observable<Brand> {
+    let headers = new HttpHeaders({
+      'Content-Type':  'application/json'
+    })
+    return this.http.post<Brand>(this.host + this.baseUrl, brand, {headers: headers})
+  }
 }
 
 export interface FindAllBrandsResponse {
   brands: Brand[]
+}
+
+export interface CreateBrandRequest {
+  name: String;
 }
