@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
-import { MeasurementUnitsComponent, Unit } from '../measurement-units/measurement-units.component';
+import { Unit } from '../measurement-units/measurement-units.component';
 import { UnitService } from '../service/unit.service';
 
 @Component({
@@ -41,7 +41,35 @@ export class AddUnitDialogComponent implements OnInit {
   }
 
   create() {
+    let unit = {
+      name: this.nameControl.value,
+      description: this.descriptionControl.value
+    }
 
+    if(!this.isValid(unit)) {
+      return;
+    }
+
+    this.unitService.create(unit)
+      .subscribe(
+        (response) => {
+          Swal.fire({
+            icon:"success",
+            title: "¡Unidad de Medida creada!",
+            text: "Unidad " + response.name + " creada con éxito"
+          })
+
+          this.unitsCreated.push(response)
+        },
+
+        (error) => {
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "No se pudo crear la unidad de medida"
+          })
+        }
+      )
   }
 
   isValid(unit) {
