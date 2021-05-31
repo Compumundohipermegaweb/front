@@ -1,4 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import Swal from 'sweetalert2';
@@ -12,6 +13,8 @@ import { BrandService } from '../service/brand.service';
 })
 export class BrandsComponent implements OnInit {
 
+  nameControl: FormControl
+
   displayedColumns: String[]
   brandsDatasource: MatTableDataSource<Brand>
 
@@ -20,6 +23,8 @@ export class BrandsComponent implements OnInit {
     private changeDetectorRef: ChangeDetectorRef,
     private addBrandDialog: MatDialog
   ) {
+    this.nameControl = new FormControl()
+
     this.displayedColumns = ["name", "actions"]
     this.initDataSource()
   }
@@ -116,11 +121,41 @@ export class BrandsComponent implements OnInit {
   }
 
   toggleEdit(brand: Brand) {
-
+    brand.editing = !brand.editing
   }
 
   saveChanges(brand: Brand) {
+    debugger;
+    let changes = {
+      name: this.nameControl.value
+    }
 
+    if(changes.name == null) {
+      return;
+    }
+
+    if(changes.name) {
+      brand.name = changes.name
+    }
+
+    this.brandService.update(brand)
+      .subscribe(
+        (response) => {
+          Swal.fire({
+            icon: 'success',
+            title: "¡Cambios guardados!"
+          })
+          this.nameControl.setValue(null)
+        },
+
+        (error) => {
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "No se pudieron guardar los cambios"
+          })
+        }
+      )
   }
 
 }

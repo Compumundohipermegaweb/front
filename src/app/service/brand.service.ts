@@ -28,6 +28,10 @@ export class BrandService {
     })
     return this.http.post<Brand>(this.host + this.baseUrl, brand, {headers: headers})
   }
+
+  update(brand: Brand): Observable<Brand> {
+    return this.http.put<Brand>(this.host + this.baseUrl, brand)
+  }
 }
 
 export interface FindAllBrandsResponse {
