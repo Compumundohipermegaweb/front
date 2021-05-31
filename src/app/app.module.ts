@@ -61,6 +61,7 @@ import { LoginComponent } from './login/login.component'
 import { ServiceWorkerModule } from '@angular/service-worker';
 import {environment} from '../environments/environment';
 import { HomeComponent } from './home/home.component';
+import { PaymentMethodsComponent } from './payment-methods/payment-methods.component';
 
 registerLocaleData(localEsAr)
 
@@ -92,7 +93,8 @@ registerLocaleData(localEsAr)
     MeasurementUnitsComponent,
     AddBrandDialogComponent,
     LoginComponent,
-    HomeComponent
+    HomeComponent,
+    PaymentMethodsComponent
   ],
   imports: [
     BrowserModule,
@@ -123,7 +125,13 @@ registerLocaleData(localEsAr)
     MatSlideToggleModule,
     MatRadioModule,
     MatAutocompleteModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: environment.production,
+      // Register the ServiceWorker as soon as the app is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000'
+    })
   ],
   providers: [CurrencyPipe],
   bootstrap: [AppComponent, NavBarComponent]
