@@ -33,7 +33,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MatRadioModule} from '@angular/material/radio'; 
+import { MatRadioModule} from '@angular/material/radio';
 
 import { registerLocaleData } from '@angular/common';
 import localEsAr from "@angular/common/locales/es-AR";
@@ -52,11 +52,13 @@ import { CashSummaryComponent } from './cash-summary/cash-summary.component';
 import { CategoriesComponent } from './categories/categories.component';
 import { AddCategoryDialogComponent } from './add-category-dialog/add-category-dialog.component';
 import { BrandsComponent } from './brands/brands.component';
+import { AddUnitDialogComponent } from './add-unit-dialog/add-unit-dialog.component';
+import { MeasurementUnitsComponent } from './measurement-units/measurement-units.component'
 
 registerLocaleData(localEsAr)
 
 @NgModule({
-  declarations: [	
+  declarations: [
     AppComponent,
     NavBarComponent,
     SalesComponent,
@@ -78,7 +80,9 @@ registerLocaleData(localEsAr)
     CashSummaryComponent,
     CategoriesComponent,
     AddCategoryDialogComponent,
-    BrandsComponent
+    BrandsComponent,
+    AddUnitDialogComponent,
+    MeasurementUnitsComponent
   ],
   imports: [
     BrowserModule,
@@ -106,7 +110,7 @@ registerLocaleData(localEsAr)
     MatDialogModule,
     MatCheckboxModule,
     MatTabsModule,
-    MatSlideToggleModule, 
+    MatSlideToggleModule,
     MatRadioModule
   ],
   providers: [CurrencyPipe],

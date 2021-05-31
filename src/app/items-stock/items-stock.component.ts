@@ -15,7 +15,7 @@ export class ItemsStockComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  columns = ['sku','description', 'stock_total', 'minimum_stock', 'security_stock','editar'];
+  columns = ['nroItem','sku','description', 'stock_total', 'minimum_stock', 'security_stock','editar'];
   stock = new MatTableDataSource<Stock>()
 
   constructor(
@@ -24,15 +24,15 @@ export class ItemsStockComponent implements OnInit {
     public editStockDialog: MatDialog,
     //@Inject(MAT_DIALOG_DATA) public data: EditStockDialogData,
   ) {
-    this.loadStock(); 
+    this.loadStock();
   }
 
   ngOnInit() {
   }
 
   ngAfterViewInit(): void {
-    
-    this.stock.paginator = this.paginator; 
+
+    this.stock.paginator = this.paginator;
   }
 
   loadStock() {
@@ -56,8 +56,8 @@ export class ItemsStockComponent implements OnInit {
      const dialogRef = this.editStockDialog.open(EditStockDialogComponent, { data: stock});
      dialogRef.afterClosed().subscribe(stock => {
       if (stock != undefined)
-        this.stock.data=null; 
-        this.loadStock(); 
+        this.stock.data=null;
+        this.loadStock();
     });
   }
 
@@ -68,7 +68,7 @@ export class ItemsStockComponent implements OnInit {
 
 }
 
-export interface Stock{  
+export interface Stock{
   id: number;
   sku: String;
   description: String;

@@ -12,7 +12,7 @@ import { StockToModifyRequest, IncreaseAllRequest, DecreaseAllRequest, StockServ
 })
 export class EditStockDialogComponent implements OnInit {
 
-  
+
   selectControl: FormControl;
   quantityControl: FormControl;
 
@@ -22,7 +22,7 @@ export class EditStockDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<EditStockDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Stock,
     private stockService: StockService,
-  ) { 
+  ) {
     this.selectedItemStock = data
     this.selectControl = new FormControl();
     this.quantityControl = new FormControl();
@@ -36,7 +36,7 @@ export class EditStockDialogComponent implements OnInit {
     this.stockService.decreaseStock(itemStockModified,1)
     .subscribe(
       (response) => {
-      
+
         Swal.fire({
           icon: "success",
           title: "¡Merma realizada!"
@@ -57,7 +57,7 @@ export class EditStockDialogComponent implements OnInit {
     this.stockService.increaseStock(itemStockModified,1)
     .subscribe(
       (response) => {
-      
+
         Swal.fire({
           icon: "success",
           title: "¡Incremento realizado!"
@@ -82,7 +82,7 @@ export class EditStockDialogComponent implements OnInit {
         icon: "warning",
         title: "Seleccione una opción y verifique que la cantidad sea correcta"
       });
-    }else if ((this.quantityControl.value > stockItem.stock_total && this.selectControl.value ==1) 
+    }else if ((this.quantityControl.value > stockItem.stock_total && this.selectControl.value ==1)
               ||this.quantityControl.value < 0)
     {
       Swal.fire({
@@ -98,7 +98,7 @@ export class EditStockDialogComponent implements OnInit {
 
       let empList: Array<StockToModifyRequest> = [];
 
-      empList.push(stockToModified); 
+      empList.push(stockToModified);
 
       if(this.selectControl.value=="1") {
         //Merma
@@ -117,10 +117,10 @@ export class EditStockDialogComponent implements OnInit {
       this.close()
 
     }
-    
-      
 
-    
+
+
+
   }
 
   close() {
