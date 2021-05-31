@@ -51,7 +51,6 @@ export class SalesComponent implements OnInit {
   descriptionControl: FormControl;
   quantityControl: FormControl;
   priceControl: FormControl;
-  quantityTableControl: FormControl;
 
   paymentMethodControl: FormControl;
   paymentAmountControl: FormControl;
@@ -126,7 +125,7 @@ export class SalesComponent implements OnInit {
     this.paymentTypeControl = new FormControl();
     this.paymentLastDigitsControl = new FormControl();
     this.paymentEmailControl= new FormControl();
-    this.quantityTableControl = new FormControl();
+
 
   }
 
@@ -570,120 +569,15 @@ export class SalesComponent implements OnInit {
     }
   }
 
-  validateStock2(valor: number, item: Item) {
-    let request = {
-      branchId: item.id,
-      sku: item.sku
-    }
-
-    if(valor == null || valor <= 0) {
-      this.ventanaError("Cantidad Invalida")
-      alert('entro');
-    }
-
-    if(!request.branchId || !request.sku) {
-      this.ventanaError("Falta SKU y ID")
-      alert('entro2');
-    }
-
-
-    this.stockService.validateStock(request)
-      .subscribe(
-        (response: StockValidationResponse) => {
-          this.itemStock = response;
-          if(response.available_stock == 0) {
-            this.ventanaError("Stock Insuficiente")
-            alert('entro3');
-          } else if(response.available_stock < valor) {
-            this.ventanaError("Stock Insuficiente")
-            alert('entro4');
-          } else {
-            alert('entro5')
-
-          }
-        },
-
-        (error) => {
-
-          alert('entro6');
-
-        }
-      );
 
 
 
   }
 
-  validateStock3(item: Item) {
-    let request = {
-      branchId: item.id,
-      sku: item.sku
-    }
-
-    if(this.quantityTableControl.value == null || this.quantityTableControl.value <= 0) {
-      this.quantityTableControl.setErrors({"invalid": true})
-      return
-    }
-
-    if(!request.branchId || !request.sku) {
-      this.quantityTableControl.setErrors({"required": true})
-      return
-    }
-
-
-    this.stockService.validateStock(request)
-      .subscribe(
-        (response: StockValidationResponse) => {
-          this.itemStock = response;
-          if(response.available_stock == 0) {
-            this.quantityTableControl.setErrors({"unavailable": true});
-          } else if(response.available_stock < this.quantityTableControl.value) {
-            this.quantityTableControl.setErrors({"unavailable": true});
-          } else {
-            this.quantityTableControl.setErrors(null);
-          }
-        },
-
-        (error) => {
-          this.quantityTableControl.setErrors({"unavailable": true});
-        }
-      );
 
 
 
-  }
-
-  getQuantityTableErrors(){
-    if(this.quantityTableControl.hasError("unavailable")) {
-      return "Stock insuficiente. Disponible: " + this.itemStock.available_stock;
-    } else if(this.quantityTableControl.hasError("invalid")){
-      return "Cantidad inválida";
-    } else if(this.quantityTableControl.hasError("required")) {
-      return "Ingrese Sucursal y SKU";
-    }
-  }
 
 
-  cambioCantidad(item: Item){
-    //validar el stock del item
-    //let cantidadActual = (document.getElementById("inputt") as HTMLInputElement).value;
-
-    this.validateStock3(item);
-    if(this.quantityTableControl.getError == null){
-      item.quantity = this.quantityTableControl.value;
-      alert('es true');
-    }else{
-      alert('es false, no hago nada')
-    }
-
-  }
-
-  ventanaError(mensaje: String){
-    Swal.fire({
-      icon: "error",
-      title: mensaje
-    });
-  }
 
 
-}
