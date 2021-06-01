@@ -1,4 +1,6 @@
+import { state } from '@angular/animations';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import Swal from 'sweetalert2';
 import { PaymentMethodService } from '../service/payment-method.service';
@@ -15,12 +17,24 @@ export class PaymentMethodsComponent implements OnInit {
   displayedColumns: String[]
   dataSource: MatTableDataSource<PaymentMethod>
 
+  descriptionControl: FormControl
+  typeControl: FormControl
+  stateControl: FormControl
+
+  paymentMethodsTypes: PaymentMethodType[] = []
+
   constructor(
     private paymentMethodService: PaymentMethodService,
     private changeDetectorRef: ChangeDetectorRef
   ) {
+    this.descriptionControl = new FormControl()
+    this.typeControl = new FormControl()
+    this.stateControl = new FormControl()
+
     this.displayedColumns = ["description", "type", "state", "actions"]
+
     this.initDataSource()
+    this.initPaymentMethodTypes()
   }
 
   ngOnInit(): void {
@@ -29,7 +43,7 @@ export class PaymentMethodsComponent implements OnInit {
   initDataSource() {
     this.dataSource = new MatTableDataSource()
 
-    this.paymentMethodService.findAll()
+    this.paymentMethodService.getAll()
       .subscribe(
         (response) => {
           this.dataSource.data = response.payment_methods
@@ -41,9 +55,22 @@ export class PaymentMethodsComponent implements OnInit {
       )
   }
 
+  initPaymentMethodTypes() {
+    this.paymentMethodService.getAllTypes()
+      .subscribe(
+        (response) => {
+          this.paymentMethodsTypes = response.types
+        }
+      )
+  }
+
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  isActive(paymentMethod: PaymentMethod): Boolean {
+    return paymentMethod.state == "ACTIVE"
   }
 
   add() {
@@ -51,7 +78,6 @@ export class PaymentMethodsComponent implements OnInit {
   }
 
   delete(paymentMethod: PaymentMethod) {
-    
     Swal.fire({
       icon: "question",
       title: "Seguro desea eliminar",
@@ -89,20 +115,69 @@ export class PaymentMethodsComponent implements OnInit {
   }
 
   toggleEdit(paymentMethod: PaymentMethod) {
-
+    paymentMethod.editing = !paymentMethod.editing
   }
 
   saveChanges(paymentMethod: PaymentMethod) {
+    debugger
+    let changes = {
+      description: this.descriptionControl.value,
+      type: this.typeControl.value,
+      state: this.getState()
+    }
 
+    if(changes.description == null && changes.type == null && changes.state == null) {
+      return;
+    }
+
+    if(changes.description) { paymentMethod.description = changes.description }
+    if(changes.type) { paymentMethod.type = changes.type }
+    if(changes.state) { paymentMethod.state = changes.state }
+
+    this.paymentMethodService.update(paymentMethod)
+      .subscribe(
+        (response) => {
+          Swal.fire({
+            icon: 'success',
+            title: "¡Cambios guardados!"
+          })
+          this.descriptionControl.setValue(null)
+        },
+
+        (error) => {
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "No se pudieron guardar los cambios"
+          })
+        }
+      )
+  }
+
+  getState(): String {
+    if(this.stateControl.value) {
+      return "ACTIVE"
+    } else { 
+      return "INACTIVE"
+    }
+  }
+
+  toggleState(paymentMethod: PaymentMethod) {
+    if(paymentMethod.state == "ACTIVE") {
+      this.stateControl.setValue(false)
+    } else {
+      this.stateControl.setValue(true)
+    }
   }
 
 }
 
 export interface PaymentMethod {
-  id: number,
-  type: PaymentMethodType,
-  description: String,
-  state: String
+  id: number;
+  type: PaymentMethodType;
+  description: String;
+  state: String;
+  editing?: Boolean;
 }
 
 export enum PaymentMethodType {
