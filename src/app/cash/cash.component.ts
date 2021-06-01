@@ -11,13 +11,11 @@ export class CashComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
 }
 
-export interface Cash{
-  cash_id: number,
+export interface Cash {
   branch_id: number,
+  cash_id: number,
   point_of_sale: number,
   status: String
 }
-

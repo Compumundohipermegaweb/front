@@ -6,37 +6,40 @@
     <!-- <div class="general"> -->
         <mat-card class="card">
         <form class="start-end-form"> 
-            
-                <mat-form-field class="start-end-full-width">
+                <mat-form-field *ngIf="cashOpened==0">
                     <mat-label>Seleccione una Caja</mat-label>
-                    <input type="text" matInput [formControl]="cashForm" [matAutocomplete]="auto">
-                    <mat-autocomplete  #auto="matAutocomplete" [displayWith]="displayFn">
-                    <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-                        {{option.name}}
-                    </mat-option>
-                    </mat-autocomplete>            
-                </mat-form-field> 
-                <mat-form-field class="start-end-full-width">
+                    <mat-select [formControl]="cashForm" (selectionChange)="selectCash($event)" >
+                        <mat-option *ngFor="let cash of cashRegisters" [value]="cash.cash_id"> Caja: {{ cash.cash_id }} PDV: {{ cash.point_of_sale }} </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="cashForm.invalid">Seleccione el tipo</mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="start-end-full-width" *ngIf="cashOpened==0">
                     <mat-label>Saldo Inicial de Caja</mat-label>
                     <input type="number" matInput [formControl]="openBalanceForm">  
                     <mat-hint>Pesos Argentinos</mat-hint>         
                 </mat-form-field> 
             
-                <button mat-raised-button class="button_right" color="primary" >Abrir Caja</button>
+                <button mat-raised-button class="button_right" color="primary" (click)="openCash()" *ngIf="cashOpened==0">Abrir Caja</button>
             
-                <mat-form-field class="start-end-full-width">
+                <mat-form-field class="start-end-full-width" *ngIf="cashOpened">
                     <mat-label>Saldo final de Caja</mat-label>
                     <input type="number" matInput [formControl]="closeBalanceForm">  
                     <mat-hint>Pesos Argentinos</mat-hint>         
                 </mat-form-field> 
             
-                <button mat-raised-button class="button_right" color="primary" >Cerrar Caja</button>
+                <button mat-raised-button class="button_right" color="primary" (click)="closeCashRegister()" *ngIf="cashOpened" >Cerrar Caja</button>
           
-            <!-- 
+           
+      
+
+
+        </form>
+
+        <div *ngIf="cashOpened">
             <button mat-raised-button class="button_right" color="primary">Registrar Egreso</button>
             <button mat-raised-button class="button_right" color="primary">Registrar Ingreso</button> 
-            -->
-        </form>
+        </div>
     </mat-card>
     <!-- </div> -->
     </mat-grid-tile>
