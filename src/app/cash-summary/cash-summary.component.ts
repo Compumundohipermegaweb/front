@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { Cash } from '../cash/cash.component';
 import { CashService ,OpenRequest, CloseRequest,CashResponse} from '../service/cash.service';
@@ -41,7 +42,7 @@ import { CashService ,OpenRequest, CloseRequest,CashResponse} from '../service/c
     constructor(
       private cashService: CashService,
       public changeDetectorRef: ChangeDetectorRef,
-      
+      private router: Router
     ) { 
      
      
@@ -102,6 +103,7 @@ import { CashService ,OpenRequest, CloseRequest,CashResponse} from '../service/c
             icon: "success",
             title: "La caja fue abierta",
           });
+          this.reloadCurrentRoute();
           },
   
           (error) => {
@@ -112,9 +114,8 @@ import { CashService ,OpenRequest, CloseRequest,CashResponse} from '../service/c
             });
           }
         );
-        this.cashForm.setValue(null)
-        this.openBalanceForm.setValue(null)
-      
+        this.cashForm.setValue(null);
+        this.openBalanceForm.setValue(null);
 
     }
 
@@ -134,6 +135,7 @@ import { CashService ,OpenRequest, CloseRequest,CashResponse} from '../service/c
               icon: "success",
               title: "La caja fue cerrada",
             });
+            this.reloadCurrentRoute();
             },
     
             (error) => {
@@ -146,7 +148,7 @@ import { CashService ,OpenRequest, CloseRequest,CashResponse} from '../service/c
           );
           
           this.closeBalanceForm.setValue(null);
-          this.changeDetectorRef.detectChanges();
+
       }  
 
     getCashOpenByUserId(userId: number){
@@ -160,6 +162,14 @@ import { CashService ,OpenRequest, CloseRequest,CashResponse} from '../service/c
           this.cashOpened=0
         }
       );
+    }
+
+    reloadCurrentRoute() {
+      let currentUrl = this.router.url;
+      this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+          this.router.navigate([currentUrl]);
+          console.log(currentUrl);
+      });
     }
 
 
