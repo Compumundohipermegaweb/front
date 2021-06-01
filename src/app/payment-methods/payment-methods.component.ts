@@ -1,8 +1,9 @@
-import { state } from '@angular/animations';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import Swal from 'sweetalert2';
+import { NewPaymentMethodComponent } from '../new-payment-method/new-payment-method.component';
 import { PaymentMethodService } from '../service/payment-method.service';
 
 @Component({
@@ -25,7 +26,8 @@ export class PaymentMethodsComponent implements OnInit {
 
   constructor(
     private paymentMethodService: PaymentMethodService,
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
+    public newPaymentMethodDialog: MatDialog
   ) {
     this.descriptionControl = new FormControl()
     this.typeControl = new FormControl()
@@ -74,7 +76,29 @@ export class PaymentMethodsComponent implements OnInit {
   }
 
   add() {
-    /* Abrir dialog */
+    const dialogRef = this.newPaymentMethodDialog.open(NewPaymentMethodComponent, { });
+
+    dialogRef.afterClosed()
+      .subscribe(
+        (result: PaymentMethod[]) => {
+          if(result && result.length > 0) {
+            this.dataSource.data.forEach(
+              (paymentMethod: PaymentMethod) => {
+                result.push(paymentMethod)
+              }
+            )
+            this.dataSource.data = result
+          }
+        },
+
+        (error) => {
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "No se pudo crear la categoria"
+          })
+        }
+      )
   }
 
   delete(paymentMethod: PaymentMethod) {

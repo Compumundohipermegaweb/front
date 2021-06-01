@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { StringValueToken } from 'html2canvas/dist/types/css/syntax/tokenizer';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { PaymentMethod, PaymentMethodType } from '../payment-methods/payment-methods.component';
@@ -30,6 +31,10 @@ export class PaymentMethodService {
   getAllTypes(): Observable<GetAllPaymentMethodTypesResponse> {
     return this.http.get<GetAllPaymentMethodTypesResponse>(this.HOST + this.BASE_URL + this.TYPES_URL)
   }
+
+  create(request: CreatePaymentMethodRequest): Observable<PaymentMethod> {
+    return this.http.post<PaymentMethod>(this.HOST + this.BASE_URL, request)
+  }
 }
 
 export interface GetAllPaymentMethodsResponse {
@@ -38,4 +43,10 @@ export interface GetAllPaymentMethodsResponse {
 
 export interface GetAllPaymentMethodTypesResponse {
   types: PaymentMethodType[]
+}
+
+export interface CreatePaymentMethodRequest {
+  payment_method: String;
+  state: String;
+  type: String;
 }

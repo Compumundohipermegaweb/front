@@ -1,0 +1,24 @@
+<h2 mat-header>Nuevo Metodo de pago</h2>
+<mat-card>
+    <mat-card-content>
+        <form [formGroup]="paymentMethodForm">
+
+            <mat-form-field>
+                <mat-label>Descripcion</mat-label>
+                <input matInput type="text" [formControl]="descriptionControl" required>
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Tipo</mat-label>
+                <mat-select  [formControl]="typeControl" required>
+                    <mat-option *ngFor="let type of paymentMethodTypes" [value]="type">{{type}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-checkbox [formControl]="stateControl" color="primary">Activo</mat-checkbox>
+
+        </form>
+        <button mat-raised-button color="primary" (click)="create()">Crear</button>
+        <button mat-raised-button color="warn" (click)="close()">Cancelar</button>
+    </mat-card-content>
+</mat-card>

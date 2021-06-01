@@ -62,6 +62,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import {environment} from '../environments/environment';
 import { HomeComponent } from './home/home.component';
 import { PaymentMethodsComponent } from './payment-methods/payment-methods.component';
+import { NewPaymentMethodComponent } from './new-payment-method/new-payment-method.component';
 
 registerLocaleData(localEsAr)
 
@@ -94,7 +95,8 @@ registerLocaleData(localEsAr)
     AddBrandDialogComponent,
     LoginComponent,
     HomeComponent,
-    PaymentMethodsComponent
+    PaymentMethodsComponent,
+    NewPaymentMethodComponent
   ],
   imports: [
     BrowserModule,
