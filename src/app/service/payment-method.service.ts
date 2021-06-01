@@ -17,6 +17,10 @@ export class PaymentMethodService {
   findAll(): Observable<FindAllPaymentMethodsResponse> {
     return this.http.get<FindAllPaymentMethodsResponse>(this.HOST + this.BASE_URL)
   }
+
+  delete(id: number) {
+    return this.http.delete(this.HOST + this.BASE_URL + "/" + id)
+  }
 }
 
 export interface FindAllPaymentMethodsResponse {
