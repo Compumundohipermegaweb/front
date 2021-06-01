@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Unit } from 'src/app/measurement-units/measurement-units.component';
+import { Unit as MeasurementUnit } from 'src/app/measurement-units/measurement-units.component';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -10,12 +10,12 @@ import { environment } from 'src/environments/environment';
 export class UnitService {
 
   private host = environment.apiHost
-  private baseUrl = "/api/unit"
+  private baseUrl = "/api/measurement-units"
 
   constructor(private http: HttpClient) { }
 
-  create(unit: CreateUnitRequest):  Observable<Unit> {
-    return this.http.post<Unit>(this.host + this.baseUrl, unit)
+  create(unit: CreateUnitRequest): Observable<MeasurementUnit> {
+    return this.http.post<MeasurementUnit>(this.host + this.baseUrl, unit)
   }
 
   findAll(): Observable<FindAllUnitResponse> {
@@ -26,8 +26,8 @@ export class UnitService {
     return this.http.delete(this.host + this.baseUrl + "/" + unitId.toString())
   }
 
-  save(unit: Unit): Observable<Unit> {
-    return this.http.put<Unit>(this.host + this.baseUrl, unit)
+  save(unit: MeasurementUnit): Observable<MeasurementUnit> {
+    return this.http.put<MeasurementUnit>(this.host + this.baseUrl, unit)
   }
 }
 
@@ -37,5 +37,5 @@ export interface CreateUnitRequest {
 }
 
 export interface FindAllUnitResponse {
-  units: Unit[]
+  units: MeasurementUnit[]
 }

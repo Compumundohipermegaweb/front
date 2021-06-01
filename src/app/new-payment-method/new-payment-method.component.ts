@@ -53,7 +53,6 @@ export class NewPaymentMethodComponent implements OnInit {
   }
 
   create() {
-    debugger
     let paymentMethod = {
       payment_method: this.descriptionControl.value,
       type: this.typeControl.value,
