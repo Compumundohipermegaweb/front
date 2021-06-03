@@ -1,5 +1,7 @@
 <h2 mat-header>Nuevo Metodo de Pago</h2>
-<h3 mat-subheader> Total: {{ totalCost | localCurrency }} </h3>
+
+<h3 mat-subheader> Total: {{ data.total | localCurrency }} </h3>
+<h3 mat-subheader> Cliente: {{ data.clientId }} </h3>
 <h3 mat-subheader> Falta: {{ totalCost - calculateCurrentSubtotal() | localCurrency}}</h3>
 <form [formGroup]="paymentForm">
     <ng-template matStepLabel>Medios de pago</ng-template>
@@ -81,5 +83,5 @@
 
 </table>
 
-<button mat-raised-button color="error">Atras</button>
+<button mat-raised-button color="error" (click)="close()">Atras</button>
 <button mat-raised-button color="primary" (click)="checkout()">Siguiente</button>

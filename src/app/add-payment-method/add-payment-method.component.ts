@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import Swal from 'sweetalert2';
 import { CardService } from '../service/card.service';
@@ -39,7 +40,9 @@ export class AddPaymentMethodComponent implements OnInit {
   constructor(
     private clientService: ClientService,
     private cardService: CardService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private matDialogRef: MatDialogRef<AddPaymentMethodComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: AddPaymentMethodData
   ) {
 
     this.paymentMethodColumns = ["method", "amount", "type", "lastDigits", "email"]
@@ -58,6 +61,8 @@ export class AddPaymentMethodComponent implements OnInit {
       lastDigist: this.lastDigitsControl,
       email: this.emailControl
     })
+
+    this.matDialogRef.disableClose = true
   }
 
   ngOnInit(): void {
@@ -252,9 +257,20 @@ export class AddPaymentMethodComponent implements OnInit {
         icon: "error",
         title: "Pago insuficiente"
       })
+    } else {
+      this.matDialogRef.close(this.payments)
     }
   }
 
+  close() {
+    this.matDialogRef.close()
+  }
+
+}
+
+export interface AddPaymentMethodData {
+  clientId: number;
+  total: number;
 }
 
 export interface Payment {
