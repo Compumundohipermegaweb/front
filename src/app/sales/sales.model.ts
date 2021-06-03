@@ -1,3 +1,5 @@
+import { Payment } from "../add-payment-method/add-payment-method.component";
+
 export interface Sale {
     invoiceType: String;
     client: Client;
@@ -21,25 +23,4 @@ export interface Item {
     description: String;
     quantity: number;
     price: number;
-}
-
-export interface Payment {
-  method: PaymentMethod;
-  amount: number;
-  typeId?: number;
-  typeName?: String;
-  lastDigits?: number;
-  email?: String;
-}
-
-export interface PaymentMethod {
-  id: number;
-  description: String;
-  type: String;
-}
-
-export interface PaymentType
-{
-  id: number;
-  name: String;
 }

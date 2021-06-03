@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
 import { Observable } from 'rxjs';
-import { Sale, Item, Payment } from '../../sales/sales.model';
+import { Sale, Item } from '../../sales/sales.model';
 import { SaleRequest, ClientRequest, SaleDetailsRequest, ItemRequest, PaymentRequest } from './sale-request.model';
 import { SaleResponse } from './sale-response.model';
 import { environment } from 'src/environments/environment';
+import { Payment } from 'src/app/add-payment-method/add-payment-method.component';
 
 
 @Injectable({

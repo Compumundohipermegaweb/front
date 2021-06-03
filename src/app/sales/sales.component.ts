@@ -6,7 +6,7 @@ import { CheckingAccountResponse, ClientService } from '../service/client.servic
 import { ItemStockResponse, StockService, StockValidationResponse } from '../service/stock.service';
 import { CardResponse, CardService } from '../service/card.service';
 
-import { Client, Item, Sale, Payment, PaymentType, PaymentMethod } from './sales.model';
+import { Client, Item, Sale } from './sales.model';
 
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
@@ -40,7 +40,6 @@ export class SalesComponent implements OnInit {
 
   constantsForm: FormGroup;
   itemForm: FormGroup;
-  paymentForm: FormGroup;
 
   invoiceTypeControl: FormControl;
   salesmanControl: FormControl;
@@ -52,30 +51,14 @@ export class SalesComponent implements OnInit {
   quantityControl: FormControl;
   priceControl: FormControl;
 
-  paymentMethodControl: FormControl;
-  paymentAmountControl: FormControl;
-  paymentTypeControl: FormControl;
-  paymentLastDigitsControl: FormControl;
-  paymentEmailControl: FormControl;
-
   paymentMethodDataSource = new MatTableDataSource()
   paymentMethodColumns: string[];
-
-  clientPayments: Payment[]
-  clientCheckingAccount: CheckingAccountResponse;
-
-  paymentMethods: PaymentMethod[];
-  selectedPaymentMethod: PaymentMethod;
-
-  cardTypes: CardResponse[] = []
-  selectedPaymentType: PaymentType;
 
   constructor(private formBuilder: FormBuilder,
               private changeDetectorRefs: ChangeDetectorRef,
               private salesService: SalesService,
               private clientService: ClientService,
               private stockService: StockService,
-              private cardService: CardService,
               private router: Router,
               public clientLookupDialog: MatDialog,
               public itemLookupDialog: MatDialog,
@@ -85,8 +68,6 @@ export class SalesComponent implements OnInit {
     this.initItems();
     this.initControls();
     this.initForms(formBuilder);
-    this.initClientPayments();
-    this.initCardTypes();
 
   }
 
@@ -99,15 +80,10 @@ export class SalesComponent implements OnInit {
 
   initColumns() {
     this.displayedColumns = ["id", "sku", "description", "quantity", "price", "subTotal"]
-    this.paymentMethodColumns = ["method", "amount", "type", "lastDigits", "email"];
   }
 
   initItems() {
     this.items = [];
-  }
-
-  initClientPayments() {
-    this.clientPayments = [];
   }
 
   initControls() {
@@ -120,11 +96,6 @@ export class SalesComponent implements OnInit {
     this.descriptionControl = new FormControl();
     this.quantityControl = new FormControl();
     this.priceControl = new FormControl();
-    this.paymentMethodControl = new FormControl();
-    this.paymentAmountControl = new FormControl();
-    this.paymentTypeControl = new FormControl();
-    this.paymentLastDigitsControl = new FormControl();
-    this.paymentEmailControl= new FormControl();
 
 
   }
@@ -144,44 +115,7 @@ export class SalesComponent implements OnInit {
       quantity: this.quantityControl,
       price: this.priceControl
     });
-
-    this.paymentForm = formBuilder.group({
-      method: this.paymentMethodControl,
-      amount: this.paymentAmountControl,
-      type: this.paymentTypeControl,
-      lastDigits: this.paymentLastDigitsControl,
-      email: this.paymentEmailControl
-    });
   }
-
-  loadAvailablePaymentMethods() {
-    this.clientService.getClientPaymentMethods(this.client.id)
-      .subscribe(
-        (response) => {
-          if(response == null) {
-            this.paymentMethods = [
-              { id: 0, description: "Efectivo", type: "EFECTIVO" }
-            ]
-          } else {
-            this.paymentMethods = response.payment_methods;
-          }
-        }
-      );
-  }
-
-  initCardTypes() {
-    this.cardService.getActiveCards()
-    .subscribe(
-      (response) => {
-        this.cardTypes = response.cards;
-      },
-
-      (error) => {
-        this.cardTypes = []
-      }
-    );
-  }
-
 
   clientLookup() {
     this.fetchingData = true;
@@ -224,7 +158,6 @@ export class SalesComponent implements OnInit {
       if(result != null) {
         this.clientControl.patchValue(result.document)
         this.client = result;
-        this.loadAvailablePaymentMethods();
       }
     });
   }
@@ -259,7 +192,6 @@ export class SalesComponent implements OnInit {
       this.itemForm.reset()
       this.refreshDataSource();
       this.calculateTotalCost();
-      this.paymentAmountControl.patchValue(this.totalCost)
     } else {
       this.constantsForm.markAllAsTouched()
     }
@@ -380,178 +312,6 @@ export class SalesComponent implements OnInit {
     this.refreshDataSource();
   }
 
-  addPayment() {
-    let payment: Payment = {
-      method: this.selectedPaymentMethod,
-      amount: this.paymentAmountControl.value
-    }
-
-    this.validatePaymentAmount()
-
-    if(this.isCardPaymentMethod()) {
-      this.validateCardFields()
-
-      if(this.paymentTypeControl.valid) {
-        payment.typeId = this.selectedPaymentType.id;
-        payment.typeName = this.selectedPaymentType.name;
-        payment.lastDigits = this.paymentLastDigitsControl.value;
-      }
-    }
-
-    if(this.isMercadoPagoPaymentMethod()) {
-      this.validateMercadoPagoFields()
-
-      if(this.paymentEmailControl.valid) {
-        payment.email = this.paymentEmailControl.value;
-      }
-    }
-
-    if(this.isCheckingAccount()) {
-
-      this.clientService.getClientBalance(this.client.id)
-        .subscribe(
-          (response) => {
-            if(response == null) {
-              this.invalidCheckingAccountMessage()
-              this.paymentAmountControl.setErrors( { "invalid": true } )
-            } else {
-              if(response.balance < payment.amount) {
-                this.paymentAmountControl.setErrors( { "insuficientFounds": true } )
-              } else {
-                this.paymentAmountControl.setErrors(null);
-                this.clientCheckingAccount = response;
-              }
-            }
-          },
-
-          (error) => {
-            this.invalidCheckingAccountMessage()
-          }
-        );
-    }
-
-    if(this.paymentForm.valid) {
-      let alreadyUsedPaymentMethod = this.clientPayments.some((it) => it.method.id == payment.method.id && it.typeId == payment.typeId );
-
-      if(!alreadyUsedPaymentMethod) {
-        this.addNewPaymentMethod(payment)
-      } else {
-        this.appendPaymentMethod(payment)
-      }
-      this.paymentMethodDataSource.data = this.clientPayments;
-
-      this.paymentForm.reset();
-      if(this.totalCost == this.calculateCurrentSubtotal()) {
-        this.paymentForm.setErrors(null)
-      }
-    }
-  }
-
-  addNewPaymentMethod(payment) {
-    this.clientPayments.push(payment);
-  }
-
-  appendPaymentMethod(payment) {
-    this.clientPayments.find((it) => it.method.id == payment.method.id && it.typeId == payment.typeId).amount += payment.amount;
-  }
-
-  invalidCheckingAccountMessage() {
-    Swal.fire({
-      icon: "error",
-      title: "Cuenta invalida",
-      text: "No se pudo encontrar la cuenta del cliente, por favor eliga otro medio de pago"
-    })
-  }
-
-  validatePaymentAmount() {
-    let currentSubTotal = this.calculateCurrentSubtotal() + this.paymentAmountControl.value
-
-    if(this.paymentAmountControl.value == 0) {
-      this.paymentAmountControl.setErrors({"invalid": true});
-    }
-
-    if(currentSubTotal > this.totalCost) {
-      this.paymentAmountControl.setErrors({"exceeded": true});
-    }
-  }
-
-  getPaymentAmountErrors() {
-    if(this.paymentAmountControl.hasError("invalid")) {
-      return "Monto inválido";
-    } else if(this.paymentAmountControl.hasError("exceeded")) {
-      return "El monto exede el total"
-    } else if(this.paymentAmountControl.hasError("insuficientFounds")) {
-      return "Fondos insuficientes. Disponible: " + this.clientCheckingAccount.balance;
-    }
-  }
-
-  calculateCurrentSubtotal(): number {
-    if(this.clientPayments && this.clientPayments.length > 0) {
-      return this.clientPayments.map((it: Payment) => it.amount).reduce((a, b) => a + b)
-    } else {
-      return 0
-    }
-  }
-
-  validatePayments() {
-    if(this.totalCost != this.calculateCurrentSubtotal()) {
-      this.paymentForm.setErrors({"mismatch": true});
-    } else {
-      this.paymentForm.setErrors(null);
-    }
-  }
-
-  checkout(stepper: MatStepper) {
-    if(this.totalCost == this.calculateCurrentSubtotal()) {
-      stepper.next()
-    } else {
-      Swal.fire({
-        icon: "error",
-        title: "Pago insuficiente"
-      });
-    }
-  }
-
-  private validateCardFields() {
-    if(this.paymentTypeControl.value == null || this.paymentTypeControl.value == undefined) {
-      this.paymentTypeControl.setErrors({"required": true});
-    }
-
-    if(!this.paymentLastDigitsControl.value) {
-      this.paymentLastDigitsControl.setErrors({"required": true});
-    }
-  }
-
-  private validateMercadoPagoFields() {
-    if(!this.paymentEmailControl.value) {
-      this.paymentEmailControl.setErrors({"required": true})
-    }
-  }
-
-  selectPaymentMethod(event) {
-    let methodType = event.value;
-    this.selectedPaymentMethod = this.paymentMethods.filter((it) => it.type == methodType)[0]
-  }
-
-  selectPaymentType(event) {
-    this.selectedPaymentType = {
-      id: event.value,
-      name: event.source.triggerValue
-    }
-  }
-
-  isCardPaymentMethod() {
-    return this.paymentMethodControl.value == "TARJETA";
-  }
-
-  isMercadoPagoPaymentMethod() {
-    return this.paymentMethodControl.value == "ONLIE";
-  }
-
-  isCheckingAccount() {
-    return this.paymentMethodControl.value == "CUENTA_CORRIENTE";
-  }
-
   private refreshDataSource() {
     this.dataSource.data = this.items;
   }
@@ -564,20 +324,8 @@ export class SalesComponent implements OnInit {
       salesmanCode: this.salesmanControl.value,
       branchCode: this.branchControl.value,
       details: this.items,
-      payment: this.clientPayments,
+      payment: [],
       total: this.totalCost
     }
   }
-
-
-
-
-  }
-
-
-
-
-
-
-
-
+}

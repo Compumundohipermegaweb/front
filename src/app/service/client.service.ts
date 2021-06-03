@@ -1,8 +1,8 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { PaymentMethod } from 'src/app/sales/sales.model';
-import { environment } from 'src/environments/environment';
+import { environment } from 'src/environments/environment'; 
+import { PaymentMethod } from '../add-payment-method/add-payment-method.component';
 
 @Injectable({
   providedIn: 'root'
