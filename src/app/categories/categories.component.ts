@@ -97,7 +97,7 @@ export class CategoriesComponent implements OnInit {
             (response) => {
               Swal.fire({
                 icon: "success",
-                title: "Item eliminado!",
+                title: "Categoria eliminada!",
                 text: "Se ha eliminado " + category.name
               });
 

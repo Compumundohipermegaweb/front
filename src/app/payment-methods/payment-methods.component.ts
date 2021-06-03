@@ -95,7 +95,7 @@ export class PaymentMethodsComponent implements OnInit {
           Swal.fire({
             icon: "error",
             title: "Error",
-            text: "No se pudo crear la categoria"
+            text: "No se pudo creae el medio de pago"
           })
         }
       )
@@ -118,7 +118,7 @@ export class PaymentMethodsComponent implements OnInit {
             (response) => {
               Swal.fire({
                 icon: "success",
-                title: "Item eliminado!",
+                title: "Medio de pago eliminado!",
                 text: "Se ha eliminado " + paymentMethod.description
               });
 

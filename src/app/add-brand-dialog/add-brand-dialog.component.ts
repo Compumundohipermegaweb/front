@@ -51,8 +51,8 @@ export class AddBrandDialogComponent implements OnInit {
         (response) => {
           Swal.fire({
             icon:"success",
-            title: "¡Categoría creada!",
-            text: "Categoria " + response.name + " creada con éxito"
+            title: "¡Marca creada!",
+            text: "Marca " + response.name + " creada con éxito"
           })
 
           this.brandsCreated.push(response)
@@ -62,7 +62,7 @@ export class AddBrandDialogComponent implements OnInit {
           Swal.fire({
             icon: "error",
             title: "Error",
-            text: "No se pudo crear la categoria"
+            text: "No se pudo crear la Marca"
           })
         }
       )

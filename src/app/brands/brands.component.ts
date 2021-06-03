@@ -64,8 +64,8 @@ export class BrandsComponent implements OnInit {
         (result: Brand[]) => {
           if(result && result.length > 0) {
             this.brandsDatasource.data.forEach(
-              (category: Brand) => {
-                result.push(category)
+              (brand: Brand) => {
+                result.push(brand)
               }
             )
             this.brandsDatasource.data = result
@@ -76,7 +76,7 @@ export class BrandsComponent implements OnInit {
           Swal.fire({
             icon: "error",
             title: "Error",
-            text: "No se pudo crear la categoria"
+            text: "No se pudo crear la marca"
           })
         }
       )
@@ -100,7 +100,7 @@ export class BrandsComponent implements OnInit {
             (response) => {
               Swal.fire({
                 icon: "success",
-                title: "Item eliminado!",
+                title: "Marca eliminada!",
                 text: "Se ha eliminado " + brand.name
               });
 
