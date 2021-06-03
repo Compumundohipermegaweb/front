@@ -63,6 +63,7 @@ import {environment} from '../environments/environment';
 import { HomeComponent } from './home/home.component';
 import { PaymentMethodsComponent } from './payment-methods/payment-methods.component';
 import { NewPaymentMethodComponent } from './new-payment-method/new-payment-method.component';
+import { CustomerManagementComponent } from './customer-management/customer-management.component';
 
 registerLocaleData(localEsAr)
 
@@ -96,7 +97,8 @@ registerLocaleData(localEsAr)
     LoginComponent,
     HomeComponent,
     PaymentMethodsComponent,
-    NewPaymentMethodComponent
+    NewPaymentMethodComponent,
+    CustomerManagementComponent
   ],
   imports: [
     BrowserModule,

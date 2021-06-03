@@ -11,6 +11,7 @@ import { MdmComponent } from './mdm/mdm.component';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { AddPaymentMethodComponent } from './add-payment-method/add-payment-method.component';
+import { CustomerManagementComponent } from './customer-management/customer-management.component';
 
 
 export const routes: Routes = [
@@ -23,7 +24,8 @@ export const routes: Routes = [
   { path: "mdm", component: MdmComponent},
   { path: "login", component: LoginComponent},
   { path: "home", component: HomeComponent},
-  { path: "asd", component: AddPaymentMethodComponent}
+  { path: "asd", component: AddPaymentMethodComponent},
+  { path: "customer", component: CustomerManagementComponent}
 ]
 
 @NgModule({

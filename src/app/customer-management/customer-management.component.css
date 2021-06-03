@@ -1,0 +1,18 @@
+.full-width-table {
+  width: 100%;
+}
+.mat-card-title{
+  padding: 1rem;
+}
+
+.mat-divider{
+  padding: 1rem;
+}
+
+.mat-raised-button{
+  margin: 15px;
+}
+
+.mat-card-content{
+  margin: 20px;
+}
