@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
+import { FLAG_UNRESTRICTED } from 'html2canvas/dist/types/css/syntax/tokenizer';
 import Swal from 'sweetalert2';
 import { CardService } from '../service/card.service';
 import { CheckingAccountResponse, ClientService } from '../service/client.service';
@@ -34,8 +35,9 @@ export class AddPaymentMethodComponent implements OnInit {
 
   totalCost: number
 
-  clientId: number = 0
+  clientId: number= null
   clientCheckingAccount: CheckingAccountResponse = null
+  isFounds: boolean= true;
 
   constructor(
     private clientService: ClientService,
@@ -63,6 +65,16 @@ export class AddPaymentMethodComponent implements OnInit {
     })
 
     this.matDialogRef.disableClose = true
+    this.clientId = data.clientId
+    this.totalCost = data.total
+    this.clientCheckingAccount = {
+      id: null,
+      balance: null
+    }
+    
+    this.loadAvailablePaymentMethods()
+    this.initCardTypes()
+    this.initClientPayments()
   }
 
   ngOnInit(): void {
@@ -94,6 +106,9 @@ export class AddPaymentMethodComponent implements OnInit {
         this.cards = []
       }
     );
+  }
+  initClientPayments() {
+    this.payments = [];
   }
 
   calculateCurrentSubtotal(): number {
@@ -171,15 +186,18 @@ export class AddPaymentMethodComponent implements OnInit {
       this.clientService.getClientBalance(this.clientId)
         .subscribe(
           (response) => {
+           console.log(JSON.stringify(response))
             if(response == null) {
               this.invalidCheckingAccountMessage()
               this.amountControl.setErrors( { "invalid": true } )
             } else {
-              if(response.balance < payment.amount) {
+              this.clientCheckingAccount = response;
+              if(response.balance < payment.amount) {    
                 this.amountControl.setErrors( { "insuficientFounds": true } )
               } else {
                 this.amountControl.setErrors(null);
-                this.clientCheckingAccount = response;
+                
+              
               }
             }
           },
@@ -189,20 +207,25 @@ export class AddPaymentMethodComponent implements OnInit {
           }
         );
     }
+    if(this.isCheckingAccount() && (this.clientCheckingAccount.balance < payment.amount)){
+      console.log("Supera el balance")
 
-    if(this.paymentForm.valid) {
-      let alreadyUsedPaymentMethod = this.payments.some((it) => it.method.id == payment.method.id && it.typeId == payment.typeId );
+    }else{
+    
+      if(this.paymentForm.valid) {
+        let alreadyUsedPaymentMethod = this.payments.some((it) => it.method.id == payment.method.id && it.typeId == payment.typeId );
 
-      if(!alreadyUsedPaymentMethod) {
-        this.addNewPaymentMethod(payment)
-      } else {
-        this.appendPaymentMethod(payment)
-      }
-      this.paymentMethodDataSource.data = this.payments;
+        if(!alreadyUsedPaymentMethod ) {
+          this.addNewPaymentMethod(payment)
+        } else {
+          this.appendPaymentMethod(payment)
+        }
+        this.paymentMethodDataSource.data = this.payments;
 
-      this.paymentForm.reset();
-      if(this.totalCost == this.calculateCurrentSubtotal()) {
-        this.paymentForm.setErrors(null)
+        this.paymentForm.reset();
+        if(this.totalCost == this.calculateCurrentSubtotal()) {
+          this.paymentForm.setErrors(null)
+        }
       }
     }
   }
