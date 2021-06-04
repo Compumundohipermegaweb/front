@@ -34,7 +34,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatRadioModule} from '@angular/material/radio';
-import { MatAutocompleteModule} from '@angular/material/autocomplete'
+import { MatAutocompleteModule} from '@angular/material/autocomplete';
+import { MDBBootstrapModule } from 'angular-bootstrap-md';
 
 
 import { registerLocaleData } from '@angular/common';
@@ -138,10 +139,9 @@ registerLocaleData(localEsAr)
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
-      // Register the ServiceWorker as soon as the app is stable
-      // or after 30 seconds (whichever comes first).
       registrationStrategy: 'registerWhenStable:30000'
-    })
+    }),
+    MDBBootstrapModule.forRoot()
   ],
   providers: [CurrencyPipe],
   bootstrap: [AppComponent, NavBarComponent]
