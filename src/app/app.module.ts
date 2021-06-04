@@ -64,6 +64,9 @@ import { HomeComponent } from './home/home.component';
 import { PaymentMethodsComponent } from './payment-methods/payment-methods.component';
 import { NewPaymentMethodComponent } from './new-payment-method/new-payment-method.component';
 import { CustomerManagementComponent } from './customer-management/customer-management.component';
+import { ReportsComponent } from './reports/reports.component';
+import { OperationalReportsComponent } from './operational-reports/operational-reports.component';
+import { ManagerialReportsComponent } from './managerial-reports/managerial-reports.component';
 
 registerLocaleData(localEsAr)
 
@@ -98,7 +101,10 @@ registerLocaleData(localEsAr)
     HomeComponent,
     PaymentMethodsComponent,
     NewPaymentMethodComponent,
-    CustomerManagementComponent
+    CustomerManagementComponent,
+    ReportsComponent,
+    OperationalReportsComponent,
+    ManagerialReportsComponent
   ],
   imports: [
     BrowserModule,

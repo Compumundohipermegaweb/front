@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { environment } from 'src/environments/environment'; 
+import { environment } from 'src/environments/environment';
 import { PaymentMethod } from '../add-payment-method/add-payment-method.component';
 
 @Injectable({
@@ -13,7 +13,7 @@ export class ClientService {
   clientsUrl = "/api/clients";
   checkingAccountBalanceUrl = "/api/clients/{client_id}/checking-account/balance";
   paymentMethodsUrl = "/api/clients/{client_id}/payment-methods";
-  
+
 
   constructor(private http: HttpClient) { }
 
@@ -37,6 +37,8 @@ export class ClientService {
   buildPaymentMethodsUrl(clientId: number): String {
     return this.paymentMethodsUrl.replace(/{client_id}/gi, clientId.toString());
   }
+
+  
 }
 
 export interface GetClientsParameters {

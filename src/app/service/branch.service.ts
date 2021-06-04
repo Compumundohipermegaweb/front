@@ -20,6 +20,8 @@ export class BranchService {
     return this.http.get<GetAllBranchesResponse>(this.HOST + this.BASE_URL)
   }
 
+ 
+
   selectBranch(branchId: number) {
     this.selectedBranch = branchId
   }

@@ -57,6 +57,10 @@ export class CustomerManagementComponent implements OnInit, AfterViewInit {
     })
   }
 
+  initDataSource(){
+
+  }
+  
   private refreshDataSource() {
     this.dataSource.data = this.EXAMPLE_DATA;
   }
