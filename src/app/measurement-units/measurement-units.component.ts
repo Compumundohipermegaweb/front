@@ -49,6 +49,10 @@ export class MeasurementUnitsComponent implements OnInit {
       )
   }
 
+  close(){
+    
+  }
+
   add() {
     const dialogRef = this.addUnitDialog.open(AddUnitDialogComponent, { });
 

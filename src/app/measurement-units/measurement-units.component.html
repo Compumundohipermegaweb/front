@@ -6,7 +6,7 @@
               <input matInput (keyup)="applyFilter($event)" #filtro>
           </mat-form-field>
 
-          <button mat-mini-fab color="primary" (click)="add()">
+          <button mat-mini-fab color="primary" (click)="add(); close()">
               <mat-icon>
                   add
               </mat-icon>
