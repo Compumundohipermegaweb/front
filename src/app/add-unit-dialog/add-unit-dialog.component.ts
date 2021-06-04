@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
-import { Unit } from '../measurement-units/measurement-units.component';
+import { MeasurementUnit } from '../measurement-units/measurement-units.component';
 import { UnitService } from '../service/unit.service';
 
 @Component({
@@ -12,7 +12,7 @@ import { UnitService } from '../service/unit.service';
 })
 export class AddUnitDialogComponent implements OnInit {
 
-  unitsCreated: Unit[]
+  unitsCreated: MeasurementUnit[]
 
   nameControl: FormControl
   descriptionControl: FormControl

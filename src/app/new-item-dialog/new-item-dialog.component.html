@@ -43,7 +43,9 @@
     
                 <mat-form-field>
                     <mat-label>Unidad de medida</mat-label>
-                    <input matInput type="text" [formControl]="uomControl" required>
+                    <mat-select [formControl]="uomControl" required>
+                        <mat-option *ngFor="let uom of measurementUnits" [value]="uom.id"> {{ uom.name }} </mat-option>
+                    </mat-select>
                 </mat-form-field>
             </div>
             <div>

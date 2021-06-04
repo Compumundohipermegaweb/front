@@ -17,7 +17,7 @@ export class MeasurementUnitsComponent implements OnInit {
   nameControl: FormControl
   descriptionControl: FormControl
 
-  measurementUnitsDatasource: MatTableDataSource<Unit>
+  measurementUnitsDatasource: MatTableDataSource<MeasurementUnit>
   displayedColumns: String[]
 
   constructor(public changeDetectorRef: ChangeDetectorRef, private addUnitDialog: MatDialog, private unitService: UnitService,) {
@@ -54,10 +54,10 @@ export class MeasurementUnitsComponent implements OnInit {
 
     dialogRef.afterClosed()
       .subscribe(
-        (result: Unit[]) => {
+        (result: MeasurementUnit[]) => {
           if(result && result.length > 0) {
             this.measurementUnitsDatasource.data.forEach(
-              (unit: Unit) => {
+              (unit: MeasurementUnit) => {
                 result.push(unit)
               }
             )
@@ -80,7 +80,7 @@ export class MeasurementUnitsComponent implements OnInit {
     this.measurementUnitsDatasource.filter = filterValue.trim().toLowerCase();
   }
 
-  delete(unit: Unit) {
+  delete(unit: MeasurementUnit) {
 
     Swal.fire({
       icon: "question",
@@ -118,11 +118,11 @@ export class MeasurementUnitsComponent implements OnInit {
     });
   }
 
-  toggleEdit(unit: Unit) {
+  toggleEdit(unit: MeasurementUnit) {
     unit.editing = !unit.editing
   }
 
-  saveChanges(unit: Unit) {
+  saveChanges(unit: MeasurementUnit) {
     debugger;
     let changes = {
       name: this.nameControl.value,
@@ -164,7 +164,7 @@ export class MeasurementUnitsComponent implements OnInit {
 
 }
 
-export interface Unit {
+export interface MeasurementUnit {
   id: number;
   name: String;
   description: String;

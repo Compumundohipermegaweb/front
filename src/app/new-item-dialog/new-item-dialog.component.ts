@@ -8,6 +8,8 @@ import { MasterItem } from '../item-master/item-master.component';
 import { BrandService } from '../service/brand.service';
 import { CategoryService } from '../service/category.service';
 import { ItemService, PostItemRequest } from '../service/item.service';
+import { MeasurementUnit } from 'src/app/measurement-units/measurement-units.component';
+import { UnitService } from '../service/unit.service';
 
 @Component({
   selector: 'app-new-item-dialog',
@@ -20,6 +22,7 @@ export class NewItemDialogComponent implements OnInit {
 
   brands: Brand[]
   categories: Category[]
+  measurementUnits: MeasurementUnit[]
 
   itemForm: FormGroup;
 
@@ -46,11 +49,13 @@ export class NewItemDialogComponent implements OnInit {
     private formBuilder: FormBuilder,
     private itemService: ItemService,
     private brandService: BrandService,
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    private measurementUnitService: UnitService
   ) { 
     this.createdItems = [];
     this.fetchBrands()
     this.fetchCategories()
+    this.fetchMeasurementUnits()
 
     this.skuControl = new FormControl();
     this.shortDescriptionControl = new FormControl();
@@ -110,6 +115,17 @@ export class NewItemDialogComponent implements OnInit {
       .subscribe(
         (response) => {
           this.categories = response.categories
+        }
+      )
+  }
+
+  fetchMeasurementUnits() {
+    this.measurementUnits = []
+
+    this.measurementUnitService.findAll()
+      .subscribe(
+        (response) => {
+          this.measurementUnits = response.units
         }
       )
   }

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Unit as MeasurementUnit } from 'src/app/measurement-units/measurement-units.component';
+import { MeasurementUnit } from 'src/app/measurement-units/measurement-units.component';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
