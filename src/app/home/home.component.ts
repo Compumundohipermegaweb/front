@@ -10,6 +10,7 @@ import { BranchService } from '../service/branch.service';
 export class HomeComponent implements OnInit {
 
   branches: Branch[]
+  branchSelected: number
 
   constructor(private branchService: BranchService) { 
     this.fetchBranches()
@@ -25,8 +26,15 @@ export class HomeComponent implements OnInit {
       .subscribe(
         (response) => {
           this.branches = response.branches
+          this.branchSelected = this.branches[0].id
+          this.branchService.selectBranch(this.branchSelected)
         }
       )
+  }
+
+  selectBranch(branchId: number) {
+    this.branchSelected = branchId
+    this.branchService.selectBranch(this.branchSelected)
   }
 
 }

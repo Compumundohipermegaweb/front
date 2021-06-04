@@ -29,6 +29,7 @@ export class ItemLookupDialogComponent implements OnInit {
     private formBuilder: FormBuilder,
     private stockService: StockService) {
       this.branchIdControl = new FormControl(data.branchId);
+      this.branchIdControl.disable()
       this.itemCategoryControl = new FormControl("");
       this.itemDescriptionControl = new FormControl("");
       this.itemBrandControl = new FormControl("");

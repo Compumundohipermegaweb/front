@@ -12,10 +12,16 @@ export class BranchService {
   private HOST = environment.apiHost
   private BASE_URL = "/api/branches"
 
+  selectedBranch: number
+
   constructor(private http: HttpClient) { }
 
   getAll(): Observable<GetAllBranchesResponse> {
     return this.http.get<GetAllBranchesResponse>(this.HOST + this.BASE_URL)
+  }
+
+  selectBranch(branchId: number) {
+    this.selectedBranch = branchId
   }
 }
 

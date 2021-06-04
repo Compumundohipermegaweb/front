@@ -16,6 +16,8 @@ import { Router } from '@angular/router';
 import Swal  from 'sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
 import { MatStepper } from '@angular/material/stepper';
+import { BranchService } from '../service/branch.service';
+import { CashService } from '../service/cash.service';
 
 
 @Component({
@@ -61,6 +63,8 @@ export class SalesComponent implements OnInit {
               private salesService: SalesService,
               private clientService: ClientService,
               private stockService: StockService,
+              private branchService: BranchService,
+              private cashService: CashService,
               private router: Router,
               public clientLookupDialog: MatDialog,
               public itemLookupDialog: MatDialog,
@@ -71,7 +75,6 @@ export class SalesComponent implements OnInit {
     this.initItems();
     this.initControls();
     this.initForms(formBuilder);
-
   }
 
   ngOnInit(): void {
@@ -82,7 +85,25 @@ export class SalesComponent implements OnInit {
   }
 
   checkCashStatus() {
-    this.cashOpen = true
+    this.cashService.getAllCash()
+      .subscribe(
+        (response) => {
+          if(response.cash_registers) {
+            let currentCash = response.cash_registers.find((it) => it.branch_id == this.branchService.selectedBranch)
+            if(currentCash.status == "OPEN") {
+              this.cashOpen = true
+            }
+          }
+
+          if(!this.cashOpen) {
+            Swal.fire({
+              icon: "warning",
+              title: "¡Caja cerrada!",
+              text: "Realice la apertura de caja antes de registrar una venta"
+            })
+          }
+        }
+      )
   }
 
   initColumns() {
@@ -96,7 +117,8 @@ export class SalesComponent implements OnInit {
   initControls() {
     this.invoiceTypeControl = new FormControl("B");
     this.salesmanControl = new FormControl();
-    this.branchControl = new FormControl();
+    this.branchControl = new FormControl(this.branchService.selectedBranch);
+    this.branchControl.disable()
     this.clientControl = new FormControl();
     this.idControl = new FormControl();
     this.skuControl = new FormControl();

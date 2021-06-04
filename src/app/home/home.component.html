@@ -12,8 +12,8 @@
         <span>Hefesto</span>
         <span class="example-spacer"></span>
         <span>Sucursal</span>
-        <mat-select style="width: 8rem; padding-left: 1rem;">
-          <mat-option *ngFor="let branch of branches" value="branch.id"> {{branch.name}} </mat-option>
+        <mat-select [(value)]="branchSelected" (selectionChange)="selectBranch($event.value)" style="width: 8rem; padding-left: 1rem;">
+          <mat-option *ngFor="let branch of branches" [value]="branch.id" [selected]="branchSelected === branch.id"> {{branch.name}} </mat-option>
         </mat-select>
       </mat-toolbar>
     </div>
