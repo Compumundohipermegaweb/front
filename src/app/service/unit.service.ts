@@ -27,7 +27,7 @@ export class UnitService {
   }
 
   save(unit: MeasurementUnit): Observable<MeasurementUnit> {
-    return this.http.put<MeasurementUnit>(this.host + this.baseUrl, unit)
+    return this.http.put<MeasurementUnit>(this.host + this.baseUrl + "/" + unit.id, { name: unit.name, description: unit.description})
   }
 }
 
