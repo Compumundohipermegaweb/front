@@ -3,8 +3,10 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
 import { Brand } from '../brands/brands.component';
+import { Category } from '../categories/categories.component';
 import { MasterItem } from '../item-master/item-master.component';
 import { BrandService } from '../service/brand.service';
+import { CategoryService } from '../service/category.service';
 import { ItemService, PostItemRequest } from '../service/item.service';
 
 @Component({
@@ -17,6 +19,7 @@ export class NewItemDialogComponent implements OnInit {
   creatingItem = false;
 
   brands: Brand[]
+  categories: Category[]
 
   itemForm: FormGroup;
 
@@ -42,10 +45,12 @@ export class NewItemDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<NewItemDialogComponent>, 
     private formBuilder: FormBuilder,
     private itemService: ItemService,
-    private brandService: BrandService
+    private brandService: BrandService,
+    private categoryService: CategoryService
   ) { 
     this.createdItems = [];
     this.fetchBrands()
+    this.fetchCategories()
 
     this.skuControl = new FormControl();
     this.shortDescriptionControl = new FormControl();
@@ -94,6 +99,17 @@ export class NewItemDialogComponent implements OnInit {
       .subscribe(
         (response) => {
           this.brands = response.brands
+        }
+      )
+  }
+
+  fetchCategories() {
+    this.categories = []
+
+    this.categoryService.findAll()
+      .subscribe(
+        (response) => {
+          this.categories = response.categories
         }
       )
   }
