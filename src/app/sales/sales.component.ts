@@ -29,6 +29,7 @@ export class SalesComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   fetchingData = false;
+  isCompleted = false;
 
   displayedColumns: string[];
   dataSource = new MatTableDataSource<Item>();
@@ -223,6 +224,9 @@ export class SalesComponent implements OnInit {
         this.items = this.items.filter((it: Item) => it.sku != item.sku)
         this.calculateTotalCost()
         this.refreshDataSource()
+        if(this.items.length == 0) {
+          this.isCompleted = false
+        }
       }
     })
   }
@@ -310,6 +314,17 @@ export class SalesComponent implements OnInit {
   cancelSale() {
     this.initItems()
     this.refreshDataSource();
+  }
+
+  validateItems() {
+    if(this.items.length == 0 ) {
+      Swal.fire({
+        icon: "warning",
+        title: "Ingrese items antes de continuar"
+      })
+    } else {
+      this.isCompleted = true
+    }
   }
 
   private refreshDataSource() {

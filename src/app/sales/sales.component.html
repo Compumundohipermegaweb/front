@@ -10,7 +10,7 @@
     <mat-card-subtitle>* campo obligatorio</mat-card-subtitle>
 
     <mat-vertical-stepper linear #stepper>
-        <mat-step [stepControl]="constantsForm">
+        <mat-step [completed]="isCompleted">
             <form [formGroup]="constantsForm">
                 <ng-template matStepLabel>Detalle</ng-template>
                 <mat-form-field>
@@ -133,7 +133,7 @@
                 </table>
             </div>
             <div>
-                <button mat-raised-button color="primary" matStepperNext>Siguiente</button>
+                <button mat-raised-button color="primary" (click)="validateItems()" matStepperNext>Siguiente</button>
             </div>
         </mat-step>
         <mat-step>
