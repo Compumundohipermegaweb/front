@@ -28,8 +28,9 @@ export class SalesComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  fetchingData = false;
-  isCompleted = false;
+  fetchingData = false
+  isCompleted = false
+  cashOpen = false
 
   displayedColumns: string[];
   dataSource = new MatTableDataSource<Item>();
@@ -64,7 +65,8 @@ export class SalesComponent implements OnInit {
               public clientLookupDialog: MatDialog,
               public itemLookupDialog: MatDialog,
               public paymentMethodDialog: MatDialog) {
-
+    
+    this.checkCashStatus()
     this.initColumns();
     this.initItems();
     this.initControls();
@@ -77,6 +79,10 @@ export class SalesComponent implements OnInit {
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator
+  }
+
+  checkCashStatus() {
+    this.cashOpen = true
   }
 
   initColumns() {

@@ -10,6 +10,11 @@
           <mat-icon>menu</mat-icon>
         </button>
         <span>Hefesto</span>
+        <span class="example-spacer"></span>
+        <span>Sucursal</span>
+        <mat-select style="width: 8rem; padding-left: 1rem;">
+          <mat-option *ngFor="let branch of branches" value="branch.id"> {{branch.name}} </mat-option>
+        </mat-select>
       </mat-toolbar>
     </div>
     <div>

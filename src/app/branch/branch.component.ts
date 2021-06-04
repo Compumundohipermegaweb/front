@@ -3,6 +3,7 @@ import { AfterViewInit, Component, ViewChild, OnInit, ChangeDetectorRef} from '@
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
+import { StringValueToken } from 'html2canvas/dist/types/css/syntax/tokenizer';
 
 
 
@@ -46,6 +47,17 @@ export class BranchComponent implements OnInit, AfterViewInit{
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
   }
+}
+
+
+export interface Branch {
+  id: number;
+  name: String;
+  address: String;
+  postal_code: String;
+  email: String;
+  contact_number: String;
+  attetention_schedule: String;
 }
 
 export interface MyTableItem {

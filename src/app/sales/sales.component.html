@@ -7,9 +7,10 @@
 
     <mat-divider></mat-divider>
 
+
     <mat-card-subtitle>* campo obligatorio</mat-card-subtitle>
 
-    <mat-vertical-stepper linear #stepper>
+    <mat-vertical-stepper *ngIf="cashOpen" linear #stepper>
         <mat-step [completed]="isCompleted">
             <form [formGroup]="constantsForm">
                 <ng-template matStepLabel>Detalle</ng-template>
