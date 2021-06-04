@@ -6,6 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import Swal from 'sweetalert2';
 import { Payment, AddPaymentMethodComponent } from '../add-payment-method/add-payment-method.component';
 import { Client } from '../sales/sales.model';
+import { CashService } from '../service/cash.service';
 
 @Component({
   selector: 'app-cash-income',
@@ -59,6 +60,28 @@ export class CashIncomeComponent implements OnInit {
                     typeName: null,
                     lastDigits: null,
                     email: null
+                  },
+                  { method: {
+                            id: 2,
+                            description: "Tarjeta de Crédito",
+                            type: "TARJETA"
+                    },
+                    amount: 1300,
+                    typeId: 0,
+                    typeName: "VISA",
+                    lastDigits: 2345,
+                    email: null
+                  },
+                  { method: {
+                            id: 2,
+                            description: "Tarjeta de Débito",
+                            type: "TARJETA"
+                    },
+                    amount: 500,
+                    typeId: 0,
+                    typeName: "MASTERCARD",
+                    lastDigits: 1234,
+                    email: null
                   }
       ],
       movementType: "INGRESO",
@@ -74,6 +97,7 @@ export class CashIncomeComponent implements OnInit {
 
   columns = ['client','paymentMethods','amount','source', 'description','actions'];
   incomes = new MatTableDataSource<CashMovement>()
+  // incomesPrueba = new MatTableDataSource<CashMovementPrueba>()
   expandedElement: CashMovement | null;
 
 
@@ -81,18 +105,39 @@ export class CashIncomeComponent implements OnInit {
   constructor(
     private addPaymentMethodDialog: MatDialog,
     public changeDetectorRef: ChangeDetectorRef,
+    private cashService: CashService
   ) { 
     this.incomes = new MatTableDataSource(this.EXAMPLE_DATA)
     this.incomes.data.push(this.EXAMPLE_DATA2)
+    // this.loadIncome();
   }
 
   ngOnInit() {
   }
-
+  
   ngAfterViewInit(): void {   
     this.incomes.paginator = this.paginator; 
   }
-  
+
+  // loadIncome() {
+  //   this.cashService.getIncomes(1)
+  //     .subscribe(
+  //       (response) => {
+  //         console.log(JSON.stringify(response))
+  //         this.incomesPrueba.data = response.incomes;
+  //         console.log(JSON.stringify(this.incomesPrueba.data))
+          
+  //       },
+
+  //       (error) => {
+  //         Swal.fire({
+  //           icon: "error",
+  //           title: "Error",
+  //           text: "No se pudieron cargar los ingresos de la Caja"
+  //         });
+  //       }
+  //     );
+  // }
   addPaymentMethod(cashMovement: CashMovement) {
     const dialogRef = this.addPaymentMethodDialog.open(AddPaymentMethodComponent, { data: { clientId: cashMovement.client.id, total: cashMovement.amount } })
 
@@ -113,6 +158,16 @@ export class CashIncomeComponent implements OnInit {
       }
     )
   }
+
+
+  getPaymentsMade(payments: Payment[]){
+
+    console.log( JSON.stringify(payments))
+
+    return "string"
+
+  }
+
 }
 
 export interface CashMovement {
@@ -126,3 +181,13 @@ export interface CashMovement {
   description: String;
   movementDate: String;
 }
+
+
+// export interface CashMovementPrueba {
+//   id_movement: number,
+//   datetime: Date,
+//   transaction: String,
+//   detail: String,
+//   payment: String,
+//   amount: number
+// }

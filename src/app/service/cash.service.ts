@@ -15,7 +15,7 @@ export class CashService {
   endCashUrl ="/api/cash/end" ;
   allCashUrl ="/api/cash/all" ;
   startEndByUser ='/api/cash/start-end?user_id={user_id}';
-  incomeUrl ='/api/cash/ cash/income?cash_start_end_id={cash_start_end_id}';
+  incomeUrl ='/api/cash/cash/income?cash_start_end_id={cash_start_end_id}';
   allTransactionUrl ='/api/cash/transaction/all?cash_start_end_id={cash_start_end_id}';
 
 
@@ -37,9 +37,21 @@ constructor(private http: HttpClient) { }
   return this.startEndByUser.replace(/{user_id}/gi, userId.toString());
   }
 
+  buildUrlIncome(cashStartEndId  :number): String{
+    return this.incomeUrl.replace(/{cash_start_end_id}/gi, cashStartEndId.toString());
+  }
+
   getCashOpenByUser(userId :number): Observable<CashStarEndIdResponse>{
     return this.http.get<CashStarEndIdResponse>(this.apiHost + this.buildUrlCashOpenByUser(userId));
   }
+
+  getIncomes(cashStartEndId: number): Observable<IncomesResponse> {
+    return this.http.get<IncomesResponse>(this.apiHost + this.buildUrlIncome(cashStartEndId));
+  }
+
+
+
+
 }
 export interface AllCashResponse {
   cash_registers: Cash[];

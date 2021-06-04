@@ -8,15 +8,15 @@
 	<ng-container matColumnDef="paymentMethods">
 	  <th mat-header-cell *matHeaderCellDef mat-sort-header>Medios de pago</th>
 	  <td mat-cell *matCellDef="let row"  > 
-		<div *ngFor="let payment of row.payments | keyvalue">
-			Desplegar para ver {{payment.method}}
+		<div *ngFor="let item of row.payments; let i = index">
+			 {{item.method.description}}
 		</div> 
 	</td>  
 	</ng-container> 
 
 	<ng-container matColumnDef="amount">
 		<th mat-header-cell *matHeaderCellDef mat-sort-header>Monto</th>
-		<td mat-cell *matCellDef="let row">{{row.amount}}</td>
+		<td mat-cell *matCellDef="let row"> $ {{row.amount}}</td>
 	</ng-container>
 
 	<ng-container matColumnDef="source">
@@ -42,16 +42,19 @@
 	 <ng-container matColumnDef="expandedDetail">
 		<td mat-cell *matCellDef="let row" [attr.colspan]="columns.length">
 			<div class="example-element-detail" [@detailExpand]="row == expandedElement ? 'expanded' : 'collapsed'">
+
 				<div class="example-element-diagram">
-					
-					<div class="example-element-position"> Fecha: {{row.movementDate}} </div>
+					Detalle del movimiento:
+					<div class="example-element-name"> Fecha: {{row.movementDate}} </div>
 					<div class="example-element-name"> Vendedor: {{row.vendedor}} </div>
-					<div class="example-element-position"> Cliente: {{row.client.document}} </div>
+					<div class="example-element-name"> Nro. de Documento del Cliente: {{row.client.document}} </div>
 					
 				</div>
-				<div class="example-element-description">{{row.payments.amount}}
-					<span class="example-element-description-attribution"> Metodos de Pago: </span>
-
+				<div class="example-element-diagram">
+					Metodos de Pago:
+					<div  class="example-element-name" *ngFor="let item of row.payments; let i = index" [attr.data-index]="i">
+						{{item.method.description}} {{item.typeName}} : ${{item.amount}}
+					</div>
 				</div>
 	   		</div>
 		</td>

@@ -11,7 +11,7 @@ table {
   }
   
   tr.example-element-row:not(.example-expanded-row):active {
-    background: #efefef;
+    background: whitesmoke;
   }
   
   .example-element-row td {
@@ -21,6 +21,7 @@ table {
   .example-element-detail {
     overflow: hidden;
     display: flex;
+    background: #eaf1f7 ;
   }
   
   .example-element-diagram {
