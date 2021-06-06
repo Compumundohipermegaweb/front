@@ -1,39 +1,74 @@
-<table  mat-table [dataSource]="expenses"  class="full-width-table" matSort aria-label="Elements">
-	<ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Id Movimiento</th>
+<table  mat-table [dataSource]="expenses" multiTemplateDataRows class="full-width-table" matSort aria-label="Elements">
+	<ng-container matColumnDef="supplier">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Proveedor</th>
         <td mat-cell *matCellDef="let row">{{row.id}}</td>
       </ng-container>
   
-      <ng-container matColumnDef="date">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha y Hora</th>
-        <td mat-cell *matCellDef="let row">{{row.date}}</td> 
+      <ng-container matColumnDef="paymentMethods">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Medios de pago</th>
+        <td mat-cell *matCellDef="let row"  > 
+          <!-- <div *ngFor="let item of row.payments; let i = index">
+             {{item.method.description}}
+          </div>  -->
+        </td>  
       </ng-container> 
-  
-      <ng-container matColumnDef="transaction">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Transacción</th>
-          <td mat-cell *matCellDef="let row">{{row.transaction}}</td>
-      </ng-container>
-  
-      <ng-container matColumnDef="reference">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Detalle</th>
-          <td mat-cell *matCellDef="let row">{{row.reference}}</td>
-      </ng-container>
-    
-      <ng-container matColumnDef="payment">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Metodo de Pago</th>
-        <td mat-cell *matCellDef="let row">{{row.payment}} </td>
-      </ng-container>
   
       <ng-container matColumnDef="amount">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Monto</th>
-          <td mat-cell *matCellDef="let row">{{row.amount}} </td>
-        </ng-container>
-    
+          <td mat-cell *matCellDef="let row">$ {{row.amount}}</td>
+      </ng-container>
   
+      <ng-container matColumnDef="source">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Origen</th>
+          <td mat-cell *matCellDef="let row">{{row.source_description}}</td>
+      </ng-container>
+    
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Descripción</th>
+        <td mat-cell *matCellDef="let row">{{row.detail}} </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Pagar / Editar el pago</th>
+        <td mat-cell *matCellDef="let row">
+          <!-- <button mat-mini-fab color="primary">      
+            <mat-icon>attach_money</mat-icon>
+          </button>
+          <button mat-mini-fab color="primary">
+            <mat-icon>edit</mat-icon>
+          </button> -->
+		    </td>
+      </ng-container>
 
-	<tr mat-header-row *matHeaderRowDef=columns></tr>
-	<tr mat-row *matRowDef="let row; columns: columns;"></tr>
+      <ng-container matColumnDef="expandedDetail">
+        <td mat-cell *matCellDef="let row" [attr.colspan]="columns.length">
+          <div class="expenses-element-detail" [@detailExpand]="row == expandedElement ? 'expanded' : 'collapsed'">
+    
+            <div class="expenses-element-diagram">
+              Detalle del movimiento:
+              <div class="expenses-element-name"> Fecha: {{row.datetime}} </div>
+              <div class="expenses-element-name"> Resposable: {{row.id_movement}} </div>
+              
+            </div>
+            <div class="expenses-element-diagram">
+              Metodos de Pago:
+              <div  class="expenses-element-name">{{row.payment}}</div>
+              <!-- <div  class="expenses-element-name" *ngFor="let item of row.payments; let i = index" [attr.data-index]="i">
+                {{item.method.description}} {{item.typeName}} : ${{item.amount}}
+              </div> -->
+              </div>
+            </div>
+             
+        </td>
+      </ng-container>
 
+      <tr mat-header-row *matHeaderRowDef=columns></tr>
+      <tr mat-row *matRowDef="let row; columns: columns;"
+        class="expenses-element-row"
+            [class.expenses-expanded-row]="expandedElement === row"
+            (click)="expandedElement = expandedElement === row ? null : row">
+      </tr>
+      <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="expenses-detail-row"></tr>
 </table>
 
 

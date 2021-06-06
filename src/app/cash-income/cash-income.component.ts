@@ -5,8 +5,9 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import Swal from 'sweetalert2';
 import { Payment, AddPaymentMethodComponent } from '../add-payment-method/add-payment-method.component';
-import { Client } from '../sales/sales.model';
 import { CashService } from '../service/cash.service';
+import { ClientResponse } from '../service/client.service';
+import { SalesService } from '../service/sale/sales.service';
 
 @Component({
   selector: 'app-cash-income',
@@ -22,94 +23,20 @@ import { CashService } from '../service/cash.service';
 })
 export class CashIncomeComponent implements OnInit {
 
-  EXAMPLE_DATA: CashMovement[] = [
-    {
-      id: 1,
-      client: {
-        id: 11,
-        firstName: "Simon",
-        lastName: "Cervera",
-        document: "33100234"
-      },
-      payments:[],
-      movementType: "INGRESO",
-      cashMovementSource: "Venta en local",
-      salesmanId: 1,
-      amount: 10000,
-      description: "Factura nro. 19278361",
-      movementDate: "Hoy"
-    }
-  ]
-
-  EXAMPLE_DATA2: CashMovement = 
-    {
-      id: 0,
-      client: {
-        id: 50,
-        firstName: "Ruben",
-        lastName: "Sanchez",
-        document: "33100190"
-      },
-      payments: [ { method: {
-                            id: 1,
-                            description: "Efectivo",
-                            type: "EFECTIVO"
-                            },
-                    amount: 200,
-                    typeId: 0,
-                    typeName: null,
-                    lastDigits: null,
-                    email: null
-                  },
-                  { method: {
-                            id: 2,
-                            description: "Tarjeta de Crédito",
-                            type: "TARJETA"
-                    },
-                    amount: 1300,
-                    typeId: 0,
-                    typeName: "VISA",
-                    lastDigits: 2345,
-                    email: null
-                  },
-                  { method: {
-                            id: 2,
-                            description: "Tarjeta de Débito",
-                            type: "TARJETA"
-                    },
-                    amount: 500,
-                    typeId: 0,
-                    typeName: "MASTERCARD",
-                    lastDigits: 1234,
-                    email: null
-                  }
-      ],
-      movementType: "INGRESO",
-      cashMovementSource: "Venta en local",
-      salesmanId: 1,
-      amount: 2000,
-      description: "Factura nro. 19278362",
-      movementDate: "03 de Junio del 2021"
-    }
-  
-
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   columns = ['client','paymentMethods','amount','source', 'description','actions'];
   incomes = new MatTableDataSource<CashMovement>()
-  // incomesPrueba = new MatTableDataSource<CashMovementPrueba>()
   expandedElement: CashMovement | null;
-
-
 
   constructor(
     private addPaymentMethodDialog: MatDialog,
     public changeDetectorRef: ChangeDetectorRef,
-    private cashService: CashService
+    private cashService: CashService,
+    private salesService: SalesService
   ) { 
-    this.incomes = new MatTableDataSource(this.EXAMPLE_DATA)
-    this.incomes.data.push(this.EXAMPLE_DATA2)
-    // this.loadIncome();
+    
+     this.loadIncomes();
   }
 
   ngOnInit() {
@@ -119,75 +46,75 @@ export class CashIncomeComponent implements OnInit {
     this.incomes.paginator = this.paginator; 
   }
 
-  // loadIncome() {
-  //   this.cashService.getIncomes(1)
-  //     .subscribe(
-  //       (response) => {
-  //         console.log(JSON.stringify(response))
-  //         this.incomesPrueba.data = response.incomes;
-  //         console.log(JSON.stringify(this.incomesPrueba.data))
-          
-  //       },
-
-  //       (error) => {
-  //         Swal.fire({
-  //           icon: "error",
-  //           title: "Error",
-  //           text: "No se pudieron cargar los ingresos de la Caja"
-  //         });
-  //       }
-  //     );
-  // }
-  addPaymentMethod(cashMovement: CashMovement) {
-    const dialogRef = this.addPaymentMethodDialog.open(AddPaymentMethodComponent, { data: { clientId: cashMovement.client.id, total: cashMovement.amount } })
-
-    dialogRef.afterClosed()
-    .subscribe(
-      (result: Payment[]) => {
-        if(result && result.length > 0) {
-          cashMovement.payments = result
+  loadIncomes() {
+    this.cashService.getIncomes(1)
+      .subscribe(
+        (response) => {
+          console.log(JSON.stringify(response))
+          this.incomes.data = response.incomes;  
+        },
+        (error) => {
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "No se pudieron cargar los ingresos de la Caja"
+          });
         }
-      },
+      );
+  }
 
-      (error) => {
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: "No se pudo crear la categoria"
-        })
+  addPaymentMethod(cashMovement: CashMovement) {
+    
+    if(!this.isTheBillPaid(cashMovement.payments)){
+
+      const dialogRef = this.addPaymentMethodDialog.open(AddPaymentMethodComponent, { data: { clientId: cashMovement.client.id, total: cashMovement.amount } })
+
+      dialogRef.afterClosed()
+      .subscribe(
+        (result: Payment[]) => {
+          if(result && result.length > 0) {
+            cashMovement.payments = result
+          }
+        },
+        (error) => {
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "No se pudo crear el pago"
+          })
+        }
+      )
+    }else{
+      Swal.fire({
+        icon: "warning",
+        title: "La factura ya fue pagada"
+      });
+
+
+    }
+  }
+
+  isTheBillPaid(payments: Payment[]){
+    console.log(JSON.stringify(payments))
+      if(JSON.stringify(payments)=="[]"){
+        return false
+      }else{
+        return true
       }
-    )
   }
-
-
-  getPaymentsMade(payments: Payment[]){
-
-    console.log( JSON.stringify(payments))
-
-    return "string"
-
-  }
-
 }
 
 export interface CashMovement {
-  id: number;
-  client: Client;
+  id_movement: number;
+  datetime: number;
+  source_id: number;
+  source_description: String;
+  detail: String;
   payments?: Payment[];
-  movementType: String;
-  cashMovementSource: String;
-  salesmanId: number;
   amount: number;
-  description: String;
-  movementDate: String;
+  salesman_id: number;
+  client?: ClientResponse;
+  transaction_id: number //Id de la Venta
 }
 
 
-// export interface CashMovementPrueba {
-//   id_movement: number,
-//   datetime: Date,
-//   transaction: String,
-//   detail: String,
-//   payment: String,
-//   amount: number
-// }

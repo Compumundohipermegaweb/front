@@ -3,6 +3,9 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Cash } from '../cash/cash.component';
+import { Payment} from '../add-payment-method/add-payment-method.component';
+import { ClientResponse } from '../service/client.service';
+
 
 
 @Injectable({
@@ -15,8 +18,9 @@ export class CashService {
   endCashUrl ="/api/cash/end" ;
   allCashUrl ="/api/cash/all" ;
   startEndByUser ='/api/cash/start-end?user_id={user_id}';
-  incomeUrl ='/api/cash/cash/income?cash_start_end_id={cash_start_end_id}';
+  incomesUrl ='/api/cash/cash/income?cash_start_end_id={cash_start_end_id}';
   allTransactionUrl ='/api/cash/transaction/all?cash_start_end_id={cash_start_end_id}';
+  expensesUrl ='/api/cash/cash/expense?cash_start_end_id={cash_start_end_id}';
 
 
 constructor(private http: HttpClient) { }
@@ -37,8 +41,12 @@ constructor(private http: HttpClient) { }
   return this.startEndByUser.replace(/{user_id}/gi, userId.toString());
   }
 
-  buildUrlIncome(cashStartEndId  :number): String{
-    return this.incomeUrl.replace(/{cash_start_end_id}/gi, cashStartEndId.toString());
+  buildUrlIncomes(cashStartEndId  :number): String{
+    return this.incomesUrl.replace(/{cash_start_end_id}/gi, cashStartEndId.toString());
+  }
+
+  buildUrlExpenses(cashStartEndId  :number): String{
+    return this.expensesUrl.replace(/{cash_start_end_id}/gi, cashStartEndId.toString());
   }
 
   getCashOpenByUser(userId :number): Observable<CashStarEndIdResponse>{
@@ -46,11 +54,12 @@ constructor(private http: HttpClient) { }
   }
 
   getIncomes(cashStartEndId: number): Observable<IncomesResponse> {
-    return this.http.get<IncomesResponse>(this.apiHost + this.buildUrlIncome(cashStartEndId));
+    return this.http.get<IncomesResponse>(this.apiHost + this.buildUrlIncomes(cashStartEndId));
   }
 
-
-
+  getExpenses(cashStartEndId: number): Observable<ExpensesResponse> {
+    return this.http.get<ExpensesResponse>(this.apiHost + this.buildUrlExpenses(cashStartEndId));
+  }
 
 }
 export interface AllCashResponse {
@@ -81,14 +90,34 @@ export interface CashStarEndIdResponse{
 }
 
 export interface IncomeResponse{
+  id_movement: number;
+  datetime: number;
+  source_id: number;
+  source_description: String;
+  detail: String;
+  payments?: Payment[];
+  amount: number;
+  salesman_id: number;
+  client?: ClientResponse
+  transaction_id: number;//Id de la Venta
+}
+
+
+export interface IncomesResponse{
+    incomes: IncomeResponse[]
+}
+
+
+export interface ExpenseResponse{
   id_movement: number,
   datetime: Date,
-  transaction: String,
+  transaction_id: number;
+  source_description: String,
   detail: String,
   payment: String,
   amount: number
 }
 
-export interface IncomesResponse{
-    incomes: IncomeResponse[]
+export interface ExpensesResponse{
+    expenses: ExpenseResponse[]
 }

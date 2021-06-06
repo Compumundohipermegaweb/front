@@ -1,17 +1,16 @@
 <table  mat-table [dataSource]="incomes" multiTemplateDataRows class="mat-elevation-z8" matSort aria-label="Elements">
 
-	<ng-container matColumnDef="client">
-	  <th mat-header-cell *matHeaderCellDef mat-sort-header>Cliente</th>
-	  <td mat-cell *matCellDef="let row">{{row.client.firstName}} {{row.client.lastName}}</td>
+	<ng-container  matColumnDef="client">
+		<th mat-header-cell *matHeaderCellDef mat-sort-header>Cliente</th>
+		<td mat-cell *matCellDef="let row" > {{row.client?.first_name}} {{row.client?.last_name}} </td>
+		<mat-error>Cajero</mat-error>
 	</ng-container>
 
 	<ng-container matColumnDef="paymentMethods">
-	  <th mat-header-cell *matHeaderCellDef mat-sort-header>Medios de pago</th>
-	  <td mat-cell *matCellDef="let row"  > 
-		<div *ngFor="let item of row.payments; let i = index">
-			 {{item.method.description}}
-		</div> 
-	</td>  
+		<th mat-header-cell *matHeaderCellDef mat-sort-header>Medios de pago</th>
+		<td mat-cell *matCellDef="let row"> 
+			<div *ngFor="let item of row.payments; let i = index"> {{item.method?.description}}</div> 
+		</td>  
 	</ng-container> 
 
 	<ng-container matColumnDef="amount">
@@ -21,38 +20,40 @@
 
 	<ng-container matColumnDef="source">
 		<th mat-header-cell *matHeaderCellDef mat-sort-header>Origen</th>
-		<td mat-cell *matCellDef="let row">{{row.cashMovementSource}}</td>
+		<td mat-cell *matCellDef="let row">{{row.source_description}}</td>
 	</ng-container>
   
 	<ng-container matColumnDef="description">
 	  <th mat-header-cell *matHeaderCellDef mat-sort-header>Descripcion</th>
-	  <td mat-cell *matCellDef="let row">{{row.description}} </td>
+	  <td mat-cell *matCellDef="let row">{{row.detail}} {{row.transaction_id}}</td>
 	</ng-container>
 
     <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Acciones</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Pagar / Editar el pago</th>
         <td mat-cell *matCellDef="let row">
-			<button mat-mini-fab color="primary" (click)="addPaymentMethod(row)">
-				<mat-icon>add</mat-icon>
+			<button mat-mini-fab color="primary"  (click)="addPaymentMethod(row)" >
+				<mat-icon>attach_money</mat-icon>
+			</button>
+			<button mat-mini-fab color="primary"  >
+				<mat-icon>edit</mat-icon>
 			</button>
 		</td>
     </ng-container>
 
-	 <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
 	 <ng-container matColumnDef="expandedDetail">
 		<td mat-cell *matCellDef="let row" [attr.colspan]="columns.length">
-			<div class="example-element-detail" [@detailExpand]="row == expandedElement ? 'expanded' : 'collapsed'">
+			<div class="incomes-element-detail" [@detailExpand]="row == expandedElement ? 'expanded' : 'collapsed'">
 
-				<div class="example-element-diagram">
+				<div class="incomes-element-diagram">
 					Detalle del movimiento:
-					<div class="example-element-name"> Fecha: {{row.movementDate}} </div>
-					<div class="example-element-name"> Vendedor: {{row.vendedor}} </div>
-					<div class="example-element-name"> Nro. de Documento del Cliente: {{row.client.document}} </div>
+					<div class="incomes-element-name"> Fecha: {{row.datetime}} </div>
+					<div class="incomes-element-name"> Vendedor: {{row.salesman_id}} </div>
+					<div class="incomes-element-name"> Cliente: {{row.client?.document_number}}  Email: {{row.client?.email}}</div>
 					
 				</div>
-				<div class="example-element-diagram">
+				<div class="incomes-element-diagram">
 					Metodos de Pago:
-					<div  class="example-element-name" *ngFor="let item of row.payments; let i = index" [attr.data-index]="i">
+					<div  class="incomes-element-name" *ngFor="let item of row.payments; let i = index" [attr.data-index]="i">
 						{{item.method.description}} {{item.typeName}} : ${{item.amount}}
 					</div>
 				</div>
@@ -63,11 +64,11 @@
 
 	<tr mat-header-row *matHeaderRowDef=columns></tr>
 	<tr mat-row *matRowDef="let row; columns: columns;"
-		class="example-element-row"
-      	[class.example-expanded-row]="expandedElement === row"
+		class="incomes-element-row"
+      	[class.incomes-expanded-row]="expandedElement === row"
       	(click)="expandedElement = expandedElement === row ? null : row">
   	</tr>
-  	<tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+  	<tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="incomes-detail-row"></tr>
 </table>
 
 <mat-paginator #paginator

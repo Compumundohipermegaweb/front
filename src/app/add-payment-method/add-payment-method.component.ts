@@ -207,13 +207,14 @@ export class AddPaymentMethodComponent implements OnInit {
           }
         );
     }
-    if(this.isCheckingAccount() && (this.clientCheckingAccount.balance < payment.amount)){
-      console.log("Supera el balance")
+     if(this.isCheckingAccount() && (this.clientCheckingAccount.balance < payment.amount)){
+       console.log("Supera el balance")
 
-    }else{
+     }else{
     
-      if(this.paymentForm.valid) {
-        let alreadyUsedPaymentMethod = this.payments.some((it) => it.method.id == payment.method.id && it.typeId == payment.typeId );
+        if(this.paymentForm.valid) {
+            let alreadyUsedPaymentMethod = this.payments.some((it) => it.method.id == payment.method.id && it.typeId == payment.typeId 
+                                                                     && (payment.method.type=="EFECTIVO"||payment.method.type=="CUENTA_CORRIENTE"));
 
         if(!alreadyUsedPaymentMethod ) {
           this.addNewPaymentMethod(payment)
@@ -226,7 +227,7 @@ export class AddPaymentMethodComponent implements OnInit {
         if(this.totalCost == this.calculateCurrentSubtotal()) {
           this.paymentForm.setErrors(null)
         }
-      }
+     }
     }
   }
   
@@ -251,7 +252,7 @@ export class AddPaymentMethodComponent implements OnInit {
     this.payments.push(payment);
   }
 
-  appendPaymentMethod(payment) {
+  appendPaymentMethod(payment) {  
     this.payments.find((it) => it.method.id == payment.method.id && it.typeId == payment.typeId).amount += payment.amount;
   }
   

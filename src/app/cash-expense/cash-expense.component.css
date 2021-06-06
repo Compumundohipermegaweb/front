@@ -1,0 +1,37 @@
+table {
+    width: 100%;
+  }
+  
+  tr.expenses-detail-row {
+    height: 0;
+  }
+  
+  tr.expenses-element-row:not(.expenses-expanded-row):hover {
+    background: whitesmoke;
+  }
+  
+  tr.expenses-element-row:not(.expenses-expanded-row):active {
+    background: whitesmoke;
+  }
+  
+  .expenses-element-row td {
+    border-bottom-width: 0;
+  }
+  
+  .expenses-element-detail {
+    overflow: hidden;
+    display: flex;
+    background: #eaf1f7 ;
+  }
+  
+  .expenses-element-diagram {
+    min-width: 30%;
+    /* border: 2px solid black; */
+    padding: 8px;
+    font-weight: lighter;
+    margin: 8px 0;
+    height: 104px;
+  }
+  
+
+  

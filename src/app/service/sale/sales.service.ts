@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
-import { Observable } from 'rxjs';
+import { from, Observable } from 'rxjs';
 import { Sale, Item } from '../../sales/sales.model';
 import { SaleRequest, ClientRequest, SaleDetailsRequest, ItemRequest, PaymentRequest } from './sale-request.model';
 import { SaleResponse } from './sale-response.model';
 import { environment } from 'src/environments/environment';
 import { Payment } from 'src/app/add-payment-method/add-payment-method.component';
+import { ClientResponse } from 'src/app/service/client.service';
 
 
 @Injectable({
@@ -15,7 +16,8 @@ import { Payment } from 'src/app/add-payment-method/add-payment-method.component
 export class SalesService {
 
   host = environment.apiHost
-  salesUrl = "/api/sales"
+  salesUrl = "/api/sales"  
+  clientBySaleUrl ='/api/sales/client?sale_id={sale_id}'
 
   constructor(private http: HttpClient) { }
 
@@ -64,5 +66,14 @@ export class SalesService {
       type: payment.method.type,
       sub_total: payment.amount
     }
+  } 
+
+  buildUrlClientBySale(saleId: number): String{
+    return this.clientBySaleUrl.replace(/{sale_id}/gi, saleId.toString());
   }
+  
+  getClientBySale(saleId: number): Observable<ClientResponse> {
+    return this.http.get<ClientResponse>(this.host + this.buildUrlClientBySale(saleId));
+  }
+
 }
