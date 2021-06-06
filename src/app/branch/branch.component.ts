@@ -26,7 +26,7 @@ export class BranchComponent implements OnInit, AfterViewInit{
   dataSource = new MatTableDataSource<Branch>();
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns = ['codigo', 'domicilio', 'cp', 'horarios', 'telefono', 'mail'];
+  displayedColumns = ['codigo', 'domicilio', 'cp', 'telefono', 'mail', 'horarios'];
 
   constructor(private changeDetectorRefs: ChangeDetectorRef, private branchService: BranchService) {
     this.initDataSource();

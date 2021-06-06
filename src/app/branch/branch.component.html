@@ -10,41 +10,40 @@
 
   <mat-card-content>
 
-    <button mat-raised-button color="primary">Nueva Sucursal</button>
 
-    <mat-divider></mat-divider>
 
   <table  mat-table [dataSource]="dataSource"  class="full-width-table" matSort aria-label="Elements">
     <!-- Id Column -->
     <ng-container matColumnDef="codigo">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Codigo</th>
-      <td mat-cell *matCellDef="let row">{{row.codigo_sucursal}}</td>
+      <td mat-cell *matCellDef="let branch">{{branch.id}}</td>
     </ng-container>
 
     <!-- Name Column -->
     <ng-container matColumnDef="domicilio">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Domicilio</th>
-      <td mat-cell *matCellDef="let row">{{row.domicilio}}</td>
+      <td mat-cell *matCellDef="let branch">{{branch.address}}</td>
     </ng-container>
 
     <ng-container matColumnDef="cp">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>CP</th>
-      <td mat-cell *matCellDef="let row">{{row.codigo_postal}}</td>
+      <td mat-cell *matCellDef="let branch">{{branch.postal_code}}</td>
     </ng-container>
 
-    <ng-container matColumnDef="horarios">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Horarios</th>
-      <td mat-cell *matCellDef="let row">{{row.horarios}}</td>
-    </ng-container>
 
     <ng-container matColumnDef="telefono">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Telefono</th>
-      <td mat-cell *matCellDef="let row">{{row.telefono}}</td>
+      <td mat-cell *matCellDef="let branch">{{branch.contact_number}}</td>
     </ng-container>
 
     <ng-container matColumnDef="mail">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Mail</th>
-      <td mat-cell *matCellDef="let row">{{row.mail}}</td>
+      <td mat-cell *matCellDef="let branch">{{branch.email}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="horarios">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Horarios</th>
+      <td mat-cell *matCellDef="let branch">{{branch.attetention_schedule}}</td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
