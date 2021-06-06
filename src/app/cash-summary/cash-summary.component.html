@@ -1,11 +1,11 @@
 
-<mat-grid-list cols="2" rowHeight="2:1">  
+<mat-grid-list cols="2" rowHeight="2:1">
     <!-- Start-End Cash -->
-   
+
     <mat-grid-tile>
     <!-- <div class="general"> -->
         <mat-card class="card">
-        <form class="start-end-form"> 
+        <form class="start-end-form">
                 <mat-form-field *ngIf="cashOpened==0">
                     <mat-label>Seleccione una Caja</mat-label>
                     <mat-select [formControl]="cashForm" (selectionChange)="selectCash($event)" >
@@ -13,29 +13,29 @@
                     </mat-select>
                     <mat-error *ngIf="cashForm.invalid">Seleccione el tipo</mat-error>
                 </mat-form-field>
-
+  
                 <mat-form-field class="start-end-full-width" *ngIf="cashOpened==0">
                     <mat-label>Saldo Inicial de Caja</mat-label>
-                    <input type="number" matInput [formControl]="openBalanceForm">  
-                    <mat-hint>Pesos Argentinos</mat-hint>         
-                </mat-form-field> 
-            
+                    <input type="number" matInput [formControl]="openBalanceForm">
+                    <mat-hint>Pesos Argentinos</mat-hint>
+                </mat-form-field>
+
                 <button mat-raised-button class="button_right" color="primary" (click)="openCash()" *ngIf="cashOpened==0">Abrir Caja</button>
-            
+
                 <mat-form-field class="start-end-full-width" *ngIf="cashOpened">
                     <mat-label>Saldo final de Caja</mat-label>
-                    <input type="number" matInput [formControl]="closeBalanceForm">  
-                    <mat-hint>Pesos Argentinos</mat-hint>         
-                </mat-form-field> 
-            
+                    <input type="number" matInput [formControl]="closeBalanceForm">
+                    <mat-hint>Pesos Argentinos</mat-hint>
+                </mat-form-field>
+
                 <button mat-raised-button class="button_right" color="primary" (click)="closeCashRegister()" *ngIf="cashOpened" >Cerrar Caja</button>
-          
+
 
         </form>
 
         <div *ngIf="cashOpened">
             <button mat-raised-button class="button_right" color="primary">Registrar Egreso</button>
-            <button mat-raised-button class="button_right" color="primary">Registrar Ingreso</button> 
+            <button mat-raised-button class="button_right" color="primary">Registrar Ingreso</button>
         </div>
     </mat-card>
     <!-- </div> -->
@@ -49,26 +49,26 @@
             <td mat-cell *matCellDef="let transaction"> {{transaction.movement}} </td>
             <td mat-footer-cell *matFooterCellDef> Diferencia </td>
             </ng-container>
-        
+
             <!-- Amount Column -->
             <ng-container matColumnDef="amount">
             <th mat-header-cell *matHeaderCellDef> Total </th>
             <td mat-cell *matCellDef="let transaction"> {{transaction.amount | currency}} </td>
             <td mat-footer-cell *matFooterCellDef> {{getTotalCost() | currency}} </td>
             </ng-container>
-        
+
             <ng-container matColumnDef="disclaimer">
             <td mat-footer-cell *matFooterCellDef colspan="2">
-                Nota: Si existe diferencia entre el total de Ingreso y el total de Egreso, se deberá aplicar el movimiento correspondiente para poder cerrar la caja. 
+                Nota: Si existe diferencia entre el total de Ingreso y el total de Egreso, se deberá aplicar el movimiento correspondiente para poder cerrar la caja.
             </td>
             </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns"
                 class="example-first-header-row">
             </tr>
-        
+
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        
+
             <tr mat-footer-row *matFooterRowDef="displayedColumns" class="example-first-footer-row"></tr>
             <tr mat-footer-row *matFooterRowDef="['disclaimer']" class="example-second-footer-row"></tr>
         </table>
