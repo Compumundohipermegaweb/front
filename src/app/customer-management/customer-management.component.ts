@@ -2,7 +2,9 @@ import { AfterViewInit, Component, ViewChild, OnInit, ChangeDetectorRef} from '@
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
+import { runInThisContext } from 'node:vm';
 import Swal  from 'sweetalert2';
+import { ClientService } from '../service/client.service'
 
 @Component({
   selector: 'app-customer-management',
@@ -11,19 +13,17 @@ import Swal  from 'sweetalert2';
 })
 export class CustomerManagementComponent implements OnInit, AfterViewInit {
 
-  EXAMPLE_DATA: MyTableClients[] =[
-    {id: 1, name: "maxi", email: 'jorge@yahoo.com', credit_limit: 2000, defaulter: false, state: true}
-  ];
+
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatTable) table!: MatTable<MyTableClients>;
-  dataSource = new MatTableDataSource<MyTableClients>();
+  dataSource = new MatTableDataSource<Client>();
 
   displayedColumns = ['id', 'nombre', 'email', 'limite', 'moroso', 'estado', 'acciones'];
 
-  constructor(private changeDetectorRefs: ChangeDetectorRef) {
-    this.dataSource.data = this.EXAMPLE_DATA;
+  constructor(private changeDetectorRefs: ChangeDetectorRef, private clientService: ClientService) {
+    this.initDataSource();
   }
 
   ngOnInit(): void {
@@ -32,6 +32,25 @@ export class CustomerManagementComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
+  }
+
+  initDataSource(){
+    this.dataSource = new MatTableDataSource();
+
+    this.clientService.getClient()
+      .subscribe(
+        (response) => {
+          this.dataSource.data = response.clients
+        },
+
+        (error) => {
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "No se pudieron cargar las categorías"
+          })
+        }
+      )
   }
 
   delete(row: MyTableClients){
@@ -51,19 +70,15 @@ export class CustomerManagementComponent implements OnInit, AfterViewInit {
           title: "Item eliminado!",
           text: "Se ha eliminado " + "Cliente" + row.name
         });
-        this.EXAMPLE_DATA = this.EXAMPLE_DATA.filter((cli: MyTableClients) => cli.id != row.id)
-        this.refreshDataSource()
+        //this.EXAMPLE_DATA = this.EXAMPLE_DATA.filter((cli: MyTableClients) => cli.id != row.id)
+        //this.refreshDataSource()
       }
     })
   }
 
-  initDataSource(){
 
-  }
-  
-  private refreshDataSource() {
-    this.dataSource.data = this.EXAMPLE_DATA;
-  }
+
+
 }
 
 export interface MyTableClients{
@@ -73,4 +88,15 @@ export interface MyTableClients{
   credit_limit: number;
   defaulter: boolean;
   state: boolean;
+}
+
+export interface Client{
+  id: number;
+  document_number: String;
+  first_name: String;
+  last_name: String;
+  state: String;
+  credit_limit: number;
+  email: String;
+  contact_number: String;
 }
