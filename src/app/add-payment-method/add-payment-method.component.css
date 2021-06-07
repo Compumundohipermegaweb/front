@@ -1,3 +1,18 @@
-.mat-table{
-    width:100%
+.mat-dialog-container{
+    min-width: 1000px;
 }
+
+.mat-table{
+    width:100%;
+} 
+
+.mat-dialog-container{
+    padding-right: 5px;
+}
+
+th,td{ 
+    min-width: 100px; 
+    padding-right: 5px;
+    padding-left: 5px;
+}
+

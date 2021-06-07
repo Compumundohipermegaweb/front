@@ -1,15 +1,16 @@
-<h2 mat-header>Nuevo Metodo de Pago</h2>
-
-<h3 mat-subheader> Total: {{ data.total | localCurrency }} </h3>
-<h3 mat-subheader> Cliente: {{ data.clientId }} </h3>
-<h3 mat-subheader> Falta: {{ totalCost - calculateCurrentSubtotal() | localCurrency}}</h3>
+<!-- <h3 mat-header>Agregar o Editar Medios de Pago</h3> -->
+<h2 mat-dialog-title>Agregar o Editar Medios de Pago</h2> 
+<h3>Total: {{ data.total | localCurrency }}</h3> 
+<h3>Cliente: {{ data.clientId }} </h3>
+<h3>Falta: {{ totalCost - calculateCurrentSubtotal() | localCurrency}}</h3>
+<mat-dialog-content class="mat-typography">
 <form [formGroup]="paymentForm">
     <ng-template matStepLabel>Medios de pago</ng-template>
 
     <mat-form-field>
         <mat-label>Medio de pago</mat-label>
         <mat-select [formControl]="paymentMethodControl" (selectionChange)="selectPaymentMethod($event)" required>
-            <mat-option *ngFor="let paymentMethod of paymentMethods" [value]="paymentMethod.type"> {{ paymentMethod.description }} </mat-option>
+            <mat-option *ngFor="let paymentMethod of paymentMethods" [value]="paymentMethod.id"> {{ paymentMethod.description }} </mat-option>
         </mat-select>
     </mat-form-field>
 
@@ -79,9 +80,19 @@
       <th mat-header-cell *matHeaderCellDef>Email</th>
       <td mat-cell *matCellDef="let payment"> {{payment.email}} </td>
       <td mat-footer-cell *matFooterCellDef> {{ calculateCurrentSubtotal() | localCurrency }} </td>
-  </ng-container>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Eliminar</th>
+        <td mat-cell *matCellDef="let payment"> 
+            <button mat-mini-fab color="warn" (click)="delete(payment)">
+                <mat-icon>delete</mat-icon>
+            </button>
+        </td>
+        <td mat-footer-cell *matFooterCellDef></td>
+    </ng-container>
 
 </table>
-
+</mat-dialog-content>
 <button mat-raised-button color="error" (click)="close()">Cancelar</button>
 <button mat-raised-button color="primary" (click)="checkout()">Confirmar</button>

@@ -64,10 +64,8 @@ export class CashIncomeComponent implements OnInit {
   }
 
   addPaymentMethod(cashMovement: CashMovement) {
-    
-    if(!this.isTheBillPaid(cashMovement.payments)){
 
-      const dialogRef = this.addPaymentMethodDialog.open(AddPaymentMethodComponent, { data: { clientId: cashMovement.client.id, total: cashMovement.amount } })
+      const dialogRef = this.addPaymentMethodDialog.open(AddPaymentMethodComponent, { data: { clientId: cashMovement.client.id, total: cashMovement.amount , payments: cashMovement.payments} })
 
       dialogRef.afterClosed()
       .subscribe(
@@ -84,23 +82,6 @@ export class CashIncomeComponent implements OnInit {
           })
         }
       )
-    }else{
-      Swal.fire({
-        icon: "warning",
-        title: "La factura ya fue pagada"
-      });
-
-
-    }
-  }
-
-  isTheBillPaid(payments: Payment[]){
-    console.log(JSON.stringify(payments))
-      if(JSON.stringify(payments)=="[]"){
-        return false
-      }else{
-        return true
-      }
   }
 }
 
