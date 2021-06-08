@@ -16,17 +16,17 @@ import { AuthorizatedGuard } from './login/core/authorizated.guard';
 
 
 export const routes: Routes = [
-  { path: "sales", component: SalesComponent },
-  { path: "sales/invoice", component: SaleInvoiceComponent },
-  { path: "branch", component: BranchComponent},
-  { path: "client-lookup-dialog", component: ClientLookupDialogComponent},
-  { path: "stock", component: StockComponent},
-  { path: "cash", component: CashComponent},
-  { path: "mdm", component: MdmComponent},
+  { path: "sales", component: SalesComponent, canActivate: [AuthorizatedGuard]},
+  { path: "sales/invoice", component: SaleInvoiceComponent, canActivate: [AuthorizatedGuard]},
+  { path: "branch", component: BranchComponent, canActivate: [AuthorizatedGuard]},
+  { path: "client-lookup-dialog", component: ClientLookupDialogComponent, canActivate: [AuthorizatedGuard]},
+  { path: "stock", component: StockComponent, canActivate: [AuthorizatedGuard]},
+  { path: "cash", component: CashComponent, canActivate: [AuthorizatedGuard]},
+  { path: "mdm", component: MdmComponent, canActivate: [AuthorizatedGuard]},
   { path: "login", component: LoginComponent},
   { path: "home", component: HomeComponent, canActivate: [AuthorizatedGuard]},
-  { path: "customer", component: CustomerManagementComponent},
-  { path: "reports", component: ReportsComponent},
+  { path: "customer", component: CustomerManagementComponent, canActivate: [AuthorizatedGuard]},
+  { path: "reports", component: ReportsComponent, canActivate: [AuthorizatedGuard]},
   { path: "", redirectTo: "/home", pathMatch: "full" },
   { path: "**", redirectTo: "/home"}
 ]
