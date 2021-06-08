@@ -1,15 +1,16 @@
 <mat-list>
 
-  <mat-list-item>
-    <button mat-button class="nav-button" routerLink="/cash" routerLinkActive="active">
-      <mat-icon>point_of_sale</mat-icon> Caja
-    </button>
-  </mat-list-item>
+  <div *ngIf="isCashier() || isAdmin()">
+    <mat-list-item>
+      <button mat-button class="nav-button" [routerLink]="['cash']" routerLinkActive="active">
+        <mat-icon>point_of_sale</mat-icon> Caja
+      </button>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+  </div>
 
-  <mat-divider></mat-divider>
-
   <mat-list-item>
-    <button mat-button class="nav-button" routerLink="/sales" routerLinkActive="active">
+    <button mat-button class="nav-button" [routerLink]="['sales']" routerLinkActive="active">
       <mat-icon>sell</mat-icon> Ventas
     </button>
   </mat-list-item>
@@ -17,7 +18,7 @@
   <mat-divider></mat-divider>
 
   <mat-list-item>
-    <button mat-button class="nav-button" routerLink="/stock" routerLinkActive="active">
+    <button mat-button class="nav-button" [routerLink]="['stock']" routerLinkActive="active">
       <mat-icon>view_in_ar</mat-icon> Stock
     </button>
   </mat-list-item>
@@ -25,7 +26,7 @@
   <mat-divider></mat-divider>
 
   <mat-list-item>
-    <button mat-button class="nav-button" routerLink="/branch" routerLinkActive="active">
+    <button mat-button class="nav-button" [routerLink]="['branch']" routerLinkActive="active">
       <mat-icon>home</mat-icon> Sucursales
     </button>
   </mat-list-item>
@@ -33,7 +34,7 @@
   <mat-divider></mat-divider>
 
   <mat-list-item>
-    <button mat-button class="nav-button" routerLink="/customer" routerLinkActive="active">
+    <button mat-button class="nav-button" [routerLink]="['customer']" routerLinkActive="active">
       <mat-icon>perm_identity</mat-icon> Clientes
     </button>
   </mat-list-item>
@@ -41,7 +42,7 @@
   <mat-divider></mat-divider>
 
   <mat-list-item>
-    <button mat-button class="nav-button" routerLink="/reports" routerLinkActive="active">
+    <button mat-button class="nav-button" [routerLink]="['reports']" routerLinkActive="active">
       <mat-icon>insights</mat-icon> Reportes
     </button>
   </mat-list-item>
@@ -49,7 +50,7 @@
   <mat-divider></mat-divider>
 
   <mat-list-item>
-    <button mat-button class="nav-button" routerLink="/mdm" routerLinkActive="active">
+    <button mat-button class="nav-button" [routerLink]="['mdm']" routerLinkActive="active">
       <mat-icon>settings</mat-icon> Datos Maestros
     </button>
   </mat-list-item>

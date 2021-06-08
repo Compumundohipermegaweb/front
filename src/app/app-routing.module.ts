@@ -11,22 +11,23 @@ import { MdmComponent } from './mdm/mdm.component';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { CustomerManagementComponent } from './customer-management/customer-management.component';
-import { ReportsComponent } from './reports/reports.component'
+import { ReportsComponent } from './reports/reports.component';
 import { AuthorizatedGuard } from './login/core/authorizated.guard';
 
 
 export const routes: Routes = [
-  { path: "sales", component: SalesComponent, canActivate: [AuthorizatedGuard]},
-  { path: "sales/invoice", component: SaleInvoiceComponent, canActivate: [AuthorizatedGuard]},
-  { path: "branch", component: BranchComponent, canActivate: [AuthorizatedGuard]},
-  { path: "client-lookup-dialog", component: ClientLookupDialogComponent, canActivate: [AuthorizatedGuard]},
-  { path: "stock", component: StockComponent, canActivate: [AuthorizatedGuard]},
-  { path: "cash", component: CashComponent, canActivate: [AuthorizatedGuard]},
-  { path: "mdm", component: MdmComponent, canActivate: [AuthorizatedGuard]},
   { path: "login", component: LoginComponent},
-  { path: "home", component: HomeComponent, canActivate: [AuthorizatedGuard]},
-  { path: "customer", component: CustomerManagementComponent, canActivate: [AuthorizatedGuard]},
-  { path: "reports", component: ReportsComponent, canActivate: [AuthorizatedGuard]},
+  { path: "home", component: HomeComponent, canActivate: [AuthorizatedGuard], children: [
+    { path: "sales", component: SalesComponent, canActivate: [AuthorizatedGuard]},
+    { path: "sales/invoice", component: SaleInvoiceComponent, canActivate: [AuthorizatedGuard]},
+    { path: "branch", component: BranchComponent, canActivate: [AuthorizatedGuard]},
+    { path: "client-lookup-dialog", component: ClientLookupDialogComponent, canActivate: [AuthorizatedGuard]},
+    { path: "stock", component: StockComponent, canActivate: [AuthorizatedGuard]},
+    { path: "cash", component: CashComponent, canActivate: [AuthorizatedGuard]},
+    { path: "mdm", component: MdmComponent, canActivate: [AuthorizatedGuard]},
+    { path: "customer", component: CustomerManagementComponent, canActivate: [AuthorizatedGuard]},
+    { path: "reports", component: ReportsComponent, canActivate: [AuthorizatedGuard]}
+  ]},
   { path: "", redirectTo: "/home", pathMatch: "full" },
   { path: "**", redirectTo: "/home"}
 ]

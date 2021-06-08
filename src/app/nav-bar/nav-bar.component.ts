@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AdminGuard } from '../login/core/admin.guard';
+import { CashierGuard } from '../login/core/cashier.guard';
 
 @Component({
   selector: 'app-nav-bar',
@@ -7,9 +9,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavBarComponent implements OnInit {
 
-  constructor() { }
+  constructor(private cashierGuard: CashierGuard, private adminGuard: AdminGuard) { }
 
   ngOnInit(): void {
+  }
+
+  isCashier() {
+    return this.cashierGuard.canActivate()
+  }
+
+  isAdmin() {
+    return this.adminGuard.canActivate()
   }
 
 }

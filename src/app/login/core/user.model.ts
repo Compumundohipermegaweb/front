@@ -6,3 +6,11 @@ export class User {
   public username: string;
   public password?: string;
 }
+
+export enum Role {
+  VENDEDOR = "VENDEDOR", 
+  CAJERO = "CAJERO", 
+  SUPERVISOR = "SUPERVISOR", 
+  GERENTE = "GERENTE", 
+  ADMIN = "ADMIN"
+}

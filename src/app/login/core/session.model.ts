@@ -1,3 +1,5 @@
+import { Role } from "./user.model";
+
 export class Session {
   public token: Token;
   public user: String;
@@ -5,5 +7,5 @@ export class Session {
 
 export interface Token {
   code: String;
-  role: String;
+  role: Role;
 }
