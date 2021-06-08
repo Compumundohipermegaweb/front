@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ViewChild, OnInit, ChangeDetectorRef} from '@
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
-import { runInThisContext } from 'node:vm';
+//import { runInThisContext } from 'node:vm';
 import Swal  from 'sweetalert2';
 import { ClientService } from '../service/client.service'
 
@@ -23,7 +23,7 @@ export class CustomerManagementComponent implements OnInit, AfterViewInit {
   displayedColumns = ['id', 'nombre', 'email', 'limite', 'moroso', 'estado', 'acciones'];
 
   constructor(private changeDetectorRefs: ChangeDetectorRef, private clientService: ClientService) {
-    this.initDataSource();
+    //this.initDataSource();
   }
 
   ngOnInit(): void {
@@ -34,7 +34,7 @@ export class CustomerManagementComponent implements OnInit, AfterViewInit {
     this.dataSource.paginator = this.paginator;
   }
 
-  initDataSource(){
+  /*initDataSource(){
     this.dataSource = new MatTableDataSource();
 
     this.clientService.getClient()
@@ -51,7 +51,7 @@ export class CustomerManagementComponent implements OnInit, AfterViewInit {
           })
         }
       )
-  }
+  }*/
 
   delete(row: MyTableClients){
     Swal.fire({
