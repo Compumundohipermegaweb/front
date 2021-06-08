@@ -1,9 +1,6 @@
-/**
- * Created by xavi on 5/16/17.
- */
  import {Injectable} from "@angular/core";
  import { Router } from '@angular/router';
- import {Session} from "./session.model";
+ import {Session, Token} from "./session.model";
  import {User} from "./user.model";
 
  @Injectable({
@@ -38,7 +35,7 @@
      this.currentSession = null;
    }
 
-   getCurrentUser(): User {
+   getCurrentUser(): String {
      var session: Session = this.getCurrentSession();
      return (session && session.user) ? session.user : null;
    };
@@ -47,7 +44,7 @@
      return (this.getCurrentToken() != null) ? true : false;
    };
 
-   getCurrentToken(): string {
+   getCurrentToken(): Token {
      var session = this.getCurrentSession();
      return (session && session.token) ? session.token : null;
    };

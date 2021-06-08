@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Branch } from '../branch/branch.component';
+import { StorageService } from '../login/core/storage.service';
 import { BranchService } from '../service/branch.service';
 
 @Component({
@@ -12,7 +13,7 @@ export class HomeComponent implements OnInit {
   branches: Branch[]
   branchSelected: number
 
-  constructor(private branchService: BranchService) { 
+  constructor(private branchService: BranchService, private storageService: StorageService) { 
     this.fetchBranches()
   }
 
@@ -35,6 +36,10 @@ export class HomeComponent implements OnInit {
   selectBranch(branchId: number) {
     this.branchSelected = branchId
     this.branchService.selectBranch(this.branchSelected)
+  }
+
+  logout() {
+    this.storageService.logout()
   }
 
 }

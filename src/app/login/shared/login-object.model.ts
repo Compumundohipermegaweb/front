@@ -1,7 +1,4 @@
-/**
- * Created by xavi on 5/16/17.
- */
- export class LoginObject {
+export class LoginObject {
 
   public username: string;
   public password: string;
