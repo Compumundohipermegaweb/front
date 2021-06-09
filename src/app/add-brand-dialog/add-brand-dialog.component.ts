@@ -22,7 +22,7 @@ export class AddBrandDialogComponent implements OnInit {
     private formBuilder: FormBuilder,
     private brandService: BrandService,
     private matDialogRef: MatDialogRef<AddBrandDialogComponent>
-  ) { 
+  ) {
     this.matDialogRef.disableClose = true
 
     this.brandsCreated = []
@@ -56,6 +56,7 @@ export class AddBrandDialogComponent implements OnInit {
           })
 
           this.brandsCreated.push(response)
+          this.close()
         },
 
         (error) => {

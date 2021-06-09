@@ -60,6 +60,7 @@ export class AddUnitDialogComponent implements OnInit {
           })
 
           this.unitsCreated.push(response)
+          this.close()
         },
 
         (error) => {

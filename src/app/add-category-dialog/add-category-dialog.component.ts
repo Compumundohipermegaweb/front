@@ -23,7 +23,7 @@ export class AddCategoryDialogComponent implements OnInit {
     private formBuilder: FormBuilder,
     private categoryService: CategoryService,
     public dialogRef: MatDialogRef<AddCategoryDialogComponent>
-  ) { 
+  ) {
 
     this.nameControl = new FormControl()
     this.descriptionControl = new FormControl()
@@ -60,6 +60,7 @@ export class AddCategoryDialogComponent implements OnInit {
           })
 
           this.categoriesCreated.push(response)
+          this.close()
         },
 
         (error) => {

@@ -74,6 +74,7 @@ export class NewPaymentMethodComponent implements OnInit {
           })
 
           this.createdPaymentMethods.push(response)
+          this.close()
         },
 
         (error) => {
@@ -93,7 +94,7 @@ export class NewPaymentMethodComponent implements OnInit {
       return "INACTIVE"
     }
   }
-  
+
   close() {
     this.matDialogRef.close(this.createdPaymentMethods)
   }

@@ -13,6 +13,9 @@ import { HomeComponent } from './home/home.component';
 import { CustomerManagementComponent } from './customer-management/customer-management.component';
 import { ReportsComponent } from './reports/reports.component';
 import { AuthorizatedGuard } from './login/core/authorizated.guard';
+import { PurchasesComponent } from './purchases/purchases.component';
+import { SupplierComponent } from './supplier/supplier.component'
+import { SettingsComponent } from './settings/settings.component'
 
 
 export const routes: Routes = [
@@ -26,7 +29,10 @@ export const routes: Routes = [
     { path: "cash", component: CashComponent, canActivate: [AuthorizatedGuard]},
     { path: "mdm", component: MdmComponent, canActivate: [AuthorizatedGuard]},
     { path: "customer", component: CustomerManagementComponent, canActivate: [AuthorizatedGuard]},
-    { path: "reports", component: ReportsComponent, canActivate: [AuthorizatedGuard]}
+    { path: "reports", component: ReportsComponent, canActivate: [AuthorizatedGuard]},
+    { path: "purchase", component: PurchasesComponent, canActivate: [AuthorizatedGuard]},
+    { path: "supplier", component: SupplierComponent, canActivate: [AuthorizatedGuard]},
+    { path: "setting", component: SettingsComponent, canActivate: [AuthorizatedGuard]}
   ]},
   { path: "", redirectTo: "/home", pathMatch: "full" },
   { path: "**", redirectTo: "/home"}

@@ -68,6 +68,10 @@ import { CustomerManagementComponent } from './customer-management/customer-mana
 import { ReportsComponent } from './reports/reports.component';
 import { OperationalReportsComponent } from './operational-reports/operational-reports.component';
 import { ManagerialReportsComponent } from './managerial-reports/managerial-reports.component';
+import { PurchasesComponent } from './purchases/purchases.component';
+import { SupplierComponent } from './supplier/supplier.component';
+import { AddSupplierDialogComponent } from './add-supplier-dialog/add-supplier-dialog.component';
+import { SettingsComponent } from './settings/settings.component';
 
 registerLocaleData(localEsAr)
 
@@ -105,7 +109,11 @@ registerLocaleData(localEsAr)
     CustomerManagementComponent,
     ReportsComponent,
     OperationalReportsComponent,
-    ManagerialReportsComponent
+    ManagerialReportsComponent,
+    PurchasesComponent,
+    SupplierComponent,
+    AddSupplierDialogComponent,
+    SettingsComponent
   ],
   imports: [
     BrowserModule,
