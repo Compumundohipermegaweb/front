@@ -320,11 +320,8 @@ export class AddPaymentMethodComponent implements OnInit {
         (response) => {
          console.log(JSON.stringify(response))
           if(response) {
-            alert("OK")
             this.matDialogRef.close(this.payments)
-          } else {
-            alert("NOOO")
-          }
+          } 
         },
 
         (error) => {
