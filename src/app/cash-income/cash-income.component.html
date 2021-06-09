@@ -9,7 +9,7 @@
 	<ng-container matColumnDef="paymentMethods">
 		<th mat-header-cell *matHeaderCellDef mat-sort-header>Medios de pago</th>
 		<td mat-cell *matCellDef="let row"> 
-			<div *ngFor="let item of row.payments; let i = index"> {{item.method?.description}}</div> 
+			<div *ngFor="let item of row.payments; let i = index"> {{findPaymentMethodDescription(item.method.id)}}</div> 
 		</td>  
 	</ng-container> 
 
@@ -37,7 +37,7 @@
 		</td>
     </ng-container>
 
-	 <ng-container matColumnDef="expandedDetail">
+	<ng-container matColumnDef="expandedDetail">
 		<td mat-cell *matCellDef="let row" [attr.colspan]="columns.length">
 			<div class="incomes-element-detail" [@detailExpand]="row == expandedElement ? 'expanded' : 'collapsed'">
 
@@ -50,13 +50,13 @@
 				</div>
 				<div class="incomes-element-diagram">
 					<strong>Metodos de Pago:</strong>
-					<div  class="incomes-element-name" *ngFor="let item of row.payments; let i = index" [attr.data-index]="i">
-						&nbsp;&nbsp;{{item.method.description}} {{item.typeName}} : ${{item.amount}}
+					<div  class="incomes-element-name" *ngFor="let item of row.payments; let i = index" [attr.data-index]="i">&nbsp;&nbsp;
+						{{findPaymentMethodDescription(item.method.id)}}&nbsp;{{findCardName(item.card_id)}}: ${{item.sub_total}} 
 					</div>
 				</div>
 	   		</div>
 		</td>
-	  </ng-container>
+	</ng-container>
 	
 
 	<tr mat-header-row *matHeaderRowDef=columns></tr>

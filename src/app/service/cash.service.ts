@@ -3,8 +3,9 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Cash } from '../cash/cash.component';
-import { Payment} from '../add-payment-method/add-payment-method.component';
+import { Payment, PaymentMethod} from '../add-payment-method/add-payment-method.component';
 import { ClientResponse } from '../service/client.service';
+
 
 
 
@@ -15,12 +16,13 @@ export class CashService {
   
   apiHost = environment.apiHost;
   startCashUrl = "/api/cash/start";
-  endCashUrl ="/api/cash/end" ;
-  allCashUrl ="/api/cash/all" ;
-  startEndByUser ='/api/cash/start-end?user_id={user_id}';
-  incomesUrl ='/api/cash/cash/income?cash_start_end_id={cash_start_end_id}';
-  allTransactionUrl ='/api/cash/transaction/all?cash_start_end_id={cash_start_end_id}';
-  expensesUrl ='/api/cash/cash/expense?cash_start_end_id={cash_start_end_id}';
+  endCashUrl = "/api/cash/end" ;
+  allCashUrl = "/api/cash/all" ;
+  startEndByUser = '/api/cash/start-end?user_id={user_id}';
+  incomesUrl = '/api/cash/cash/income?cash_start_end_id={cash_start_end_id}';
+  allTransactionUrl = '/api/cash/transaction/all?cash_start_end_id={cash_start_end_id}';
+  expensesUrl = '/api/cash/cash/expense?cash_start_end_id={cash_start_end_id}';
+  paymentsUrl  = '/api/cash/payment-details/update?movement_id={movement_id}';
 
 
 constructor(private http: HttpClient) { }
@@ -49,19 +51,31 @@ constructor(private http: HttpClient) { }
     return this.expensesUrl.replace(/{cash_start_end_id}/gi, cashStartEndId.toString());
   }
 
+  buildUrlPayments(movementId  :number): String{
+    return this.paymentsUrl.replace(/{movement_id}/gi, movementId.toString());
+  }
+
   getCashOpenByUser(userId :number): Observable<CashStarEndIdResponse>{
     return this.http.get<CashStarEndIdResponse>(this.apiHost + this.buildUrlCashOpenByUser(userId));
   }
 
   getIncomes(cashStartEndId: number): Observable<IncomesResponse> {
     return this.http.get<IncomesResponse>(this.apiHost + this.buildUrlIncomes(cashStartEndId));
+   
   }
 
   getExpenses(cashStartEndId: number): Observable<ExpensesResponse> {
     return this.http.get<ExpensesResponse>(this.apiHost + this.buildUrlExpenses(cashStartEndId));
   }
 
+  payMovement(movementId: number, payments: PaymentRequest[]): Observable<boolean> {
+    return this.http.post<boolean>(this.apiHost + this.buildUrlPayments(movementId), payments)
+  }
+
+
 }
+
+
 export interface AllCashResponse {
   cash_registers: Cash[];
 }
@@ -102,22 +116,30 @@ export interface IncomeResponse{
   transaction_id: number;//Id de la Venta
 }
 
-
 export interface IncomesResponse{
     incomes: IncomeResponse[]
 }
 
-
 export interface ExpenseResponse{
-  id_movement: number,
-  datetime: Date,
+  id_movement: number;
+  datetime: Date;
   transaction_id: number;
-  source_description: String,
-  detail: String,
-  payment: String,
+  source_description: String;
+  detail: String;
+  payment: String;
   amount: number
 }
 
 export interface ExpensesResponse{
     expenses: ExpenseResponse[]
 }
+
+export interface PaymentRequest{
+  method: PaymentMethod;
+  sub_total: number;
+  card_id?: number;
+  lastDigits?: String;
+  email?: String;
+}
+
+

@@ -3,8 +3,8 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import Swal from 'sweetalert2';
-import { Client } from '../sales/sales.model';
 import { CardService } from '../service/card.service';
+import { CashService } from '../service/cash.service';
 import { CheckingAccountResponse, ClientService } from '../service/client.service';
 
 @Component({
@@ -18,30 +18,29 @@ export class AddPaymentMethodComponent implements OnInit {
   paymentMethodDataSource: MatTableDataSource<Payment>
 
   paymentForm: FormGroup
-
   paymentMethodControl: FormControl
   amountControl: FormControl
   cardControl: FormControl
   lastDigitsControl: FormControl
   emailControl: FormControl
 
+  clientId: number = null
   payments: Payment[]
+  movementId: number = null
+  selectedPaymentMethod: PaymentMethod
+  selectedCard: Card
+  totalCost: number
 
   paymentMethods: PaymentMethod[] = []
   cards: Card[] = []
 
-  selectedPaymentMethod: PaymentMethod
-  selectedCard: Card
-
-  totalCost: number
-
-  clientId: number = null
   clientCheckingAccount: CheckingAccountResponse = null
   isFounds: boolean= true;
 
   constructor(
     private clientService: ClientService,
     private cardService: CardService,
+    private cashService: CashService,
     private formBuilder: FormBuilder,
     private matDialogRef: MatDialogRef<AddPaymentMethodComponent>,
     private changeDetectorRef: ChangeDetectorRef,
@@ -57,7 +56,7 @@ export class AddPaymentMethodComponent implements OnInit {
     this.lastDigitsControl = new FormControl()
     this.emailControl = new FormControl()
 
-    this.paymentForm = formBuilder.group({
+    this.paymentForm = this.formBuilder.group({
       paymentMethod: this.paymentMethodControl,
       amount: this.amountControl,
       card: this.cardControl,
@@ -69,6 +68,7 @@ export class AddPaymentMethodComponent implements OnInit {
     this.clientId = data.clientId
     this.totalCost = data.total
     this.payments = data.payments
+    this.movementId = data.movementId
     this.clientCheckingAccount = {
       id: null,
       balance: null
@@ -116,7 +116,7 @@ export class AddPaymentMethodComponent implements OnInit {
 
   calculateCurrentSubtotal(): number {
     if(this.payments && this.payments.length > 0) {
-      return this.payments.map((it: Payment) => it.amount).reduce((a, b) => a + b)
+      return this.payments.map((it: Payment) => it.sub_total).reduce((a, b) => a + b)
     } else {
       return 0
     }
@@ -179,7 +179,7 @@ export class AddPaymentMethodComponent implements OnInit {
   add() {
     let payment: Payment = {
       method: this.selectedPaymentMethod,
-      amount: this.amountControl.value
+      sub_total: this.amountControl.value
     }
 
     this.validatePaymentAmount()
@@ -188,9 +188,9 @@ export class AddPaymentMethodComponent implements OnInit {
       this.validateCardFields()
 
       if(this.cardControl.valid) {
-        payment.typeId = this.selectedCard.id;
-        payment.typeName = this.selectedCard.name;
-        payment.lastDigits = this.lastDigitsControl.value;
+        payment.card_id = this.selectedCard.id;
+        payment.card_name = this.selectedCard.name;
+        payment.last_digits = this.lastDigitsControl.value;
       }
     }
 
@@ -213,7 +213,7 @@ export class AddPaymentMethodComponent implements OnInit {
               this.amountControl.setErrors( { "invalid": true } )
             } else {
               this.clientCheckingAccount = response;
-              if(response.balance < payment.amount) {    
+              if(response.balance < payment.sub_total) {    
                 this.amountControl.setErrors( { "insuficientFounds": true } )
               } else {
                 this.amountControl.setErrors(null);
@@ -227,13 +227,13 @@ export class AddPaymentMethodComponent implements OnInit {
           }
         );
     }
-     if(this.isCheckingAccount() && (this.clientCheckingAccount.balance < payment.amount)){
+     if(this.isCheckingAccount() && (this.clientCheckingAccount.balance < payment.sub_total)){
        console.log("Supera el balance")
 
      }else{
     
         if(this.paymentForm.valid) {
-            let alreadyUsedPaymentMethod = this.payments.some((it) => it.method.id == payment.method.id && it.typeId == payment.typeId 
+            let alreadyUsedPaymentMethod = this.payments.some((it) => it.method.id == payment.method.id && it.card_id == payment.card_id 
                                                                      && (payment.method.type=="EFECTIVO"||payment.method.type=="CUENTA_CORRIENTE"));
 
         if(!alreadyUsedPaymentMethod ) {
@@ -273,10 +273,16 @@ export class AddPaymentMethodComponent implements OnInit {
   }
 
   appendPaymentMethod(payment) {  
-    this.payments.find((it) => it.method.id == payment.method.id && it.typeId == payment.typeId).amount += payment.amount;
+    this.payments.find((it) => it.method.id == payment.method.id && it.card_id == payment.typeId).sub_total += payment.amount;
   }
 
   delete(payment :Payment){  
+
+    let paymentMethod =this.paymentMethods.find((it) => it.id == this.paymentMethodControl.value);
+    if(payment.method.type== "CUENTA_CORRIENTE"){
+      this.clientCheckingAccount.balance+=payment.sub_total;
+      console.log()
+    }
     this.paymentMethodDataSource.data = this.paymentMethodDataSource.data.filter((it) => it.method != payment.method)
     this.payments = this.payments.filter((it) => it.method != payment.method)
     this.changeDetectorRef.detectChanges()
@@ -307,7 +313,30 @@ export class AddPaymentMethodComponent implements OnInit {
         title: "Pago insuficiente"
       })
     } else {
-      this.matDialogRef.close(this.payments)
+      console.log("payments: "+JSON.stringify(this.payments))
+
+      this.cashService.payMovement(this.movementId, this.payments)
+      .subscribe(
+        (response) => {
+         console.log(JSON.stringify(response))
+          if(response) {
+            alert("OK")
+            this.matDialogRef.close(this.payments)
+          } else {
+            alert("NOOO")
+          }
+        },
+
+        (error) => {
+
+          Swal.fire({
+            icon: "error",
+            title: "No se pudo realizar el pago, valide los datos"
+          })
+
+        }
+      );
+
     }
   }
 
@@ -315,20 +344,34 @@ export class AddPaymentMethodComponent implements OnInit {
     this.matDialogRef.close()
   }
 
+  findCardName(id : number): String{
+    let card =this.cards.find((it) => it.id ==id)
+    return card?.name
+  }
+
+  findPaymentMethodDescription(id : number): String{
+    console.log(id)
+    let payment =this.paymentMethods.find((it) => it.id ==id)
+    return payment?.description
+  }
+
+  
+
 }
 
 export interface AddPaymentMethodData {
   clientId: number;
   total: number; 
-  payments: Payment[]
+  payments: Payment[];
+  movementId: number;
 }
 
 export interface Payment {
   method: PaymentMethod;
-  amount: number;
-  typeId?: number;
-  typeName?: String;
-  lastDigits?: number;
+  sub_total: number;
+  card_id?: number;
+  card_name?: String;
+  last_digits?: String;
   email?: String;
 }
 

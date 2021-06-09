@@ -64,7 +64,7 @@ export class SalesService {
   toPaymentRequest(payment: Payment): PaymentRequest {
     return {
       type: payment.method.type,
-      sub_total: payment.amount
+      sub_total: payment.sub_total
     }
   } 
 

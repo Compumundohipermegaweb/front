@@ -151,7 +151,7 @@ import { CashService ,OpenRequest, CloseRequest,CashResponse} from '../service/c
 
       }  
 
-    getCashOpenByUserId(userId: number){
+    getCashOpenByUserId(userId: number): number{
 
       this.cashService.getCashOpenByUser(userId)
       .subscribe(
@@ -162,6 +162,7 @@ import { CashService ,OpenRequest, CloseRequest,CashResponse} from '../service/c
           this.cashOpened=0
         }
       );
+      return this.cashOpened
     }
 
     reloadCurrentRoute() {

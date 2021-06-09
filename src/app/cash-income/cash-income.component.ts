@@ -4,10 +4,13 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import Swal from 'sweetalert2';
-import { Payment, AddPaymentMethodComponent } from '../add-payment-method/add-payment-method.component';
+import { Payment, AddPaymentMethodComponent, Card } from '../add-payment-method/add-payment-method.component';
+import { PaymentMethod } from '../payment-methods/payment-methods.component';
+import { CardService } from '../service/card.service';
 import { CashService } from '../service/cash.service';
 import { ClientResponse } from '../service/client.service';
-import { SalesService } from '../service/sale/sales.service';
+import { PaymentMethodService } from '../service/payment-method.service';
+import { CashSummaryComponent} from '../cash-summary/cash-summary.component';
 
 @Component({
   selector: 'app-cash-income',
@@ -28,14 +31,19 @@ export class CashIncomeComponent implements OnInit {
   columns = ['client','paymentMethods','amount','source', 'description','actions'];
   incomes = new MatTableDataSource<CashMovement>()
   expandedElement: CashMovement | null;
-
+  paymentMethods: PaymentMethod[] = []
+  cards: Card[] = []
+  cashOpened: number= 0;
   constructor(
     private addPaymentMethodDialog: MatDialog,
     public changeDetectorRef: ChangeDetectorRef,
     private cashService: CashService,
-    private salesService: SalesService
+    private cardService: CardService,
+    private paymentMethodService: PaymentMethodService,
   ) { 
-    
+     this.cashOpened = 1;
+     this.initPaymentMethodTypes();
+     this.initCardTypes()
      this.loadIncomes();
   }
 
@@ -46,11 +54,32 @@ export class CashIncomeComponent implements OnInit {
     this.incomes.paginator = this.paginator; 
   }
 
-  loadIncomes() {
-    this.cashService.getIncomes(1)
+  initPaymentMethodTypes() {
+    this.paymentMethodService.getAll()
       .subscribe(
         (response) => {
-          console.log(JSON.stringify(response))
+          this.paymentMethods = response.payment_methods
+        }
+      )
+  }
+
+  initCardTypes() {
+    this.cardService.getActiveCards()
+    .subscribe(
+      (response) => {
+        this.cards = response.cards;
+      },
+      (error) => {
+        this.cards = []
+      }
+    );
+  }
+
+  loadIncomes() {
+    this.cashService.getIncomes(this.cashOpened)
+      .subscribe(
+        (response) => {
+        //  console.log(JSON.stringify(response))
           this.incomes.data = response.incomes;  
         },
         (error) => {
@@ -65,7 +94,7 @@ export class CashIncomeComponent implements OnInit {
 
   addPaymentMethod(cashMovement: CashMovement) {
 
-      const dialogRef = this.addPaymentMethodDialog.open(AddPaymentMethodComponent, { data: { clientId: cashMovement.client.id, total: cashMovement.amount , payments: cashMovement.payments} })
+      const dialogRef = this.addPaymentMethodDialog.open(AddPaymentMethodComponent, { data: { movementId: cashMovement.id_movement, clientId: cashMovement.client.id, total: cashMovement.amount , payments: cashMovement.payments} })
 
       dialogRef.afterClosed()
       .subscribe(
@@ -83,6 +112,17 @@ export class CashIncomeComponent implements OnInit {
         }
       )
   }
+
+  findCardName(id : number): String{
+    let card =this.cards.find((it) => it.id ==id)
+    return card?.name
+  }
+
+  findPaymentMethodDescription(id : number): String{
+    let payment = this.paymentMethods.find((it) => it.id ==id)
+    return payment?.description
+  }
+
 }
 
 export interface CashMovement {
