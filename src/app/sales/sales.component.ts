@@ -368,7 +368,7 @@ export class SalesComponent implements OnInit {
       branchCode: this.branchControl.value,
       details: this.items,
       payment: [],
-      total: this.totalCost
+      total: this.acotarDecimal(this.totalCost)
     }
   }
 }
