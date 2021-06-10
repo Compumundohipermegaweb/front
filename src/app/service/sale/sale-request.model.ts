@@ -4,6 +4,7 @@ export interface SaleRequest {
     salesman_id: String;
     branch_id: String;
     sale_details: SaleDetailsRequest;
+    category: String
   }
   
   export interface ClientRequest {

@@ -48,7 +48,8 @@ export class SalesService {
       client: clientRequest,
       salesman_id: sale.salesmanCode,
       branch_id: sale.branchCode,
-      sale_details: saleDetails
+      sale_details: saleDetails,
+      category: "LOCAL"
     }
   }
 
