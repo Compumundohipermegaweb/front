@@ -325,7 +325,7 @@ export class SalesComponent implements OnInit {
     this.salesService.postSale(sale)
       .subscribe(
         (response) => {
-          this.router.navigateByUrl('/sales/invoice', { state: { data: response } })
+          this.router.navigateByUrl('/home/sales/invoice', { state: { data: response } })
         },
         (error) => {
           console.log(error)

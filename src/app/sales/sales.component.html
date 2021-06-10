@@ -134,7 +134,7 @@
                 </table>
             </div>
             <div>
-                <button mat-raised-button color="primary" (click)="validateItems()" matStepperNext>Siguiente</button>
+                <button mat-raised-button color="primary" (mousedown)="validateItems()" matStepperNext>Siguiente</button>
             </div>
         </mat-step>
         <mat-step>
@@ -202,7 +202,7 @@
 
             </mat-card>
             <button mat-raised-button color="error" matStepperPrevious>Atras</button>
-            <button mat-raised-button color="primary" (click)="registerSale()" matStepperNext>Confirmar</button>
+            <button mat-raised-button color="primary" (click)="registerSale();" matStepperNext>Confirmar</button>
         </mat-step>
     </mat-vertical-stepper>
 </mat-card>
