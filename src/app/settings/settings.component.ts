@@ -69,11 +69,23 @@ export class SettingsComponent implements OnInit {
       return;
     }
 
+
+    if(!this.isValid()){
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "El valor debe estar entre 1 y 24"
+      })
+      return
+    }
+
     if(changes.time) {
       alerta.time = changes.time
     }
 
-    
+
+
+
 
     this.settingService.updateAlert(alerta)
       .subscribe(
@@ -95,7 +107,21 @@ export class SettingsComponent implements OnInit {
       )
   }
 
+  isValid(): boolean{
+    this.timeControl.setValue(Math.trunc(Number(this.timeControl.value)))
+    if(this.timeControl.value > 0 && this.timeControl.value < 25){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
 }
+
+/*
+  var x = "32";
+  var y: number = +x;
+*/
 
 
 

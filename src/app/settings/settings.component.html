@@ -28,7 +28,7 @@
           <span *ngIf="!alert.editing">{{alert.time}}</span>
 
                 <mat-form-field *ngIf="alert.editing" >
-                  <input matInput  [formControl]="timeControl" placeholder="{{alert.time}}" >
+                  <input matInput  type="number" [formControl]="timeControl" placeholder="{{alert.time}}" >
                 </mat-form-field>
         </td>
       </ng-container>
