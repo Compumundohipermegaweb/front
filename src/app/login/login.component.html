@@ -1,30 +1,36 @@
-<mat-card style="position: fixed; align-content: center; justify-content: center;">
-  <mat-card-content>
-    <form [formGroup]="loginForm">
-      <div>
-        <mat-form-field>
-          <mat-label>Usuario</mat-label>
-          <input matInput type="email" [formControl]="username" placeholder="email@gmail.com"/>
-          <mat-hint style="color: red;" *ngIf="submitted && error?.code == 1 && !loginForm.controls.username.hasError('required')">{{error.message}}</mat-hint>
-          <mat-hint style="color: red;" *ngIf="submitted && loginForm.controls.username.hasError('required')">Campo obligatorio</mat-hint>
-        </mat-form-field>
-      </div>
-      <div>
-        <mat-form-field>
-          <mat-label>Contraseña</mat-label>
-          <input matInput type="password" [formControl]="password"/>
-          <mat-hint style="color: red;" *ngIf="submitted && error?.code == 2 && !loginForm.controls.password.hasError('required')">{{error.message}}</mat-hint>
-          <mat-hint style="color: red;" *ngIf="submitted && loginForm.controls.password.hasError('required')">Campo obligatorio</mat-hint>
-        </mat-form-field>
-      </div>
-    </form>
-  </mat-card-content>
-  <mat-card-actions>
-    <div>
-      <button mat-raised-button color="primary" (click)="submitLogin()"> Ingresar</button>
-    </div>
-    <div>
+<div class="center">
+  <mat-card>
+    <mat-card-header>
+      <h2 mat-header>
+        Iniciar sesión
+      </h2>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="loginForm">
+          <mat-form-field>
+            <mat-label>Usuario</mat-label>
+            <input matInput type="email" [formControl]="username" placeholder="email@gmail.com"/>
+            <span matPrefix>
+              <mat-icon>account_circle</mat-icon>
+              &nbsp;
+              &nbsp;
+            </span>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Contraseña</mat-label>
+            <input matInput type="password" [formControl]="password"/>
+            <span matPrefix>
+              <mat-icon>lock</mat-icon>
+              &nbsp;
+              &nbsp;
+            </span>
+          </mat-form-field>
+          
+          <button mat-raised-button color="primary" (click)="submitLogin()"> Ingresar</button>
+      </form>
+    </mat-card-content>
+    <mat-card-actions>
       <a mat-button>Olvido su contraseña?</a>
-    </div>
-  </mat-card-actions>
-</mat-card>
+    </mat-card-actions>
+  </mat-card>
+</div>
