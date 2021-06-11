@@ -1,10 +1,11 @@
- import {Component, OnInit} from "@angular/core";
- import {Validators, FormGroup, FormBuilder, FormControl} from "@angular/forms";
- import {LoginObject} from "./shared/login-object.model";
- import {AuthenticationService} from "./shared/authentication.service";
- import {StorageService} from "../login/core/storage.service";
- import {Router} from "@angular/router";
- import {Session} from "../login/core/session.model";
+ import { Component, OnInit } from "@angular/core";
+ import { FormGroup, FormBuilder, FormControl } from "@angular/forms";
+ import { LoginObject } from "./shared/login-object.model";
+ import { AuthenticationService } from "./shared/authentication.service";
+ import { StorageService } from "../login/core/storage.service";
+ import { Router } from "@angular/router";
+ import { Session } from "../login/core/session.model";
+import Swal from "sweetalert2";
 
  @Component({
    selector: 'app-login',
@@ -42,9 +43,12 @@ export class LoginComponent implements OnInit {
     this.error = null;
     if(this.loginForm.valid){
       this.authenticationService.login(new LoginObject(this.loginForm.value)).subscribe(
-        data => this.correctLogin(data),
-        error => {
-          this.error = error;
+        (data) => this.correctLogin(data),
+        (error) => {
+          Swal.fire({
+            icon: "error",
+            title: "Usuario o contraseña inválidos"
+          })
         }
       )
     }

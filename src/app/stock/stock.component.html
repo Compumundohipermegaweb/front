@@ -13,7 +13,7 @@
           <app-items-stock></app-items-stock>
         </mat-tab>
 
-        <mat-tab *ngIf="!isAllowed()" label="Maestro De Items">
+        <mat-tab *ngIf="isAllowed()" label="Maestro De Items">
           <app-item-master></app-item-master>
         </mat-tab>
 

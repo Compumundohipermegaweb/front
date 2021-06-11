@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { RoleService } from '../service/role.service';
 
 @Component({
   selector: 'app-reports',
@@ -7,9 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ReportsComponent implements OnInit {
 
-  constructor() { }
+  constructor(private roleService: RoleService) { }
 
   ngOnInit(): void {
+  }
+
+  isAllowed() {
+    return this.roleService.isAdmin() || this.roleService.isManager()
   }
 
 }

@@ -16,8 +16,7 @@ export class StockComponent implements OnInit  {
   }
 
   isAllowed() {
-    debugger
-    return this.roleService.isAdmin() || this.roleService.isManager || this.roleService.isSupervisor()
+    return this.roleService.isAdmin() || this.roleService.isManager() || this.roleService.isSupervisor()
   }
 
 }
