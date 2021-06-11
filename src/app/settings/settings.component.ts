@@ -3,7 +3,6 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { FormControl} from '@angular/forms';
-import { EditScheduleDialogComponent } from '../edit-schedule-dialog/edit-schedule-dialog.component'
 import { MatDialog } from '@angular/material/dialog';
 import { SettingsService } from '../service/settings.service'
 import Swal from 'sweetalert2';
@@ -17,24 +16,20 @@ import Swal from 'sweetalert2';
 
 export class SettingsComponent implements OnInit {
 
-  hControl: FormControl;
+  timeControl: FormControl;
 
   EXAMPLE_DATA: Alert[] = [
-    {id: 1, processDescription: "Nose", time: "18", editing: true}
+    {id: 1, time: "18", alert_description: "Nose" }
   ]
-
-
 
   dataSource: MatTableDataSource<Alert>;
 
-
   displayedColums: String[]
 
-
   constructor(private editScheduleDialog: MatDialog, public changeDetectorRef: ChangeDetectorRef, private settingService: SettingsService) {
-    //this.dataSource.data = this.EXAMPLE_DATA;
-    this.hControl = new FormControl();
+    this.timeControl = new FormControl();
     this.initDataSource()
+    //this.dataSource.data = this.EXAMPLE_DATA;
     this.displayedColums = ["id", "descripcion", "horario", "acciones"]
    }
 
@@ -67,7 +62,7 @@ export class SettingsComponent implements OnInit {
   saveChanges(alerta: Alert) {
     debugger;
     let changes = {
-      time: this.hControl.value,
+      time: this.timeControl.value,
     }
 
     if(changes.time == null) {
@@ -78,15 +73,16 @@ export class SettingsComponent implements OnInit {
       alerta.time = changes.time
     }
 
-    /*this.settingService.save(category)
+    
+
+    this.settingService.updateAlert(alerta)
       .subscribe(
         (response) => {
           Swal.fire({
             icon: 'success',
             title: "¡Cambios guardados!"
           })
-          this.nameControl.setValue(null)
-          this.descriptionControl.setValue(null)
+          this.timeControl.setValue(null)
         },
 
         (error) => {
@@ -97,15 +93,15 @@ export class SettingsComponent implements OnInit {
           })
         }
       )
-  }*/
+  }
 
 }
-}
+
 
 
 export interface Alert{
   id: number;
   time: String;
-  processDescription: String;
+  alert_description: String;
   editing?: boolean;
 }

@@ -10,14 +10,17 @@ import { Alert } from 'src/app/settings/settings.component'
 
 export class SettingsService {
 
-  host = environment.apiHost
-  configurationUrl = "/api/configurable";
-  alertsUrl = "api/configurable/alerts"
+  private host = environment.apiHost
+  private baseUrl = "/api/alerts";
 
   constructor(private http: HttpClient) { }
 
   getAllAlerts(): Observable<AlertResponse> {
-    return this.http.get<AlertResponse>(this.host + this.alertsUrl);
+    return this.http.get<AlertResponse>(this.host + this.baseUrl);
+  }
+
+  updateAlert(alerta: Alert): Observable<Alert>{
+    return this.http.put<Alert>(this.host + this.baseUrl, {id: alerta.id, time: alerta.time, alert_description: alerta.alert_description});
   }
 
 }

@@ -73,7 +73,6 @@ import { PurchasesComponent } from './purchases/purchases.component';
 import { SupplierComponent } from './supplier/supplier.component';
 import { AddSupplierDialogComponent } from './add-supplier-dialog/add-supplier-dialog.component';
 import { SettingsComponent } from './settings/settings.component';
-import { EditScheduleDialogComponent } from './edit-schedule-dialog/edit-schedule-dialog.component';
 
 registerLocaleData(localEsAr)
 
@@ -116,7 +115,6 @@ registerLocaleData(localEsAr)
     SupplierComponent,
     AddSupplierDialogComponent,
     SettingsComponent,
-    EditScheduleDialogComponent
   ],
   imports: [
     BrowserModule,
