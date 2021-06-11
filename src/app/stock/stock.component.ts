@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { RoleService } from '../service/role.service';
 
 @Component({
   selector: 'app-stock',
@@ -8,12 +9,16 @@ import { Component, OnInit } from '@angular/core';
 
 export class StockComponent implements OnInit  {
 
-  constructor(){
+  constructor(private roleService: RoleService){
   }
   
   ngOnInit(): void {
   }
 
+  isAllowed() {
+    debugger
+    return this.roleService.isAdmin() || this.roleService.isManager || this.roleService.isSupervisor()
+  }
 
 }
 
