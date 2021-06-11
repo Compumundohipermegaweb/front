@@ -1,61 +1,60 @@
 <mat-list>
 
-  <div *ngIf="isCashier() || isAdmin()">
-    <mat-list-item>
-      <button mat-button class="nav-button" [routerLink]="['cash']" routerLinkActive="active">
-        <mat-icon>point_of_sale</mat-icon> Caja
-      </button>
-    </mat-list-item>
-    <mat-divider></mat-divider>
-  </div>
+  <mat-list-item *ngIf="isAdmin() || isManager() || isSupervisor() || isCashier()">
+    <button mat-button class="nav-button" [routerLink]="['cash']" routerLinkActive="active">
+      <mat-icon>point_of_sale</mat-icon> Caja
+    </button>
 
-  <mat-list-item>
+    <mat-divider></mat-divider>
+
+  </mat-list-item>
+
+  <mat-list-item *ngIf="isAdmin() || isSupervisor() || isSalesman()">
     <button mat-button class="nav-button" [routerLink]="['sales']" routerLinkActive="active">
       <mat-icon>sell</mat-icon> Ventas
     </button>
+
+    <mat-divider></mat-divider>
+
   </mat-list-item>
 
-  <mat-divider></mat-divider>
 
-  <mat-list-item>
+  <mat-list-item *ngIf="isAdmin() || isManager() || isSupervisor() || isSalesman() || isCashier()">
     <button mat-button class="nav-button" [routerLink]="['stock']" routerLinkActive="active">
       <mat-icon>view_in_ar</mat-icon> Stock
     </button>
+    
+    <mat-divider></mat-divider>
+
   </mat-list-item>
 
-  <mat-divider></mat-divider>
 
-  <mat-list-item>
+  <mat-list-item *ngIf="isAdmin() || isManager() || isSupervisor()">
     <button mat-button class="nav-button" [routerLink]="['branch']" routerLinkActive="active">
       <mat-icon>home</mat-icon> Sucursales
     </button>
+
+    <mat-divider></mat-divider>
+
   </mat-list-item>
 
-  <mat-divider></mat-divider>
-
-  <mat-list-item>
+  <mat-list-item *ngIf="isAdmin() || isManager() || isSupervisor() || isSalesman() || isCashier()">
     <button mat-button class="nav-button" [routerLink]="['customer']" routerLinkActive="active">
       <mat-icon>perm_identity</mat-icon> Clientes
     </button>
+
+    <mat-divider></mat-divider>
+  
   </mat-list-item>
 
-  <mat-divider></mat-divider>
-
-  <mat-list-item>
+  <mat-list-item *ngIf="isAdmin() || isManager() || isSupervisor()">
     <button mat-button class="nav-button" [routerLink]="['reports']" routerLinkActive="active">
       <mat-icon>insights</mat-icon> Reportes
     </button>
+
+    <mat-divider></mat-divider>
+  
   </mat-list-item>
-
-  <mat-divider></mat-divider>
-
-  <mat-list-item>
-    <button mat-button class="nav-button" [routerLink]="['mdm']" routerLinkActive="active">
-      <mat-icon>settings</mat-icon> Datos Maestros
-    </button>
-  </mat-list-item>
-
-  <mat-divider></mat-divider>
 
   <!--
   <mat-list-item>
@@ -67,20 +66,31 @@
   <mat-divider></mat-divider>
   -->
 
-  <mat-list-item>
+  <mat-list-item *ngIf="isAdmin() || isManager() || isSupervisor()">
     <button mat-button class="nav-button" [routerLink]="['supplier']" routerLinkActive="active">
       <mat-icon>account_box</mat-icon> Proveedores
     </button>
+
+    <mat-divider></mat-divider>
+
   </mat-list-item>
 
-  <mat-divider></mat-divider>
-
-  <mat-list-item>
+  <mat-list-item *ngIf="isAdmin() || isManager() || isSupervisor()">
     <button mat-button class="nav-button" [routerLink]="['setting']" routerLinkActive="active">
-      <mat-icon>settings</mat-icon> Configuración
+      <mat-icon>notifications_active</mat-icon> Alertas
     </button>
-  </mat-list-item>
 
   <mat-divider></mat-divider>
+
+  </mat-list-item>
+
+  <mat-list-item *ngIf="isAdmin() || isManager() || isSupervisor()">
+    <button mat-button class="nav-button" [routerLink]="['mdm']" routerLinkActive="active">
+      <mat-icon>settings</mat-icon> Datos Maestros
+    </button>
+
+    <mat-divider></mat-divider>
+
+  </mat-list-item>
 
 </mat-list>

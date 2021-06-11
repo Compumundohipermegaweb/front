@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AdminGuard } from '../login/core/admin.guard';
-import { CashierGuard } from '../login/core/cashier.guard';
+import { RoleService } from '../service/role.service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -9,17 +8,31 @@ import { CashierGuard } from '../login/core/cashier.guard';
 })
 export class NavBarComponent implements OnInit {
 
-  constructor(private cashierGuard: CashierGuard, private adminGuard: AdminGuard) { }
+  constructor(private roleService: RoleService) { }
 
   ngOnInit(): void {
   }
 
+  isSalesman() {
+    return this.roleService.isSalesman()
+  }
+
   isCashier() {
-    return this.cashierGuard.canActivate()
+    return this.roleService.isCashier()
+  }
+
+  isSupervisor() {
+    return this.roleService.isSupervisor()
+  }
+
+  isManager() {
+    return this.roleService.isManager()
   }
 
   isAdmin() {
-    return this.adminGuard.canActivate()
+    return this.roleService.isAdmin()
   }
+
+
 
 }
