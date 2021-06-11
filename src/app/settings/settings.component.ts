@@ -5,6 +5,9 @@ import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { FormControl} from '@angular/forms';
 import { EditScheduleDialogComponent } from '../edit-schedule-dialog/edit-schedule-dialog.component'
 import { MatDialog } from '@angular/material/dialog';
+import { SettingsService } from '../service/settings.service'
+import Swal from 'sweetalert2';
+
 
 @Component({
   selector: 'app-settings',
@@ -12,48 +15,97 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrls: ['./settings.component.css']
 })
 
-export class SettingsComponent implements OnInit, AfterViewInit {
+export class SettingsComponent implements OnInit {
 
   hControl: FormControl;
 
-  EXAMPLE_DATA: TableSetting[] = [
-    {id: 1, descripcion: "Nose", horario: 18}
+  EXAMPLE_DATA: Alert[] = [
+    {id: 1, processDescription: "Nose", time: "18", editing: true}
   ]
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
-  @ViewChild(MatTable) table!: MatTable<TableSetting>;
-
-  dataSource = new MatTableDataSource();
 
 
+  dataSource: MatTableDataSource<Alert>;
 
-  displayedColumns = ['id', 'descripcion', 'horario', 'acciones'];
 
-  constructor(private editScheduleDialog: MatDialog, public changeDetectorRef: ChangeDetectorRef) {
-    this.dataSource.data = this.EXAMPLE_DATA;
+  displayedColums: String[]
+
+
+  constructor(private editScheduleDialog: MatDialog, public changeDetectorRef: ChangeDetectorRef, private settingService: SettingsService) {
+    //this.dataSource.data = this.EXAMPLE_DATA;
     this.hControl = new FormControl();
+    this.initDataSource()
+    this.displayedColums = ["id", "descripcion", "horario", "acciones"]
    }
 
   ngOnInit(): void {
   }
 
-  ngAfterViewInit(){
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
+  initDataSource() {
+    this.dataSource = new MatTableDataSource()
+
+    this.settingService.getAllAlerts()
+      .subscribe(
+        (response) => {
+          this.dataSource.data = response.alerts
+        },
+
+        (error) => {
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "No se pudieron cargar las Alertas"
+          })
+        }
+      )
   }
 
-  cambioHorario(setting: TableSetting){
-    const dialogRef = this.editScheduleDialog.open(EditScheduleDialogComponent, {});
-    //tengo que tomar el hcontrol.value y pasarselo al service para que lo setee en la base,
-    //y cuando cargue otra vez mi datasource ya estara el nuevo dato ya que se toma de la base
-    //alert(this.hControl.value)
+  toggleEdit(alerta: Alert) {
+    alerta.editing = !alerta.editing
   }
+
+  saveChanges(alerta: Alert) {
+    debugger;
+    let changes = {
+      time: this.hControl.value,
+    }
+
+    if(changes.time == null) {
+      return;
+    }
+
+    if(changes.time) {
+      alerta.time = changes.time
+    }
+
+    /*this.settingService.save(category)
+      .subscribe(
+        (response) => {
+          Swal.fire({
+            icon: 'success',
+            title: "¡Cambios guardados!"
+          })
+          this.nameControl.setValue(null)
+          this.descriptionControl.setValue(null)
+        },
+
+        (error) => {
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "No se pudieron guardar los cambios"
+          })
+        }
+      )
+  }*/
 
 }
+}
 
-export interface TableSetting{
+
+export interface Alert{
   id: number;
-  descripcion: String;
-  horario: number;
+  time: String;
+  processDescription: String;
+  editing?: boolean;
 }
