@@ -5,7 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import Swal from 'sweetalert2';
 import { CardService } from '../service/card.service';
 import { CashService } from '../service/cash.service';
-import { CheckingAccountResponse, ClientService } from '../service/client.service';
+import { CheckingAccountResponse, ClientResponse, ClientService } from '../service/client.service';
 
 @Component({
   selector: 'app-add-payment-method',
@@ -23,7 +23,6 @@ export class AddPaymentMethodComponent implements OnInit {
   cardControl: FormControl
   lastDigitsControl: FormControl
   emailControl: FormControl
-
   clientId: number = null
   payments: Payment[]
   movementId: number = null
@@ -34,8 +33,9 @@ export class AddPaymentMethodComponent implements OnInit {
   paymentMethods: PaymentMethod[] = []
   cards: Card[] = []
 
-  clientCheckingAccount: CheckingAccountResponse = null
-  isFounds: boolean= true;
+  clientCheckingAccount: CheckingAccountResponse = null 
+  caHistoryAmount: number = 0
+ 
 
   constructor(
     private clientService: ClientService,
@@ -76,7 +76,11 @@ export class AddPaymentMethodComponent implements OnInit {
     
     this.loadAvailablePaymentMethods()
     this.initCardTypes()
-    this.initClientPayments()
+    this.initClientPayments() 
+    this.getBalance(this.clientId)
+
+    
+  
   }
 
   ngOnInit(): void {
@@ -112,6 +116,9 @@ export class AddPaymentMethodComponent implements OnInit {
 
   initClientPayments() {
     this.paymentMethodDataSource.data =this.payments
+    this.caHistoryAmount = this.payments?.filter((it) => it.method.id ==5)[0]?.sub_total || 0
+
+    console.log(this.caHistoryAmount)
    }
 
   calculateCurrentSubtotal(): number {
@@ -175,9 +182,28 @@ export class AddPaymentMethodComponent implements OnInit {
       return false
     }
   }
+
+  getBalance(client : number){
+
+  this.clientService.getClientBalance(this.clientId)
+        .subscribe(
+          (response) => {
+           console.log(JSON.stringify(response))
+            if(response == null) {
+              console.log("sin cuenta")
+            } else {
+              this.clientCheckingAccount = response;
+            }
+          },
+          (error) => {
+            console.log("Error al traer cuenta")
+            this.invalidCheckingAccountMessage()
+          }
+        );
+  }
   
   add() {
-    let payment: Payment = {
+    let paymentNew: Payment = {
       method: this.selectedPaymentMethod,
       sub_total: this.amountControl.value
     }
@@ -188,9 +214,9 @@ export class AddPaymentMethodComponent implements OnInit {
       this.validateCardFields()
 
       if(this.cardControl.valid) {
-        payment.card_id = this.selectedCard.id;
-        payment.card_name = this.selectedCard.name;
-        payment.last_digits = this.lastDigitsControl.value;
+        paymentNew.card_id = this.selectedCard.id;
+        paymentNew.card_name = this.selectedCard.name;
+        paymentNew.last_digits = this.lastDigitsControl.value;
       }
     }
 
@@ -198,60 +224,28 @@ export class AddPaymentMethodComponent implements OnInit {
       this.validateMercadoPagoFields()
 
       if(this.emailControl.valid) {
-        payment.email = this.emailControl.value;
+        paymentNew.email = this.emailControl.value;
       }
     }
 
-    if(this.isCheckingAccount()) {
+    if(this.paymentForm.valid) {
+      let alreadyUsedPaymentMethod = this.payments.some((it) => it.method.id == paymentNew.method.id && it.card_id == paymentNew.card_id 
+                                                                  && (paymentNew.method.type=="EFECTIVO"||paymentNew.method.type=="CUENTA_CORRIENTE"));
 
-      this.clientService.getClientBalance(this.clientId)
-        .subscribe(
-          (response) => {
-           console.log(JSON.stringify(response))
-            if(response == null) {
-              this.invalidCheckingAccountMessage()
-              this.amountControl.setErrors( { "invalid": true } )
-            } else {
-              this.clientCheckingAccount = response;
-              if(response.balance < payment.sub_total) {    
-                this.amountControl.setErrors( { "insuficientFounds": true } )
-              } else {
-                this.amountControl.setErrors(null);
-                          
-              }
-            }
-          },
+      if(!alreadyUsedPaymentMethod ) {
+        this.addNewPaymentMethod(paymentNew)
+      } else {
+        this.appendPaymentMethod(paymentNew)
+      }
+      this.paymentMethodDataSource.data = this.payments;
 
-          (error) => {
-            this.invalidCheckingAccountMessage()
-          }
-        );
-    }
-     if(this.isCheckingAccount() && (this.clientCheckingAccount.balance < payment.sub_total)){
-       console.log("Supera el balance")
-
-     }else{
-    
-        if(this.paymentForm.valid) {
-            let alreadyUsedPaymentMethod = this.payments.some((it) => it.method.id == payment.method.id && it.card_id == payment.card_id 
-                                                                     && (payment.method.type=="EFECTIVO"||payment.method.type=="CUENTA_CORRIENTE"));
-
-        if(!alreadyUsedPaymentMethod ) {
-          this.addNewPaymentMethod(payment)
-        } else {
-          this.appendPaymentMethod(payment)
-        }
-        this.paymentMethodDataSource.data = this.payments;
-
-        this.paymentForm.reset();
-        if(this.totalCost == this.calculateCurrentSubtotal()) {
-          this.paymentForm.setErrors(null)
-        }
-     }
+      this.paymentForm.reset();
+      if(this.totalCost == this.calculateCurrentSubtotal()) {
+        this.paymentForm.setErrors(null)
+      }
     }
   }
   
-
   private validateCardFields() {
     if(this.cardControl.value == null || this.cardControl.value == undefined) {
       this.cardControl.setErrors({"required": true});
@@ -268,23 +262,19 @@ export class AddPaymentMethodComponent implements OnInit {
     }
   }
 
-  addNewPaymentMethod(payment) {
-    this.payments.push(payment);
+  addNewPaymentMethod(paymentNew) {
+    this.payments.push(paymentNew);
   }
 
-  appendPaymentMethod(payment) {  
-    this.payments.find((it) => it.method.id == payment.method.id && it.card_id == payment.typeId).sub_total += payment.amount;
+  appendPaymentMethod(paymentNew) {  
+    this.payments.find((it) => it.method.id == paymentNew.method.id && it.card_id == paymentNew.card_id).sub_total += paymentNew.sub_total;
   }
 
-  delete(payment :Payment){  
-
-    let paymentMethod =this.paymentMethods.find((it) => it.id == this.paymentMethodControl.value);
-    if(payment.method.type== "CUENTA_CORRIENTE"){
-      this.clientCheckingAccount.balance+=payment.sub_total;
-      console.log()
-    }
-    this.paymentMethodDataSource.data = this.paymentMethodDataSource.data.filter((it) => it.method != payment.method)
-    this.payments = this.payments.filter((it) => it.method != payment.method)
+  delete(payment :Payment){ 
+    this.paymentMethodDataSource.data = this.paymentMethodDataSource.data.filter((it) => !( it.method.id==payment.method.id && it.card_id==payment.card_id &&  
+                                                                                           it.sub_total==payment.sub_total && it.last_digits==payment.last_digits))
+    this.payments = this.payments.filter((it) => !( it.method.id==payment.method.id && it.card_id==payment.card_id &&  
+                                                    it.sub_total==payment.sub_total && it.last_digits==payment.last_digits))
     this.changeDetectorRef.detectChanges()
   }
   
@@ -302,8 +292,21 @@ export class AddPaymentMethodComponent implements OnInit {
     } else if(this.amountControl.hasError("exceeded")) {
       return "El monto exede el total"
     } else if(this.amountControl.hasError("insuficientFounds")) {
-      return "Fondos insuficientes. Disponible: " + this.clientCheckingAccount.balance;
+      return "Fondos insuficientes. Disponible: " + (this.clientCheckingAccount.balance + this.caHistoryAmount);
     }
+  }
+
+  verifyCAPayment(){
+    console.log("Verifica")
+    let amountCA = this.payments?.find((it) => it.method.type == "CUENTA_CORRIENTE")?.sub_total
+    if ((this.clientCheckingAccount.balance + this.caHistoryAmount) < amountCA){
+      console.log("Fondos insuficientes")
+      this.amountControl.setErrors({"insuficientFounds": true});
+      this.getPaymentAmountErrors();
+      return false
+    }
+    return true
+
   }
 
   checkout() {
@@ -312,7 +315,16 @@ export class AddPaymentMethodComponent implements OnInit {
         icon: "error",
         title: "Pago insuficiente"
       })
+
     } else {
+
+      if( this.clientCheckingAccount.id != null) {
+        console.log("Tiene Cuenta")
+        if (!this.verifyCAPayment()){
+          return false 
+        }
+      }
+   
       console.log("payments: "+JSON.stringify(this.payments))
 
       this.cashService.payMovement(this.movementId, this.payments)
@@ -321,7 +333,13 @@ export class AddPaymentMethodComponent implements OnInit {
          console.log(JSON.stringify(response))
           if(response) {
             this.matDialogRef.close(this.payments)
-          } 
+          }else{
+            Swal.fire({
+              icon: "error",
+              title: "Algunos pagos fueron rechazados. Refresque la pagina e Intente cargar el/los pagos faltantes"
+            })
+            this.matDialogRef.close()
+          }
         },
 
         (error) => {
@@ -347,13 +365,11 @@ export class AddPaymentMethodComponent implements OnInit {
   }
 
   findPaymentMethodDescription(id : number): String{
-    console.log(id)
     let payment =this.paymentMethods.find((it) => it.id ==id)
     return payment?.description
   }
 
   
-
 }
 
 export interface AddPaymentMethodData {
@@ -361,6 +377,7 @@ export interface AddPaymentMethodData {
   total: number; 
   payments: Payment[];
   movementId: number;
+  client: ClientResponse
 }
 
 export interface Payment {

@@ -1,7 +1,7 @@
 <!-- <h3 mat-header>Agregar o Editar Medios de Pago</h3> -->
 <h2 mat-dialog-title>Agregar o Editar Medios de Pago</h2> 
 <h3>Total: {{ data.total | localCurrency }}</h3> 
-<h3>Cliente: {{ data.clientId }} </h3>
+<h3>Cliente: {{ data.client.document_number + " - " +data.client.first_name + " " + data.client.last_name }} </h3>
 <h3>Falta: {{ totalCost - calculateCurrentSubtotal() | localCurrency}}</h3>
 <mat-dialog-content class="mat-typography">
 <form [formGroup]="paymentForm">

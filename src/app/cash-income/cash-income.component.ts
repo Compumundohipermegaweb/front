@@ -10,7 +10,6 @@ import { CardService } from '../service/card.service';
 import { CashService } from '../service/cash.service';
 import { ClientResponse } from '../service/client.service';
 import { PaymentMethodService } from '../service/payment-method.service';
-import { CashSummaryComponent} from '../cash-summary/cash-summary.component';
 
 @Component({
   selector: 'app-cash-income',
@@ -94,7 +93,8 @@ export class CashIncomeComponent implements OnInit {
 
   addPaymentMethod(cashMovement: CashMovement) {
 
-      const dialogRef = this.addPaymentMethodDialog.open(AddPaymentMethodComponent, { data: { movementId: cashMovement.id_movement, clientId: cashMovement.client.id, total: cashMovement.amount , payments: cashMovement.payments} })
+      const dialogRef = this.addPaymentMethodDialog.open(AddPaymentMethodComponent, { data:
+         { movementId: cashMovement.id_movement, clientId: cashMovement.client.id, client: cashMovement.client, total: cashMovement.amount , payments: cashMovement.payments} })
 
       dialogRef.afterClosed()
       .subscribe(
