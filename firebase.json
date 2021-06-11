@@ -5,7 +5,7 @@
     "source": "**",
     "destination": "/",
     "type": 301
-    } ]
+    } ],
     "ignore": [
       "firebase.json",
       "**/.*",
