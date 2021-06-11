@@ -1,11 +1,6 @@
 {
   "hosting": {
     "public": "dist/hefesto-front",
-    "redirects": [ {
-    "source": "**",
-    "destination": "/",
-    "type": 301
-    } ],
     "ignore": [
       "firebase.json",
       "**/.*",
