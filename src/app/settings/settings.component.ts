@@ -61,14 +61,6 @@ export class SettingsComponent implements OnInit {
 
   saveChanges(alerta: Alert) {
     debugger;
-    let changes = {
-      time: this.timeControl.value,
-    }
-
-    if(changes.time == null) {
-      return;
-    }
-
 
     if(!this.isValid()){
       Swal.fire({
@@ -79,13 +71,17 @@ export class SettingsComponent implements OnInit {
       return
     }
 
+    let changes = {
+      time: this.timeControl.value,
+    }
+
+    if(changes.time == null) {
+      return;
+    }
+
     if(changes.time) {
       alerta.time = changes.time
     }
-
-
-
-
 
     this.settingService.updateAlert(alerta)
       .subscribe(
