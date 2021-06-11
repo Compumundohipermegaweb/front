@@ -36,6 +36,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatRadioModule} from '@angular/material/radio';
 import { MatAutocompleteModule} from '@angular/material/autocomplete';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
+import {MatDatepickerModule} from '@angular/material/datepicker';
 
 
 import { registerLocaleData } from '@angular/common';
@@ -72,6 +73,7 @@ import { PurchasesComponent } from './purchases/purchases.component';
 import { SupplierComponent } from './supplier/supplier.component';
 import { AddSupplierDialogComponent } from './add-supplier-dialog/add-supplier-dialog.component';
 import { SettingsComponent } from './settings/settings.component';
+import { EditScheduleDialogComponent } from './edit-schedule-dialog/edit-schedule-dialog.component';
 
 registerLocaleData(localEsAr)
 
@@ -113,7 +115,8 @@ registerLocaleData(localEsAr)
     PurchasesComponent,
     SupplierComponent,
     AddSupplierDialogComponent,
-    SettingsComponent
+    SettingsComponent,
+    EditScheduleDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -125,6 +128,7 @@ registerLocaleData(localEsAr)
     MatIconModule,
     MatCardModule,
     MatFormFieldModule,
+    MatDatepickerModule,
     MatInputModule,
     MatDividerModule,
     MatSelectModule,

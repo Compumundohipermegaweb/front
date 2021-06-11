@@ -2,6 +2,9 @@ import { AfterViewInit, Component, ViewChild, OnInit, ChangeDetectorRef} from '@
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
+import { FormControl} from '@angular/forms';
+import { EditScheduleDialogComponent } from '../edit-schedule-dialog/edit-schedule-dialog.component'
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-settings',
@@ -10,6 +13,8 @@ import { MatTable, MatTableDataSource } from '@angular/material/table';
 })
 
 export class SettingsComponent implements OnInit, AfterViewInit {
+
+  hControl: FormControl;
 
   EXAMPLE_DATA: TableSetting[] = [
     {id: 1, descripcion: "Nose", horario: 18}
@@ -21,10 +26,13 @@ export class SettingsComponent implements OnInit, AfterViewInit {
 
   dataSource = new MatTableDataSource();
 
-  displayedColumns = ['id', 'descripcion', 'horario'];
 
-  constructor() {
+
+  displayedColumns = ['id', 'descripcion', 'horario', 'acciones'];
+
+  constructor(private editScheduleDialog: MatDialog, public changeDetectorRef: ChangeDetectorRef) {
     this.dataSource.data = this.EXAMPLE_DATA;
+    this.hControl = new FormControl();
    }
 
   ngOnInit(): void {
@@ -36,7 +44,10 @@ export class SettingsComponent implements OnInit, AfterViewInit {
   }
 
   cambioHorario(setting: TableSetting){
-    alert(document.getElementById("horario").innerHTML.valueOf());
+    const dialogRef = this.editScheduleDialog.open(EditScheduleDialogComponent, {});
+    //tengo que tomar el hcontrol.value y pasarselo al service para que lo setee en la base,
+    //y cuando cargue otra vez mi datasource ya estara el nuevo dato ya que se toma de la base
+    //alert(this.hControl.value)
   }
 
 }

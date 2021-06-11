@@ -1,0 +1,16 @@
+<h2 mat-header>Cambio de Horario</h2>
+<mat-card>
+    <mat-card-content>
+        <form [formGroup]="scheduleForm">
+
+            <mat-form-field>
+                <mat-label>Horario Nuevo</mat-label>
+                <input matInput type="text" [formControl]="scheduleControl" required>
+            </mat-form-field>
+
+
+        </form>
+        <button mat-raised-button color="primary" (click)="change()">Cambiar</button>
+        <button mat-raised-button color="warn" (click)="close()">Cancelar</button>
+    </mat-card-content>
+</mat-card>
