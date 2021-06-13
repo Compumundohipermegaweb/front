@@ -66,8 +66,62 @@ export class PrintTable {
     popupWin.document.write(`
   <html>
     <head>
+      <title>Hefesto</title>
       <h1>Reporte de Caja</h1>
-     
+      <style type="text/css">
+        body {
+          color: #000;
+          background: #01327B0F;
+          font-family: Helvetica, Arial, sans-serif;
+          text-align: center;
+        }
+        #page {
+          width: 600px;
+          text-align: left;
+          margin: 0 auto;
+          padding: 2em;
+          background: #fff;
+        }
+
+        /* the table */
+
+        table {
+          width: 100%;
+          border: 1px solid #000;
+          border-collapse: collapse;
+          caption-side: top;
+          }
+        th, td {
+          width: 25%;
+          text-align: left;
+          vertical-align: top;
+          border: 1px solid #000;
+          padding: 0.3em;
+        }
+        caption {
+          padding: 0.3em;
+          color: #fff;
+          background: #000;
+        }
+        th {
+          background: #01327B3D;
+        }
+        td {
+          background: #f4f4f4;
+        }
+        .odd td {
+          background: #fff;
+        }
+        .elements {
+          width: 30%;
+        }
+        .tag {
+          width: 15%;
+        }
+        .purpose {
+          width: 55%;
+        }
+      </style>
     </head>
     <body onload="window.print();window.close()"><table class="table table-bordered">${printContents}</table></body>
   </html>`

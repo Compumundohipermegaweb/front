@@ -31,6 +31,13 @@ import { CashService ,OpenRequest, CloseRequest, CashResponse} from '../service/
     // User 
     userId =1;
     cashOpened=0;
+
+    //Summary
+    displayedColumns: string[] = ['movement', 'amount'];
+    transactions: Transaction[] = [
+      {movement: 'Ingreso', amount: 0},
+      {movement: 'Egreso', amount: 0},
+    ];
     
     constructor(
       private cashService: CashService,
@@ -158,5 +165,15 @@ import { CashService ,OpenRequest, CloseRequest, CashResponse} from '../service/
       });
     }
 
+     /** Gets the difference between income and expense */
+     getTotalCost() {
+      return this.transactions.map(t => t.amount).reduce((acc, value) => - acc - value, 0);
+    }
 
+
+  }
+  
+  interface Transaction {
+    movement: string;
+    amount: number;
   }

@@ -9,8 +9,8 @@
 <table id="MovementsTable" mat-table [dataSource]="movements" class="mat-elevation-z8">
 
     <ng-container matColumnDef="payment_method">
-    <th mat-header-cell *matHeaderCellDef> Medio de Pago </th>
-    <td mat-cell *matCellDef="let movements"> {{movements.payment_method }} </td>
+        <th mat-header-cell *matHeaderCellDef> Medio de Pago </th>
+        <td mat-cell *matCellDef="let movements"> {{movements.payment_method }} </td>
     </ng-container>
 
     <ng-container matColumnDef="card">
@@ -33,8 +33,8 @@
         <td mat-cell *matCellDef="let movements"><div *ngIf="movements.movement_type == 'EGRESO'"> {{movements.total | currency}} </div></td>
     </ng-container>   
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns sticky: true" > </tr>
-    <tr mat-row *matRowDef="let movements; columns: displayedColumns;"></tr>
+    <tr class="odd" mat-header-row *matHeaderRowDef="displayedColumns sticky: true" > </tr>
+    <tr class="odd" mat-row *matRowDef="let movements; columns: displayedColumns;"></tr>
 
 </table>
 
