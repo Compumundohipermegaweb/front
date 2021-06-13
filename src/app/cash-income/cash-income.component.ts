@@ -10,6 +10,7 @@ import { CardService } from '../service/card.service';
 import { CashService } from '../service/cash.service';
 import { ClientResponse } from '../service/client.service';
 import { PaymentMethodService } from '../service/payment-method.service';
+import { AddIncomeDialogComponent } from '../add-income-dialog/add-income-dialog.component';
 
 @Component({
   selector: 'app-cash-income',
@@ -39,6 +40,7 @@ export class CashIncomeComponent implements OnInit {
     private cashService: CashService,
     private cardService: CardService,
     private paymentMethodService: PaymentMethodService,
+    private addIncomeDialog: MatDialog
   ) { 
      this.cashOpened = 1;
      this.initPaymentMethodTypes();
@@ -121,6 +123,15 @@ export class CashIncomeComponent implements OnInit {
   findPaymentMethodDescription(id : number): String{
     let payment = this.paymentMethods.find((it) => it.id ==id)
     return payment?.description
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.incomes.filter = filterValue.trim().toLowerCase();
+  }
+
+  add() {
+    const dialogRef = this.addIncomeDialog.open(AddIncomeDialogComponent, {})
   }
 
 }

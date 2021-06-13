@@ -4,6 +4,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import Swal from 'sweetalert2';
 import { CashService } from '../service/cash.service';
+import { AddExpenseDialogComponent } from '../add-expense-dialog/add-expense-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-cash-expense',
@@ -27,6 +29,7 @@ export class CashExpenseComponent implements OnInit {
   constructor(
     public changeDetectorRef: ChangeDetectorRef,
     private cashService: CashService,
+    private addExpenseDialog: MatDialog
   ) { 
 
     this.loadExpenses();
@@ -57,7 +60,16 @@ export class CashExpenseComponent implements OnInit {
       );
   }
 
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.expenses.filter = filterValue.trim().toLowerCase();
+  }
 
+  add(){
+    const dialogRef = this.addExpenseDialog.open(AddExpenseDialogComponent, {})
+
+    
+  }
 }
 
 

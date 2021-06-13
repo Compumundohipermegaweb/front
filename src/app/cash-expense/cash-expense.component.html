@@ -1,3 +1,16 @@
+<div>
+  <mat-form-field>
+      <mat-label>Filtrar</mat-label>
+      <input matInput (keyup)="applyFilter($event)" #filtro>
+  </mat-form-field>
+
+  <button mat-mini-fab color="primary" (click)="add()">
+      <mat-icon>
+          add
+      </mat-icon>
+  </button>
+</div>
+
 <table  mat-table [dataSource]="expenses" multiTemplateDataRows class="full-width-table" matSort aria-label="Elements">
 	<ng-container matColumnDef="supplier">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Proveedor</th>

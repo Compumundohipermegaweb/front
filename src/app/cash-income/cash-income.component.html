@@ -1,3 +1,16 @@
+<div>
+	<mat-form-field>
+		<mat-label>Filtrar</mat-label>
+		<input matInput (keyup)="applyFilter($event)" #filtro>
+	</mat-form-field>
+  
+	<button mat-mini-fab color="primary" (click)="add()">
+		<mat-icon>
+			add
+		</mat-icon>
+	</button>
+  </div>
+
 <table  mat-table [dataSource]="incomes" multiTemplateDataRows class="mat-elevation-z8" matSort aria-label="Elements">
 
 	<ng-container  matColumnDef="client">

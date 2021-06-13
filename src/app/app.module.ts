@@ -74,6 +74,8 @@ import { SupplierComponent } from './supplier/supplier.component';
 import { AddSupplierDialogComponent } from './add-supplier-dialog/add-supplier-dialog.component';
 import { SettingsComponent } from './settings/settings.component';
 import { CashReportComponent } from './cash-report/cash-report.component';
+import { AddExpenseDialogComponent } from './add-expense-dialog/add-expense-dialog.component';
+import { AddIncomeDialogComponent } from './add-income-dialog/add-income-dialog.component';
 
 
 registerLocaleData(localEsAr)
@@ -118,6 +120,8 @@ registerLocaleData(localEsAr)
     AddSupplierDialogComponent,
     SettingsComponent,
     CashReportComponent,
+    AddExpenseDialogComponent,
+    AddIncomeDialogComponent,
   ],
   imports: [
     BrowserModule,

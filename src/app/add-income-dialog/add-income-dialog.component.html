@@ -1,0 +1,26 @@
+<h2 mat-header>Nueva Ingreso</h2>
+<mat-card>
+    <mat-card-content>
+        <form [formGroup]="incomeForm">
+
+            <mat-form-field>
+                <mat-label>Origen</mat-label>
+                <input matInput type="text" [formControl]="sourceControl" required>
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Descripción</mat-label>
+                <input matInput type="text" [formControl]="descriptionControl" required>
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Monto</mat-label>
+                <input matInput type="number" [formControl]="amountControl" required>
+            </mat-form-field>
+
+        </form>
+        <button mat-raised-button color="primary" (click)="create()">Crear</button>
+        <button mat-raised-button color="warn" (click)="close()">Cancelar</button>
+    </mat-card-content>
+</mat-card>
+
