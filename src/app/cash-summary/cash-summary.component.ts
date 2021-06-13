@@ -46,7 +46,8 @@ import { CashService ,OpenRequest, CloseRequest, CashResponse} from '../service/
     ) { 
      
       this.getCashOpenByUserId(this.userId);
-      this.initCashRegisters() ;  
+      this.initCashRegisters() ; 
+      this.initTotalCash() ;
 
     }
 
@@ -170,9 +171,37 @@ import { CashService ,OpenRequest, CloseRequest, CashResponse} from '../service/
       return this.transactions.map(t => t.amount).reduce((acc, value) => - acc - value, 0);
     }
 
+    initTotalCash() {
+
+      this.cashService.getTotal(1)
+        .subscribe(
+          (response) => {
+            let income_cash= response.totals.filter((it)=>it.movement_type =="INGRESO" && it.payment_method =="Efectivo");         
+            let total_cash_income: number=income_cash.map(t => t.total).reduce((acc, value) =>  acc + value, 0);
+            let expense_cash = response.totals.filter((it)=>it.movement_type =="EGRESO" && it.payment_method =="Efectivo");
+            let total_cash_expense: number=expense_cash.map(t => t.total).reduce((acc, value) =>  acc + value, 0);
+
+            this.transactions = [
+              {movement: 'Ingreso', amount: total_cash_income},
+              {movement: 'Egreso', amount: total_cash_expense},
+            ];
+            
+          },
+          (error) => {
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: "No se pudieron cargar los ingresos de la Caja"
+            });
+ 
+          }
+        );
+ 
+    }
+
 
   }
-  
+
   interface Transaction {
     movement: string;
     amount: number;
