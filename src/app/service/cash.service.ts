@@ -23,6 +23,7 @@ export class CashService {
   allTransactionUrl = '/api/cash/transaction/all?cash_start_end_id={cash_start_end_id}';
   expensesUrl = '/api/cash/cash/expense?cash_start_end_id={cash_start_end_id}';
   paymentsUrl  = '/api/cash/payment-details/update?movement_id={movement_id}';
+  totalUrl = '/api/cash/total-movement?branch_id={branch_id}';
 
 
 constructor(private http: HttpClient) { }
@@ -55,6 +56,10 @@ constructor(private http: HttpClient) { }
     return this.paymentsUrl.replace(/{movement_id}/gi, movementId.toString());
   }
 
+  buildUrlTotal(branchId  :number): String{
+    return this.totalUrl.replace(/{branch_id}/gi, branchId.toString());
+  }
+
   getCashOpenByUser(userId :number): Observable<CashStarEndIdResponse>{
     return this.http.get<CashStarEndIdResponse>(this.apiHost + this.buildUrlCashOpenByUser(userId));
   }
@@ -66,6 +71,10 @@ constructor(private http: HttpClient) { }
 
   getExpenses(cashStartEndId: number): Observable<ExpensesResponse> {
     return this.http.get<ExpensesResponse>(this.apiHost + this.buildUrlExpenses(cashStartEndId));
+  }
+
+  getTotal(branchId: number): Observable<TotalsResponse> {
+    return this.http.get<TotalsResponse>(this.apiHost + this.buildUrlTotal(branchId));
   }
 
   payMovement(movementId: number, payments: PaymentRequest[]): Observable<boolean> {
@@ -140,6 +149,22 @@ export interface PaymentRequest{
   card_id?: number;
   lastDigits?: String;
   email?: String;
+}
+
+export interface TotalResponse{
+  branch_id: String,
+  cash_id: String,
+  cash_start_end_id: number,
+  date: Date,
+  movement_type: String,
+  source: String,
+  payment_method: String,
+  card: String,
+  total: number
+}
+
+export interface TotalsResponse{
+    totals: TotalResponse[]
 }
 
 

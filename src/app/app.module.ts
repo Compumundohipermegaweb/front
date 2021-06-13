@@ -73,6 +73,8 @@ import { PurchasesComponent } from './purchases/purchases.component';
 import { SupplierComponent } from './supplier/supplier.component';
 import { AddSupplierDialogComponent } from './add-supplier-dialog/add-supplier-dialog.component';
 import { SettingsComponent } from './settings/settings.component';
+import { CashReportComponent } from './cash-report/cash-report.component';
+
 
 registerLocaleData(localEsAr)
 
@@ -115,6 +117,7 @@ registerLocaleData(localEsAr)
     SupplierComponent,
     AddSupplierDialogComponent,
     SettingsComponent,
+    CashReportComponent,
   ],
   imports: [
     BrowserModule,

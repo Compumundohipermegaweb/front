@@ -4,7 +4,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { Cash } from '../cash/cash.component';
-import { CashService ,OpenRequest, CloseRequest,CashResponse} from '../service/cash.service';
+import { CashService ,OpenRequest, CloseRequest, CashResponse} from '../service/cash.service';
 
 @Component({
   selector: 'app-cash-summary',
@@ -32,19 +32,11 @@ import { CashService ,OpenRequest, CloseRequest,CashResponse} from '../service/c
     userId =1;
     cashOpened=0;
     
-    //Summary
-    displayedColumns: string[] = ['movement', 'amount'];
-    transactions: Transaction[] = [
-      {movement: 'Ingreso', amount: 0},
-      {movement: 'Egreso', amount: 0},
-    ];
-
     constructor(
       private cashService: CashService,
       public changeDetectorRef: ChangeDetectorRef,
       private router: Router
     ) { 
-     
      
       this.getCashOpenByUserId(this.userId);
       this.initCashRegisters() ;  
@@ -65,18 +57,11 @@ import { CashService ,OpenRequest, CloseRequest,CashResponse} from '../service/c
       
         }
   
-    ngOnInit() {
-      
+    ngOnInit() {     
     }
   
     ngAfterViewInit(): void {  
-    
     }  
-
-    /** Gets the difference between income and expense */
-    getTotalCost() {
-      return this.transactions.map(t => t.amount).reduce((acc, value) => - acc - value, 0);
-    }
 
     selectCash(event) {
       this.selectedCash = {
@@ -121,35 +106,35 @@ import { CashService ,OpenRequest, CloseRequest,CashResponse} from '../service/c
 
     closeCashRegister(){
 
-        let closeRequest = {
-          cash_id: 1,//this.cashOpened,
-          user_id: this.userId,
-          real_balance: this.closeBalanceForm.value,
-          theoretical_balance: this.closeBalanceForm.value
-        }
-      
-        this.cashService.close(closeRequest)
-          .subscribe(
-            (response) => { 
-             Swal.fire({
-              icon: "success",
-              title: "La caja fue cerrada",
-            });
-            this.reloadCurrentRoute();
-            },
+      let closeRequest = {
+        cash_id: 1,//this.cashOpened,
+        user_id: this.userId,
+        real_balance: this.closeBalanceForm.value,
+        theoretical_balance: this.closeBalanceForm.value
+      }
     
-            (error) => {
-              Swal.fire({
-                icon: "error",
-                title: "Error",
-                text: "No se pudo cerrada la caja"
-              });
-            }
-          );
-          
-          this.closeBalanceForm.setValue(null);
+      this.cashService.close(closeRequest)
+        .subscribe(
+          (response) => { 
+            Swal.fire({
+            icon: "success",
+            title: "La caja fue cerrada",
+          });
+          this.reloadCurrentRoute();
+          },
+  
+          (error) => {
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: "No se pudo cerrada la caja"
+            });
+          }
+        );
+        
+      this.closeBalanceForm.setValue(null);
 
-      }  
+    }  
 
     getCashOpenByUserId(userId: number): number{
 
@@ -175,9 +160,3 @@ import { CashService ,OpenRequest, CloseRequest,CashResponse} from '../service/c
 
 
   }
-
-  interface Transaction {
-    movement: string;
-    amount: number;
-  }
-
