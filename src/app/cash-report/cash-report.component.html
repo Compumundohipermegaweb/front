@@ -1,41 +1,101 @@
-<div class="buttom-print" >
-    <button mat-mini-fab color="primary" (click)="exportTable()">
-        <mat-icon>
-            print
-        </mat-icon>
-    </button>
-</div>
-<div class="div-report">  
-<table id="MovementsTable" mat-table [dataSource]="movements" class="mat-elevation-z8">
+<mat-grid-list cols="6" rowHeight="3:1">
+   
+    <mat-grid-tile colspan=2> 
+        <mat-button-toggle-group name="reportType" aria-label="Tipo de Reporte">
+            <mat-button-toggle value="consolidado">Consolidado</mat-button-toggle>
+            <mat-button-toggle value="detallado" disabled>Detallado</mat-button-toggle>
+        </mat-button-toggle-group>      
+    </mat-grid-tile>
 
-    <ng-container matColumnDef="payment_method">
-        <th mat-header-cell *matHeaderCellDef> Medio de Pago </th>
-        <td mat-cell *matCellDef="let movements"> {{movements.payment_method }} </td>
-    </ng-container>
+    <mat-grid-tile colspan=2> 
+        <div *ngIf="cashOpened; else elseBlock">Estado de la caja:<strong>ABIERTA</strong></div>
+        <ng-template #elseBlock>Estado de la caja: <strong> CERRADA</strong></ng-template>
+    </mat-grid-tile>
 
-    <ng-container matColumnDef="card">
-        <th mat-header-cell *matHeaderCellDef> Tarjeta </th>
-        <td mat-cell *matCellDef="let movements"> {{movements.card }} </td>
-    </ng-container>
+    <mat-grid-tile> 
+        <div> Saldo en Efectivo: <strong> {{getBalanceCash() | currency}}</strong></div>
+    </mat-grid-tile>
 
-    <ng-container matColumnDef="source">
-        <th mat-header-cell *matHeaderCellDef> Origen </th>
-        <td mat-cell *matCellDef="let movements"> {{movements.source }} </td>
-    </ng-container>   
+    <mat-grid-tile> 
+        <div class="buttom-print" >
+            <button mat-mini-fab color="primary" (click)="exportTable()">
+                <mat-icon> print</mat-icon>
+            </button>
+        </div>
+    </mat-grid-tile>
+</mat-grid-list>
+<mat-card>
+    <mat-card-title>Ingresos</mat-card-title> 
+<div class="container">  
+    <table id="MovementsTableInc" mat-table [dataSource]="movementsIncome" class="mat-elevation-z8">
 
-    <ng-container matColumnDef="income">
-        <th mat-header-cell *matHeaderCellDef> Ingreso </th>
-        <td mat-cell *matCellDef="let movements"><div *ngIf="movements.movement_type == 'INGRESO'">  {{movements.total | currency}}</div></td>
-    </ng-container>   
+        <ng-container matColumnDef="payment_method">
+            <th mat-header-cell *matHeaderCellDef> Medio de Pago </th>
+            <td mat-cell *matCellDef="let movements"> {{movements.payment_method }} </td>
+            <td mat-footer-cell *matFooterCellDef>  </td>
+        </ng-container>
 
-    <ng-container matColumnDef="expense">
-        <th mat-header-cell *matHeaderCellDef> Egreso </th>
-        <td mat-cell *matCellDef="let movements"><div *ngIf="movements.movement_type == 'EGRESO'"> {{movements.total | currency}} </div></td>
-    </ng-container>   
+        <ng-container matColumnDef="card">
+            <th mat-header-cell *matHeaderCellDef> Tarjeta </th>
+            <td mat-cell *matCellDef="let movements"> {{movements.card }} </td>
+            <td mat-footer-cell *matFooterCellDef></td>
+        </ng-container>
 
-    <tr class="odd" mat-header-row *matHeaderRowDef="displayedColumns sticky: true" > </tr>
-    <tr class="odd" mat-row *matRowDef="let movements; columns: displayedColumns;"></tr>
+        <ng-container matColumnDef="source">
+            <th mat-header-cell *matHeaderCellDef> Origen </th>
+            <td mat-cell *matCellDef="let movements"> {{movements.source }} </td>
+            <td mat-footer-cell *matFooterCellDef> Total Ingresos: </td>
+        </ng-container>   
 
-</table>
+        <ng-container matColumnDef="monto">
+            <th mat-header-cell *matHeaderCellDef> Monto </th>
+            <td mat-cell *matCellDef="let movements">  {{movements.total | localCurrency }}</td>
+            <td mat-footer-cell *matFooterCellDef> {{getTotalCostIncome() | localCurrency }} </td>
+        </ng-container>   
+    
 
+        <tr mat-header-row *matHeaderRowDef="displayedColumns " > </tr>
+        <tr mat-row *matRowDef="let movements; columns: displayedColumns;"></tr>
+        <tr mat-footer-row *matFooterRowDef="displayedColumns; "></tr>
+
+    </table>
 </div> 
+</mat-card>
+
+<mat-card> 
+    <mat-card-title>Egresos</mat-card-title> 
+    <div class="container">  
+        <table id="MovementsTableExp" mat-table [dataSource]="movementsExpense" class="mat-elevation-z8">
+    
+            <ng-container matColumnDef="payment_method">
+                <th mat-header-cell *matHeaderCellDef> Medio de Pago </th>
+                <td mat-cell *matCellDef="let movements"> {{movements.payment_method }} </td>
+                <td mat-footer-cell *matFooterCellDef></td>
+            </ng-container>
+    
+            <ng-container matColumnDef="card">
+                <th mat-header-cell *matHeaderCellDef> Tarjeta </th>
+                <td mat-cell *matCellDef="let movements"> {{movements.card }} </td>
+                <td mat-footer-cell *matFooterCellDef></td>
+            </ng-container>
+    
+            <ng-container matColumnDef="source">
+                <th mat-header-cell *matHeaderCellDef> Origen </th>
+                <td mat-cell *matCellDef="let movements"> {{movements.source }} </td>
+                <td mat-footer-cell *matFooterCellDef> Total Egresos:</td>
+            </ng-container>   
+    
+            <ng-container matColumnDef="monto">
+                <th mat-header-cell *matHeaderCellDef> Monto </th>
+                <td mat-cell *matCellDef="let movements">  {{movements.total | localCurrency }}</td>
+                <td mat-footer-cell *matFooterCellDef> {{getTotalCostExpense() | localCurrency}} </td>
+            </ng-container>   
+        
+    
+            <tr mat-header-row *matHeaderRowDef="displayedColumns " > </tr>
+            <tr mat-row *matRowDef="let movements; columns: displayedColumns;"></tr>
+            <tr mat-footer-row *matFooterRowDef="displayedColumns; "></tr>
+    
+        </table>
+    </div> 
+    </mat-card>

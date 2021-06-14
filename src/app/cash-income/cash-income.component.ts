@@ -5,6 +5,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import Swal from 'sweetalert2';
 import { Payment, AddPaymentMethodComponent, Card } from '../add-payment-method/add-payment-method.component';
+import { CashSummaryComponent } from '../cash-summary/cash-summary.component';
 import { PaymentMethod } from '../payment-methods/payment-methods.component';
 import { CardService } from '../service/card.service';
 import { CashService } from '../service/cash.service';
@@ -39,10 +40,11 @@ export class CashIncomeComponent implements OnInit {
     public changeDetectorRef: ChangeDetectorRef,
     private cashService: CashService,
     private cardService: CardService,
+    private cashSummary: CashSummaryComponent,
     private paymentMethodService: PaymentMethodService,
     private addIncomeDialog: MatDialog
   ) { 
-     this.cashOpened = 1;
+     this.cashOpened = this.cashSummary.cashOpened;
      this.initPaymentMethodTypes();
      this.initCardTypes()
      this.loadIncomes();

@@ -1,11 +1,10 @@
 table {
-    width: 100%;
+    width: 90%;
     margin: auto;
-    overflow: auto;
 }
 
 .div-report{
-    padding:5px;
+    padding:10px;
 }
 
 .buttom-print{
@@ -14,3 +13,18 @@ table {
 }
 
 
+mat-card-title{
+    font-size: medium;
+    margin:auto;
+    padding-bottom:10px;
+}
+
+/* .container {
+    height: 400px;
+    overflow: auto;
+} */
+
+tr.mat-footer-row, th.mat-header-cell  {
+    font-weight: bold; font-size: small;
+  }
+  

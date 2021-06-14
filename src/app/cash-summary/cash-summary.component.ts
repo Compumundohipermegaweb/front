@@ -1,10 +1,15 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Injectable, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { Cash } from '../cash/cash.component';
+import { BranchService } from '../service/branch.service';
 import { CashService ,OpenRequest, CloseRequest, CashResponse} from '../service/cash.service';
+
+@Injectable({
+  providedIn: 'root'
+})
 
 @Component({
   selector: 'app-cash-summary',
@@ -27,6 +32,7 @@ import { CashService ,OpenRequest, CloseRequest, CashResponse} from '../service/
     // Close Cash
     closeBalanceForm = new FormControl();
     closeRequest: CloseRequest;
+    cashId=0;
     
     // User 
     userId =1;
@@ -41,13 +47,15 @@ import { CashService ,OpenRequest, CloseRequest, CashResponse} from '../service/
     
     constructor(
       private cashService: CashService,
+      private branchService: BranchService,
       public changeDetectorRef: ChangeDetectorRef,
       private router: Router
     ) { 
      
       this.getCashOpenByUserId(this.userId);
-      this.initCashRegisters() ; 
-      this.initTotalCash() ;
+      this.initCashRegisters(); 
+      this.initTotalCash();
+      this.getCashIdOpen();
 
     }
 
@@ -114,33 +122,42 @@ import { CashService ,OpenRequest, CloseRequest, CashResponse} from '../service/
 
     closeCashRegister(){
 
-      let closeRequest = {
-        cash_id: 1,//this.cashOpened,
-        user_id: this.userId,
-        real_balance: this.closeBalanceForm.value,
-        theoretical_balance: this.closeBalanceForm.value
-      }
-    
-      this.cashService.close(closeRequest)
-        .subscribe(
-          (response) => { 
-            Swal.fire({
-            icon: "success",
-            title: "La caja fue cerrada",
-          });
-          this.reloadCurrentRoute();
-          },
-  
-          (error) => {
-            Swal.fire({
-              icon: "error",
-              title: "Error",
-              text: "No se pudo cerrada la caja"
+      if ( this.cashId != 0 ){
+
+        let closeRequest = {
+          cash_id: this.cashId,
+          user_id: this.userId,
+          real_balance: this.closeBalanceForm.value,
+          theoretical_balance: this.closeBalanceForm.value
+        }
+      
+        this.cashService.close(closeRequest)
+          .subscribe(
+            (response) => { 
+              Swal.fire({
+              icon: "success",
+              title: "La caja fue cerrada",
             });
-          }
-        );
-        
-      this.closeBalanceForm.setValue(null);
+            this.reloadCurrentRoute();
+            },
+    
+            (error) => {
+              Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "No se pudo cerrada la caja"
+              });
+            }
+          );
+          
+        this.closeBalanceForm.setValue(null);
+      }else{
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "No se pudo cerrada la caja, validar que esté seleccionada la sucursal"
+        });
+      }
 
     }  
 
@@ -156,6 +173,18 @@ import { CashService ,OpenRequest, CloseRequest, CashResponse} from '../service/
         }
       );
       return this.cashOpened
+    }
+
+    getCashIdOpen() {
+      this.cashService.getAllCash()
+        .subscribe(
+          (response) => {
+            if(response.cash_registers) {
+              let currentCash = response.cash_registers.find((it) => it.branch_id == this.branchService.selectedBranch)
+              this.cashId = currentCash.cash_id
+            }
+          }
+        )
     }
 
     reloadCurrentRoute() {

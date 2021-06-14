@@ -3,11 +3,11 @@ import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import Swal from 'sweetalert2';
+import { CashSummaryComponent } from '../cash-summary/cash-summary.component';
 import { CashService } from '../service/cash.service';
 import { AddExpenseDialogComponent } from '../add-expense-dialog/add-expense-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { CashSummaryComponent } from '../cash-summary/cash-summary.component';
-import { HomeComponent } from '../home/home.component';
+
 
 @Component({
   selector: 'app-cash-expense',
@@ -27,14 +27,16 @@ export class CashExpenseComponent implements OnInit {
 
   columns = ['supplier','paymentMethods','amount','source', 'description','actions'];
   expenses = new MatTableDataSource<CashMovementExpense>()
+  cashOpened = 0
 
   constructor(
     public changeDetectorRef: ChangeDetectorRef,
     private cashService: CashService,
     private addExpenseDialog: MatDialog,
-    //private caja: CashSummaryComponent
-  ) { 
+    private cashSummary: CashSummaryComponent
 
+  ) { 
+    this.cashOpened = this.cashSummary.cashOpened;
     this.loadExpenses();
   }
 
@@ -46,7 +48,7 @@ export class CashExpenseComponent implements OnInit {
   }
 
   loadExpenses() {
-    this.cashService.getExpenses(1)
+    this.cashService.getExpenses(this.cashOpened)
       .subscribe(
         (response) => {
           console.log(JSON.stringify(response))
@@ -76,7 +78,6 @@ export class CashExpenseComponent implements OnInit {
     
   }
 }
-
 
 export interface CashMovementExpense{
   id_movement: number,
