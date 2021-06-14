@@ -85,6 +85,7 @@ this.branchService.getAll()
 }
 
 exportTable(){
+  this.cashOpened = this.cashSummary.cashOpened;
   let cashStatus= this.cashOpened==0?"CERRADA":"ABIERTA"
   
   PrintTable.exportToPdf("MovementsTableInc","MovementsTableExp",cashStatus, this.getBalanceCash(),this.branch);

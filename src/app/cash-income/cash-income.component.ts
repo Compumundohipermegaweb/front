@@ -79,7 +79,7 @@ export class CashIncomeComponent implements OnInit {
   }
 
   loadIncomes() {
-    this.cashService.getIncomes(this.cashOpened)
+    this.cashService.getIncomes(1)
       .subscribe(
         (response) => {
         //  console.log(JSON.stringify(response))
