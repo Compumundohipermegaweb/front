@@ -37,7 +37,8 @@ import { MatRadioModule} from '@angular/material/radio';
 import { MatAutocompleteModule} from '@angular/material/autocomplete';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { MatDatepickerModule} from '@angular/material/datepicker';
-import { MatButtonToggleModule} from '@angular/material/button-toggle'; 
+import { MatButtonToggleModule} from '@angular/material/button-toggle';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 import { registerLocaleData } from '@angular/common';
@@ -164,7 +165,8 @@ registerLocaleData(localEsAr)
       registrationStrategy: 'registerWhenStable:30000'
     }),
     MDBBootstrapModule.forRoot(),
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    MatTooltipModule
   ],
   providers: [CurrencyPipe],
   bootstrap: [AppComponent, NavBarComponent]
