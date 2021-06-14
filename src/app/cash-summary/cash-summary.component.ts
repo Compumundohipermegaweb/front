@@ -170,6 +170,7 @@ import { CashService ,OpenRequest, CloseRequest, CashResponse} from '../service/
      getTotalCost() {
       return this.transactions.map(t => t.amount).reduce((acc, value) => - acc - value, 0);
     }
+    
 
     initTotalCash() {
 

@@ -6,6 +6,8 @@ import Swal from 'sweetalert2';
 import { CashService } from '../service/cash.service';
 import { AddExpenseDialogComponent } from '../add-expense-dialog/add-expense-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { CashSummaryComponent } from '../cash-summary/cash-summary.component';
+import { HomeComponent } from '../home/home.component';
 
 @Component({
   selector: 'app-cash-expense',
@@ -29,7 +31,8 @@ export class CashExpenseComponent implements OnInit {
   constructor(
     public changeDetectorRef: ChangeDetectorRef,
     private cashService: CashService,
-    private addExpenseDialog: MatDialog
+    private addExpenseDialog: MatDialog,
+    //private caja: CashSummaryComponent
   ) { 
 
     this.loadExpenses();
@@ -68,6 +71,8 @@ export class CashExpenseComponent implements OnInit {
   add(){
     const dialogRef = this.addExpenseDialog.open(AddExpenseDialogComponent, {})
 
+    /*verificar que el monto del nuevo egreso no sea mayor a lo que me da getTotalCost
+    this.caja.getTotalCost()*/
     
   }
 }

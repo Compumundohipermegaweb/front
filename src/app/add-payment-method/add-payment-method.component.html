@@ -3,6 +3,7 @@
 <h3>Total: {{ data.total | localCurrency }}</h3> 
 <h3>Cliente: {{ data.client.document_number + " - " +data.client.first_name + " " + data.client.last_name }} </h3>
 <h3>Falta: {{ totalCost - calculateCurrentSubtotal() | localCurrency}}</h3>
+<h3>Limite de Credito: {{ clientCheckingAccount.balance }}</h3>
 <mat-dialog-content class="mat-typography">
 <form [formGroup]="paymentForm">
     <ng-template matStepLabel>Medios de pago</ng-template>

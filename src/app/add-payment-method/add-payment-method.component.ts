@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import { CardService } from '../service/card.service';
 import { CashService } from '../service/cash.service';
 import { CheckingAccountResponse, ClientResponse, ClientService } from '../service/client.service';
+import { CashSummaryComponent } from '../cash-summary/cash-summary.component';
 
 @Component({
   selector: 'app-add-payment-method',
@@ -44,7 +45,7 @@ export class AddPaymentMethodComponent implements OnInit {
     private formBuilder: FormBuilder,
     private matDialogRef: MatDialogRef<AddPaymentMethodComponent>,
     private changeDetectorRef: ChangeDetectorRef,
-    @Inject(MAT_DIALOG_DATA) public data: AddPaymentMethodData
+    @Inject(MAT_DIALOG_DATA) public data: AddPaymentMethodData,
   ) {
 
     this.paymentMethodColumns = ["method", "amount", "type", "lastDigits", "email", "actions"]
@@ -144,6 +145,19 @@ export class AddPaymentMethodComponent implements OnInit {
 
   validatePaymentAmount() {
     let currentSubTotal = this.calculateCurrentSubtotal() + this.amountControl.value
+
+    let paymentMethod =this.paymentMethods.find((it) => it.id == this.paymentMethodControl.value);
+
+    if(paymentMethod?.type == "CUENTA_CORRIENTE"){
+      if(this.amountControl.value >= this.clientCheckingAccount.balance){
+        this.amountControl.setErrors({"exceeded": true});
+        Swal.fire({
+          icon: "error",
+          title: "Cantidad Invalida",
+          text: "El cliente no tiene suficiente credito disponible"
+        })
+      }
+    }
 
     if(this.amountControl.value == 0) {
       this.amountControl.setErrors({"invalid": true});

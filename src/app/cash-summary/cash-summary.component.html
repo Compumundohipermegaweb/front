@@ -22,7 +22,7 @@
 
                     <mat-form-field class="start-end-full-width" *ngIf="cashOpened">
                         <mat-label>Saldo final de Caja</mat-label>
-                        <input type="number" matInput [formControl]="closeBalanceForm">
+                        <input type="number" matInput [formControl]="closeBalanceForm" value="{{getTotalCost()}}"  disabled>
                         <mat-hint>Pesos Argentinos</mat-hint>
                     </mat-form-field>
 
