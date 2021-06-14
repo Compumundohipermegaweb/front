@@ -77,6 +77,8 @@ import { SettingsComponent } from './settings/settings.component';
 import { CashReportComponent } from './cash-report/cash-report.component';
 import { AddExpenseDialogComponent } from './add-expense-dialog/add-expense-dialog.component';
 import { AddIncomeDialogComponent } from './add-income-dialog/add-income-dialog.component';
+import { PurchaseOrdersComponent } from './purchase-orders/purchase-orders.component';
+import { DispatchesComponent } from './dispatches/dispatches.component';
 
 
 registerLocaleData(localEsAr)
@@ -123,6 +125,8 @@ registerLocaleData(localEsAr)
     CashReportComponent,
     AddExpenseDialogComponent,
     AddIncomeDialogComponent,
+    PurchaseOrdersComponent,
+    DispatchesComponent
   ],
   imports: [
     BrowserModule,

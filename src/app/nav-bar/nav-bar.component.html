@@ -29,6 +29,16 @@
   </mat-list-item>
 
 
+  <mat-list-item *ngIf="isAdmin() || isManager() || isSupervisor() || isSalesman() || isCashier()">
+    <button mat-button class="nav-button" [routerLink]="['purchase']" routerLinkActive="active">
+      <mat-icon>receipt_long</mat-icon> Compras
+    </button>
+    
+    <mat-divider></mat-divider>
+
+  </mat-list-item>
+
+
   <mat-list-item *ngIf="isAdmin() || isManager() || isSupervisor()">
     <button mat-button class="nav-button" [routerLink]="['branch']" routerLinkActive="active">
       <mat-icon>home</mat-icon> Sucursales

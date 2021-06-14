@@ -1,13 +1,17 @@
-<div class="mat-elevation-z8">
-  <mat-card>
-    <mat-card-title>
-      <mat-icon>shopping_cart</mat-icon>
-      <span>&nbsp;Compras a Proveedores</span>
+<mat-card>
+  <mat-card-title>
+    <mat-icon>receipt_long</mat-icon>
+    <span>&nbsp;Compras a Proveedores</span>
   </mat-card-title>
+  <mat-card-content>
+  <mat-tab-group mat-align-tabs="start">
+    <mat-tab label="Ordenes de compra">
+      <app-purchase-orders></app-purchase-orders>
+    </mat-tab>
+    <mat-tab label="Remitos">
+      <app-dispatches></app-dispatches>
+    </mat-tab>
+  </mat-tab-group>
 
-  <mat-divider></mat-divider>
-
-
-  <mat-card-content></mat-card-content>
-  </mat-card>
-  </div>
+  </mat-card-content>
+</mat-card>
