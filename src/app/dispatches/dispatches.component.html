@@ -33,7 +33,7 @@
   <ng-container matColumnDef="action">
     <th mat-header-cell *matHeaderCellDef></th>
     <td mat-cell *matCellDef="let row">
-        <button mat-mini-fab color="primary" (click)="confirmDelivery(row)">
+        <button *ngIf="row.status != 'CONFIRMED'" mat-mini-fab color="primary" (click)="confirmDelivery(row)">
             <mat-icon>check</mat-icon>
         </button>
     </td>
