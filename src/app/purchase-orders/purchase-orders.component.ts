@@ -42,7 +42,7 @@ export interface PurchaseOrder {
   dispatch_id: number;
 }
 
-enum Status {
+export enum Status {
   PENDING = "PENDING", 
   ACCEPTED = "ACCEPTED", 
   CONFIRMED = "CONFIRMED", 
