@@ -5,6 +5,7 @@ import { Supplier } from '../service/supplier.service';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import Swal from 'sweetalert2';
 import { DispatchService } from '../service/dispatch.service';
+import { BranchService } from '../service/branch.service';
 
 @Component({
   selector: 'app-dispatches',
@@ -23,7 +24,7 @@ export class DispatchesComponent implements OnInit {
   dataSource: MatTableDataSource<Dispatch>
   displayedColumns: String[]
 
-  constructor(private dispatchService: DispatchService) {
+  constructor(private dispatchService: DispatchService, private branchService: BranchService) {
     this.displayedColumns = ["id", "supplier", "total", "status", "action"]
     this.initDataSource()
   }
@@ -52,7 +53,7 @@ export class DispatchesComponent implements OnInit {
       cancelButtonColor: "#f44336"
     }).then((result) => {
       if(result.isConfirmed) {
-        this.dispatchService.confirm(dispatch.id)
+        this.dispatchService.confirm(dispatch.id, dispatch.total, this.branchService.selectedBranch)
           .subscribe(
             (success) => {
               dispatch.status = "CONFIRMED"

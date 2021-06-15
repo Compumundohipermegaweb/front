@@ -19,8 +19,8 @@ export class DispatchService {
     return this.http.get<GetAllDispatchesResponse>(this.HOST + this.BASE_URL)
   }
 
-  confirm(dispatchId: number) {
-    return this.http.post(this.HOST + this.BASE_URL + this.buildConfirmUrl(dispatchId), {})
+  confirm(dispatchId: number, total: number, branchId: number) {
+    return this.http.post(this.HOST + this.BASE_URL + this.buildConfirmUrl(dispatchId), {total_cost: total, branch_id: branchId})
   }
 
   private buildConfirmUrl(dispatchId: number): String {
