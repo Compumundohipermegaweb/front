@@ -1,5 +1,5 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -34,23 +34,25 @@ export class CashIncomeComponent implements OnInit {
   expandedElement: CashMovement | null;
   paymentMethods: PaymentMethod[] = []
   cards: Card[] = []
-  cashOpened: number= 0;
+
+  @Input() public cashOpened :number=0
+
   constructor(
     private addPaymentMethodDialog: MatDialog,
     public changeDetectorRef: ChangeDetectorRef,
     private cashService: CashService,
     private cardService: CardService,
-    private cashSummary: CashSummaryComponent,
     private paymentMethodService: PaymentMethodService,
     private addIncomeDialog: MatDialog
   ) { 
-     this.cashOpened = this.cashSummary.cashOpened;
+
      this.initPaymentMethodTypes();
      this.initCardTypes()
      this.loadIncomes();
   }
 
   ngOnInit() {
+
   }
   
   ngAfterViewInit(): void {   
@@ -79,7 +81,7 @@ export class CashIncomeComponent implements OnInit {
   }
 
   loadIncomes() {
-    this.cashService.getIncomes(1)
+    this.cashService.getIncomes(this.cashOpened)
       .subscribe(
         (response) => {
         //  console.log(JSON.stringify(response))
@@ -156,6 +158,10 @@ export class CashIncomeComponent implements OnInit {
           })
         }
       )
+  }
+
+  detectChanges(){
+    this.changeDetectorRef.detectChanges()
   }
 
 }

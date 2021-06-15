@@ -36,7 +36,7 @@ import { CashService ,OpenRequest, CloseRequest, CashResponse} from '../service/
     
     // User 
     userId =1;
-    cashOpened=0;
+    cashOpened=0
 
     //Summary
     displayedColumns: string[] = ['movement', 'amount'];
@@ -51,7 +51,7 @@ import { CashService ,OpenRequest, CloseRequest, CashResponse} from '../service/
       public changeDetectorRef: ChangeDetectorRef,
       private router: Router
     ) { 
-     
+     this.cashOpened=this.cashService.getCurrentCash()
       this.getCashOpenByUserId(this.userId);
       this.initCashRegisters(); 
       this.initTotalCash();
@@ -104,7 +104,9 @@ import { CashService ,OpenRequest, CloseRequest, CashResponse} from '../service/
             icon: "success",
             title: "La caja fue abierta",
           });
-          this.reloadCurrentRoute();
+          this.initTotalCash()
+          this.getCashOpenByUserId(this.userId)
+          this.changeDetectorRef.detectChanges()
           },
   
           (error) => {
@@ -138,7 +140,10 @@ import { CashService ,OpenRequest, CloseRequest, CashResponse} from '../service/
               icon: "success",
               title: "La caja fue cerrada",
             });
-            this.reloadCurrentRoute();
+            this.initTotalCash()
+            this.getCashOpenByUserId(this.userId)
+            this.changeDetectorRef.detectChanges()
+            // this.reloadCurrentRoute();
             },
     
             (error) => {
@@ -161,18 +166,16 @@ import { CashService ,OpenRequest, CloseRequest, CashResponse} from '../service/
 
     }  
 
-    getCashOpenByUserId(userId: number): number{
+    getCashOpenByUserId(userId: number){
 
       this.cashService.getCashOpenByUser(userId)
       .subscribe(
         response => {
-          this.cashOpened= response.cash_start_end_id;
-        },
-        (error) => {
-          this.cashOpened=0
+          this.cashService.setCurrentCash(response.cash_start_end_id);
+          this.cashOpened = this.cashService.getCurrentCash()
         }
       );
-      return this.cashOpened
+
     }
 
     getCashIdOpen() {

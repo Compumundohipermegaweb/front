@@ -25,9 +25,17 @@ export class CashService {
   paymentsUrl  = '/api/cash/payment-details/update?movement_id={movement_id}';
   totalUrl = '/api/cash/total-movement?branch_id={branch_id}';
   registoNuevoUrl = '/api/cash/movement'
+  private currentCash = 0;
 
 
 constructor(private http: HttpClient) { }
+
+  setCurrentCash(cash_id: number){
+    this.currentCash = cash_id
+  }
+  getCurrentCash(){
+    return this.currentCash
+  }
 
   getAllCash(): Observable<AllCashResponse> {
     return this.http.get<AllCashResponse>(this.apiHost + this.allCashUrl);

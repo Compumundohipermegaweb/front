@@ -48,7 +48,7 @@ export class CashExpenseComponent implements OnInit {
   }
 
   loadExpenses() {
-    this.cashService.getExpenses(1)
+    this.cashService.getExpenses(this.cashService.getCurrentCash())
       .subscribe(
         (response) => {
           console.log(JSON.stringify(response))

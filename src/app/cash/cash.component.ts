@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { CashService } from '../service/cash.service';
 
 @Component({
   selector: 'app-cash',
@@ -7,11 +8,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CashComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private cashService : CashService
+  ) { }
 
   ngOnInit(): void {
   }
+
+  getCurrentCash(){
+    return this.cashService.getCurrentCash()
+
+  }
 }
+
 
 export interface Cash {
   branch_id: number,

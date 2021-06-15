@@ -11,8 +11,8 @@
             <app-cash-summary></app-cash-summary>
           </mat-tab>
   
-          <mat-tab label="Ingresos">
-            <app-cash-income></app-cash-income>
+          <mat-tab label="Ingresos" >
+            <app-cash-income [cashOpened]="getCurrentCash()"></app-cash-income>
           </mat-tab>
   
           <mat-tab label="Egresos">
