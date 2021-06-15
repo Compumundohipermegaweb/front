@@ -1,8 +1,8 @@
 <mat-card>
-    <button mat-mini-fab color="primary" (click)="reload()">
+    <button mat-mini-fab color="primary" (click)="reload()" matTooltip="Refrescar">
         <mat-icon>autorenew</mat-icon>
     </button>
-    <button mat-mini-fab color="accent" (click)="generatePurchaseOrders()">
+    <button mat-mini-fab color="accent" (click)="generatePurchaseOrders()" matTooltip="Generar ordenes de compra">
         <mat-icon>receipt</mat-icon>
     </button>
     <table mat-table [dataSource]="dataSource" class="full-width-table">
