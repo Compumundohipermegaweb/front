@@ -1,17 +1,20 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { ChangeDetectorRef, Component, Input, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, Injectable, Input, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import Swal from 'sweetalert2';
 import { Payment, AddPaymentMethodComponent, Card } from '../add-payment-method/add-payment-method.component';
-import { CashSummaryComponent } from '../cash-summary/cash-summary.component';
 import { PaymentMethod } from '../payment-methods/payment-methods.component';
 import { CardService } from '../service/card.service';
 import { CashService } from '../service/cash.service';
 import { ClientResponse } from '../service/client.service';
 import { PaymentMethodService } from '../service/payment-method.service';
 import { AddIncomeDialogComponent } from '../add-income-dialog/add-income-dialog.component';
+
+@Injectable({
+  providedIn: 'root'
+})
 
 @Component({
   selector: 'app-cash-income',
@@ -23,7 +26,7 @@ import { AddIncomeDialogComponent } from '../add-income-dialog/add-income-dialog
       state('expanded', style({height: '*'})),
       transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
     ]),
-  ],
+  ]
 })
 export class CashIncomeComponent implements OnInit {
 
@@ -35,20 +38,18 @@ export class CashIncomeComponent implements OnInit {
   paymentMethods: PaymentMethod[] = []
   cards: Card[] = []
 
-  @Input() public cashOpened :number=0
-
   constructor(
     private addPaymentMethodDialog: MatDialog,
     public changeDetectorRef: ChangeDetectorRef,
     private cashService: CashService,
     private cardService: CardService,
     private paymentMethodService: PaymentMethodService,
-    private addIncomeDialog: MatDialog
+    private addIncomeDialog: MatDialog,
   ) { 
 
      this.initPaymentMethodTypes();
      this.initCardTypes()
-     this.loadIncomes();
+     this.loadIncomes(this.cashService.getCurrentCash());
   }
 
   ngOnInit() {
@@ -80,12 +81,14 @@ export class CashIncomeComponent implements OnInit {
     );
   }
 
-  loadIncomes() {
-    this.cashService.getIncomes(this.cashOpened)
+  loadIncomes(cashMovId: number) {
+  console.log("loadIncomes"+this.cashService.getCurrentCash())
+    this.cashService.getIncomes(cashMovId)
       .subscribe(
         (response) => {
-        //  console.log(JSON.stringify(response))
+          console.log(JSON.stringify(response))
           this.incomes.data = response.incomes;  
+          this.detectChanges()
         },
         (error) => {
           Swal.fire({

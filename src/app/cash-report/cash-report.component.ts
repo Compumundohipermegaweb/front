@@ -38,7 +38,9 @@ export class CashReportComponent implements OnInit {
 
   initTotals() {
 
-     this.cashService.getTotal(this.branchService.selectedBranch)
+
+  //   this.cashService.getTotal(this.branchService.selectedBranch)
+     this.cashService.getTotal(1)
        .subscribe(
          (response) => {
            console.log(JSON.stringify(response));

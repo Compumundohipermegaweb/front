@@ -7,8 +7,6 @@ import { Payment, PaymentMethod} from '../add-payment-method/add-payment-method.
 import { ClientResponse } from '../service/client.service';
 
 
-
-
 @Injectable({
   providedIn: 'root'
 })
@@ -74,6 +72,7 @@ constructor(private http: HttpClient) { }
   }
 
   getIncomes(cashStartEndId: number): Observable<IncomesResponse> {
+    console.log("zzzz")
     return this.http.get<IncomesResponse>(this.apiHost + this.buildUrlIncomes(cashStartEndId));
    
   }

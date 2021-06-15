@@ -3,6 +3,9 @@ import { FormControl } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { CashExpenseComponent } from '../cash-expense/cash-expense.component';
+import { CashIncomeComponent } from '../cash-income/cash-income.component';
+import { CashReportComponent } from '../cash-report/cash-report.component';
 import { Cash } from '../cash/cash.component';
 import { BranchService } from '../service/branch.service';
 import { CashService ,OpenRequest, CloseRequest, CashResponse} from '../service/cash.service';
@@ -14,7 +17,8 @@ import { CashService ,OpenRequest, CloseRequest, CashResponse} from '../service/
 @Component({
   selector: 'app-cash-summary',
   templateUrl: './cash-summary.component.html',
-  styleUrls: ['./cash-summary.component.css']
+  styleUrls: ['./cash-summary.component.css'],
+  providers:[CashIncomeComponent]
 })
  export class CashSummaryComponent implements OnInit {
 
@@ -49,9 +53,10 @@ import { CashService ,OpenRequest, CloseRequest, CashResponse} from '../service/
       private cashService: CashService,
       private branchService: BranchService,
       public changeDetectorRef: ChangeDetectorRef,
-      private router: Router
+      private router: Router,
+      private cashIncomeComponent :CashIncomeComponent
     ) { 
-     this.cashOpened=this.cashService.getCurrentCash()
+      this.cashOpened=this.cashService.getCurrentCash()
       this.getCashOpenByUserId(this.userId);
       this.initCashRegisters(); 
       this.initTotalCash();
@@ -119,7 +124,7 @@ import { CashService ,OpenRequest, CloseRequest, CashResponse} from '../service/
         );
         this.cashForm.setValue(null);
         this.openBalanceForm.setValue(null);
-
+        
     }
 
     closeCashRegister(){
@@ -173,6 +178,8 @@ import { CashService ,OpenRequest, CloseRequest, CashResponse} from '../service/
         response => {
           this.cashService.setCurrentCash(response.cash_start_end_id);
           this.cashOpened = this.cashService.getCurrentCash()
+        //  this.refreshOthersComponents()
+          console.log("ddddd"+this.cashOpened )
         }
       );
 
@@ -189,6 +196,13 @@ import { CashService ,OpenRequest, CloseRequest, CashResponse} from '../service/
           }
         )
     }
+
+    refreshOthersComponents(){
+      this.cashIncomeComponent.loadIncomes(this.cashOpened);
+      this.cashIncomeComponent.changeDetectorRef.detectChanges();
+
+    }
+  
 
     reloadCurrentRoute() {
       let currentUrl = this.router.url;
