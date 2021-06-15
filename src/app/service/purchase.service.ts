@@ -17,6 +17,10 @@ export class PurchaseService {
   getAll(): Observable<GetAllPurchaseOrders> {
     return this.http.get<GetAllPurchaseOrders>(this.HOST + this.BASE_URL)
   }
+
+  generatePurchaseOrders() {
+    return this.http.get(this.HOST + "/api/batch/restock")
+  }
 }
 
 export interface GetAllPurchaseOrders {

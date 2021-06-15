@@ -61,10 +61,21 @@ export class DispatchesComponent implements OnInit {
                 icon: "success",
                 title: "Entrega confirmada!"
               })
+            },
+
+            (error) => {
+              Swal.fire({
+                icon: "error",
+                title: "La caja se encuentra cerrada"
+              })
             }
           )
       }
     })
+  }
+
+  reload() {
+    this.initDataSource()
   }
 
 }

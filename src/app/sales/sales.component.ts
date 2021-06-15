@@ -2,9 +2,8 @@ import { ClientLookupDialogComponent } from '../client-lookup-dialog/client-look
 import { ItemLookupDialogComponent } from '../item-lookup-dialog/item-lookup-dialog.component';
 
 import { SalesService } from '../service/sale/sales.service';
-import { CheckingAccountResponse, ClientService } from '../service/client.service';
+import { ClientService } from '../service/client.service';
 import { ItemStockResponse, StockService, StockValidationResponse } from '../service/stock.service';
-import { CardResponse, CardService } from '../service/card.service';
 
 import { Client, Item, Sale } from './sales.model';
 
@@ -15,7 +14,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import Swal  from 'sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
-import { MatStepper } from '@angular/material/stepper';
 import { BranchService } from '../service/branch.service';
 import { CashService } from '../service/cash.service';
 
