@@ -24,6 +24,7 @@ export class CashService {
   expensesUrl = '/api/cash/cash/expense?cash_start_end_id={cash_start_end_id}';
   paymentsUrl  = '/api/cash/payment-details/update?movement_id={movement_id}';
   totalUrl = '/api/cash/total-movement?branch_id={branch_id}';
+  registoNuevoUrl = '/api/cash/movement'
 
 
 constructor(private http: HttpClient) { }
@@ -81,7 +82,31 @@ constructor(private http: HttpClient) { }
     return this.http.post<boolean>(this.apiHost + this.buildUrlPayments(movementId), payments)
   }
 
+  registerCash(cashMovement: cashMovementRequest): Observable<cashMovementResponse> {
+    return this.http.post<cashMovementResponse>(this.apiHost + this.registoNuevoUrl, cashMovement)
+  }
 
+}
+
+export interface cashMovementRequest{
+  cash_start_end_id: number;
+  movement_type: String;
+  source_id: number;
+  source_description: String;
+  user_id: number;
+  amount: number;
+  detail: String
+}
+
+export interface cashMovementResponse{
+  id: number;
+  cash_start_end_id: number;
+  movement_type: String;
+  source_id: number;
+  source_description: String;
+  user_id: number;
+  amount: number;
+  detail: String
 }
 
 

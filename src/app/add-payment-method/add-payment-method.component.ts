@@ -149,7 +149,7 @@ export class AddPaymentMethodComponent implements OnInit {
     let paymentMethod =this.paymentMethods.find((it) => it.id == this.paymentMethodControl.value);
 
     if(paymentMethod?.type == "CUENTA_CORRIENTE"){
-      if(this.amountControl.value >= this.clientCheckingAccount.balance){
+      if(this.amountControl.value > this.clientCheckingAccount.balance){
         this.amountControl.setErrors({"exceeded": true});
         Swal.fire({
           icon: "error",

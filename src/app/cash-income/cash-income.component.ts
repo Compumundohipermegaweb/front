@@ -134,6 +134,28 @@ export class CashIncomeComponent implements OnInit {
 
   add() {
     const dialogRef = this.addIncomeDialog.open(AddIncomeDialogComponent, {})
+
+    dialogRef.afterClosed()
+      .subscribe(
+        (result: CashMovement[]) => {
+          if(result && result.length > 0) {
+            this.incomes.data.forEach(
+              (income: CashMovement) => {
+                result.push(income)
+              }
+            )
+            this.incomes.data = result
+          }
+        },
+
+        (error) => {
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "No se pudo crear la categoria"
+          })
+        }
+      )
   }
 
 }
@@ -150,5 +172,6 @@ export interface CashMovement {
   client?: ClientResponse;
   transaction_id: number //Id de la Venta
 }
+
 
 

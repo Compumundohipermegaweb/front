@@ -13,7 +13,7 @@ import { CashService } from '../service/cash.service';
 })
 export class AddIncomeDialogComponent implements OnInit {
 
-  incomesCreated: CashIncomeComponent[]
+  incomesCreated: cashMovementResponse[]
 
   sourceControl: FormControl
   descriptionControl: FormControl
@@ -44,7 +44,40 @@ export class AddIncomeDialogComponent implements OnInit {
   }
 
   create(){
-    
+    let expense = {
+      cash_start_end_id: 1,
+      movement_type: "INGRESO",
+      source_id: 5,
+      source_description: this.descriptionControl.value,
+      user_id: 1,
+      amount: this.amountControl.value,
+      detail: this.sourceControl.value
+    }
+
+    if(!this.isValid()) {
+      return;
+    }
+
+    this.cashService.registerCash(expense)
+      .subscribe(
+        (response) => {
+          Swal.fire({
+            icon:"success",
+            title: "¡Ingreso creado!"
+          })
+
+          this.incomesCreated.push(response)
+          this.close()
+        },
+
+        (error) => {
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "No se pudo crear el nuevo egreso"
+          })
+        }
+      )
   }
 
   isValid(){
@@ -57,5 +90,15 @@ export class AddIncomeDialogComponent implements OnInit {
 
 }
 
+export interface cashMovementResponse{
+  id: number;
+  cash_start_end_id: number;
+  movement_type: String;
+  source_id: number;
+  source_description: String;
+  user_id: number;
+  amount: number;
+  detail: String
+}
 
 

@@ -73,6 +73,27 @@ export class CashExpenseComponent implements OnInit {
   add(){
     const dialogRef = this.addExpenseDialog.open(AddExpenseDialogComponent, {})
 
+    dialogRef.afterClosed()
+      .subscribe(
+        (result: CashMovementExpense[]) => {
+          if(result && result.length > 0) {
+            this.expenses.data.forEach(
+              (expense: CashMovementExpense) => {
+                result.push(expense)
+              }
+            )
+            this.expenses.data = result
+          }
+        },
+
+        (error) => {
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "No se pudo crear la categoria"
+          })
+        }
+      )
     /*verificar que el monto del nuevo egreso no sea mayor a lo que me da getTotalCost
     this.caja.getTotalCost()*/
     
