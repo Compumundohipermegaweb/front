@@ -5,8 +5,10 @@ import Swal from 'sweetalert2';
 import { CashExpenseComponent, CashMovementExpense } from '../cash-expense/cash-expense.component';
 import { CashService } from '../service/cash.service';
 import { cashMovementRequest, cashMovementResponse } from '../service/cash.service';
+import { CashSummaryComponent } from '../cash-summary/cash-summary.component';
 
 @Component({
+  providers: [CashSummaryComponent],
   selector: 'app-add-expense-dialog',
   templateUrl: './add-expense-dialog.component.html',
   styleUrls: ['./add-expense-dialog.component.css']
@@ -24,7 +26,8 @@ export class AddExpenseDialogComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private cashService: CashService,
-    public dialogRef: MatDialogRef<AddExpenseDialogComponent>
+    public dialogRef: MatDialogRef<AddExpenseDialogComponent>,
+    public cashSummary: CashSummaryComponent
   ) { 
     this.sourceControl = new FormControl()
     this.descriptionControl = new FormControl()
@@ -57,6 +60,16 @@ export class AddExpenseDialogComponent implements OnInit {
     if(!this.isValid()) {
       return;
     }
+    
+    if(this.cashSummary.getTotalCost() < this.amountControl.value){
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "No hay suficiente dinero en caja para el egreso"
+      })
+      return;
+    }
+    
 
     this.cashService.registerCash(expense)
       .subscribe(

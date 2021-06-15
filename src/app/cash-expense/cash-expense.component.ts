@@ -94,8 +94,7 @@ export class CashExpenseComponent implements OnInit {
           })
         }
       )
-    /*verificar que el monto del nuevo egreso no sea mayor a lo que me da getTotalCost
-    this.caja.getTotalCost()*/
+    
     
   }
 }

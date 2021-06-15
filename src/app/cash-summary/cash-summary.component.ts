@@ -199,7 +199,7 @@ import { CashService ,OpenRequest, CloseRequest, CashResponse} from '../service/
     }
 
      /** Gets the difference between income and expense */
-     getTotalCost() {
+    public getTotalCost() {
       return this.transactions.map(t => t.amount).reduce((acc, value) => - acc - value, 0);
     }
     
