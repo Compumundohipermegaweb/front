@@ -1,7 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import Swal from 'sweetalert2';
-import { CashSummaryComponent } from '../cash-summary/cash-summary.component';
 import { BranchService } from '../service/branch.service';
 import { CashService, TotalResponse } from '../service/cash.service';
 
@@ -23,10 +22,8 @@ export class CashReportComponent implements OnInit {
   constructor(
     private cashService: CashService,
     private branchService: BranchService,
-    private cashSummary: CashSummaryComponent,
     public changeDetectorRef: ChangeDetectorRef,
   ) { 
-    this.cashOpened = this.cashSummary.cashOpened;
     this.initTotals();
     this.getBranch();
     
@@ -37,10 +34,9 @@ export class CashReportComponent implements OnInit {
 
 
   initTotals() {
+    let branchId = this.branchService.selectedBranch | 0
 
-
-  //   this.cashService.getTotal(this.branchService.selectedBranch)
-     this.cashService.getTotal(1)
+    this.cashService.getTotal(branchId)
        .subscribe(
          (response) => {
            console.log(JSON.stringify(response));
@@ -56,6 +52,8 @@ export class CashReportComponent implements OnInit {
 
          }
        );
+
+    this.cashOpened = this.cashService.getCurrentCash() | 0
 
    }
 
@@ -87,7 +85,7 @@ this.branchService.getAll()
 }
 
 exportTable(){
-  this.cashOpened = this.cashSummary.cashOpened;
+  this.cashOpened = this.cashService.getCurrentCash() | 0;
   let cashStatus= this.cashOpened==0?"CERRADA":"ABIERTA"
   
   PrintTable.exportToPdf("MovementsTableInc","MovementsTableExp",cashStatus, this.getBalanceCash(),this.branch);

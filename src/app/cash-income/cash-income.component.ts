@@ -11,6 +11,7 @@ import { CashService } from '../service/cash.service';
 import { ClientResponse } from '../service/client.service';
 import { PaymentMethodService } from '../service/payment-method.service';
 import { AddIncomeDialogComponent } from '../add-income-dialog/add-income-dialog.component';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -49,7 +50,7 @@ export class CashIncomeComponent implements OnInit {
 
      this.initPaymentMethodTypes();
      this.initCardTypes()
-     this.loadIncomes(this.cashService.getCurrentCash());
+   //  this.loadIncomes(this.cashService.getCurrentCash());
   }
 
   ngOnInit() {
@@ -57,7 +58,9 @@ export class CashIncomeComponent implements OnInit {
   }
   
   ngAfterViewInit(): void {   
-    this.incomes.paginator = this.paginator; 
+     this.loadIncomes(this.cashService.getCurrentCash());
+     this.incomes.paginator = this.paginator; 
+     this.detectChanges()
   }
 
   initPaymentMethodTypes() {
@@ -81,14 +84,15 @@ export class CashIncomeComponent implements OnInit {
     );
   }
 
-  loadIncomes(cashMovId: number) {
-  console.log("loadIncomes"+this.cashService.getCurrentCash())
+  loadIncomes(cashMovId: number): Observable<number> {
+    var result: Observable<number>;
+    this.changeDetectorRef.markForCheck
+  console.log(cashMovId+"loadIncomes"+this.cashService.getCurrentCash())
     this.cashService.getIncomes(cashMovId)
       .subscribe(
         (response) => {
           console.log(JSON.stringify(response))
           this.incomes.data = response.incomes;  
-          this.detectChanges()
         },
         (error) => {
           Swal.fire({
@@ -98,6 +102,7 @@ export class CashIncomeComponent implements OnInit {
           });
         }
       );
+      return result
   }
 
   addPaymentMethod(cashMovement: CashMovement) {

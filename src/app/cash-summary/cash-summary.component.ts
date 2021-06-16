@@ -18,7 +18,7 @@ import { CashService ,OpenRequest, CloseRequest, CashResponse} from '../service/
   selector: 'app-cash-summary',
   templateUrl: './cash-summary.component.html',
   styleUrls: ['./cash-summary.component.css'],
-  providers:[CashIncomeComponent]
+ // providers:[CashIncomeComponent]
 })
  export class CashSummaryComponent implements OnInit {
 
@@ -54,7 +54,7 @@ import { CashService ,OpenRequest, CloseRequest, CashResponse} from '../service/
       private branchService: BranchService,
       public changeDetectorRef: ChangeDetectorRef,
       private router: Router,
-      private cashIncomeComponent :CashIncomeComponent
+     // private cashIncomeComponent :CashIncomeComponent,
     ) { 
       this.cashOpened=this.cashService.getCurrentCash()
       this.getCashOpenByUserId(this.userId);
@@ -124,7 +124,7 @@ import { CashService ,OpenRequest, CloseRequest, CashResponse} from '../service/
         );
         this.cashForm.setValue(null);
         this.openBalanceForm.setValue(null);
-        
+        this.reloadCurrentRoute();
     }
 
     closeCashRegister(){
@@ -148,7 +148,6 @@ import { CashService ,OpenRequest, CloseRequest, CashResponse} from '../service/
             this.initTotalCash()
             this.getCashOpenByUserId(this.userId)
             this.changeDetectorRef.detectChanges()
-            // this.reloadCurrentRoute();
             },
     
             (error) => {
@@ -168,6 +167,7 @@ import { CashService ,OpenRequest, CloseRequest, CashResponse} from '../service/
           text: "No se pudo cerrada la caja, validar que esté seleccionada la sucursal"
         });
       }
+      this.reloadCurrentRoute();
 
     }  
 
@@ -178,8 +178,6 @@ import { CashService ,OpenRequest, CloseRequest, CashResponse} from '../service/
         response => {
           this.cashService.setCurrentCash(response.cash_start_end_id);
           this.cashOpened = this.cashService.getCurrentCash()
-        //  this.refreshOthersComponents()
-          console.log("ddddd"+this.cashOpened )
         }
       );
 
@@ -197,12 +195,6 @@ import { CashService ,OpenRequest, CloseRequest, CashResponse} from '../service/
         )
     }
 
-    refreshOthersComponents(){
-      this.cashIncomeComponent.loadIncomes(this.cashOpened);
-      this.cashIncomeComponent.changeDetectorRef.detectChanges();
-
-    }
-  
 
     reloadCurrentRoute() {
       let currentUrl = this.router.url;
@@ -219,8 +211,9 @@ import { CashService ,OpenRequest, CloseRequest, CashResponse} from '../service/
     
 
     initTotalCash() {
+      let branchId = this.branchService.selectedBranch | 0
 
-      this.cashService.getTotal(1)
+      this.cashService.getTotal(branchId)
         .subscribe(
           (response) => {
             let income_cash= response.totals.filter((it)=>it.movement_type =="INGRESO" && it.payment_method =="Efectivo");         

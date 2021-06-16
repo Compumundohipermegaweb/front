@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
-import { CashExpenseComponent, CashMovementExpense } from '../cash-expense/cash-expense.component';
 import { CashService } from '../service/cash.service';
 import { cashMovementRequest, cashMovementResponse } from '../service/cash.service';
 import { CashSummaryComponent } from '../cash-summary/cash-summary.component';
@@ -48,13 +47,13 @@ export class AddExpenseDialogComponent implements OnInit {
 
   create(){
     let expense = {
-      cash_start_end_id: 1,
+      cash_start_end_id: this.cashService.getCurrentCash(),
       movement_type: "EGRESO",
       source_id: 6,
-      source_description: this.descriptionControl.value,
+      source_description: this.sourceControl.value,
       user_id: 1,
       amount: this.amountControl.value,
-      detail: this.sourceControl.value
+      detail: this.descriptionControl.value
     }
 
     if(!this.isValid()) {

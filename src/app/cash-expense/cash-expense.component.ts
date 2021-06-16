@@ -3,7 +3,6 @@ import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import Swal from 'sweetalert2';
-import { CashSummaryComponent } from '../cash-summary/cash-summary.component';
 import { CashService } from '../service/cash.service';
 import { AddExpenseDialogComponent } from '../add-expense-dialog/add-expense-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -33,22 +32,23 @@ export class CashExpenseComponent implements OnInit {
     public changeDetectorRef: ChangeDetectorRef,
     private cashService: CashService,
     private addExpenseDialog: MatDialog,
-    private cashSummary: CashSummaryComponent
 
   ) { 
-    this.cashOpened = this.cashSummary.cashOpened;
-    this.loadExpenses();
+
   }
 
   ngOnInit() {
   }
 
   ngAfterViewInit(): void {   
+    this.loadExpenses(this.cashService.getCurrentCash());
     this.expenses.paginator = this.paginator; 
+    this.changeDetectorRef.detectChanges;
   }
 
-  loadExpenses() {
-    this.cashService.getExpenses(this.cashService.getCurrentCash())
+  loadExpenses(cashMovId: number) {
+    this.changeDetectorRef.markForCheck;
+    this.cashService.getExpenses(cashMovId)
       .subscribe(
         (response) => {
           console.log(JSON.stringify(response))
