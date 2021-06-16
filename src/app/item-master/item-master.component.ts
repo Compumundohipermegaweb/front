@@ -5,6 +5,7 @@ import { MatTable, MatTableDataSource } from '@angular/material/table';
 import Swal from 'sweetalert2';
 import { NewItemDialogComponent } from '../new-item-dialog/new-item-dialog.component';
 import { ItemService } from '../service/item.service';
+import { FormControl} from '@angular/forms';
 
 @Component({
   selector: 'app-item-master',
@@ -15,6 +16,7 @@ export class ItemMasterComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
+  priceControl: FormControl;
   columns = ["sku", "description", "price", "cost", "uom", "imported", "state"]
   items = new MatTableDataSource<MasterItem>();
 
@@ -24,6 +26,7 @@ export class ItemMasterComponent implements OnInit {
     public changeDetectorRef: ChangeDetectorRef
   ) {
     this.loadItems();
+    this.priceControl = new FormControl();
   }
 
   ngOnInit() { }
@@ -115,6 +118,62 @@ export class ItemMasterComponent implements OnInit {
       }
     });
   }
+
+  edit(item: MasterItem) {
+    item.editing = !item.editing
+  }
+
+  saveChanges(item: MasterItem) {
+    debugger;
+
+    if(!this.isValid()){
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "El valor debe ser Positivo"
+      })
+      return
+    }
+
+    let changes = {
+      price: this.priceControl.value,
+    }
+
+    if(changes.price == null) {
+      return;
+    }
+
+    if(changes.price) {
+      item.price = changes.price
+    }
+
+    /*this.settingService.updateAlert(alerta)
+      .subscribe(
+        (response) => {
+          Swal.fire({
+            icon: 'success',
+            title: "¡Cambios guardados!"
+          })
+          this.timeControl.setValue(null)
+        },
+
+        (error) => {
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "No se pudieron guardar los cambios"
+          })
+        }
+      )*/
+  }
+
+  isValid(): boolean{
+    if(this.priceControl.value > 0){
+      return true;
+    }else{
+      return false;
+    }
+  }
 }
 
 export interface MasterItem {
@@ -127,4 +186,5 @@ export interface MasterItem {
   category_id: number;
   uom_sale: String;
   imported: boolean;
+  editing?: boolean;
 }

@@ -18,10 +18,6 @@ export class SettingsComponent implements OnInit {
 
   timeControl: FormControl;
 
-  EXAMPLE_DATA: Alert[] = [
-    {id: 1, time: "18", alert_description: "Nose" }
-  ]
-
   dataSource: MatTableDataSource<Alert>;
 
   displayedColums: String[]
@@ -29,7 +25,6 @@ export class SettingsComponent implements OnInit {
   constructor(private editScheduleDialog: MatDialog, public changeDetectorRef: ChangeDetectorRef, private settingService: SettingsService) {
     this.timeControl = new FormControl();
     this.initDataSource()
-    //this.dataSource.data = this.EXAMPLE_DATA;
     this.displayedColums = ["id", "descripcion", "horario", "acciones"]
    }
 

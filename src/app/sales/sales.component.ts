@@ -113,7 +113,7 @@ export class SalesComponent implements OnInit {
   }
 
   initControls() {
-    this.invoiceTypeControl = new FormControl("B");
+    this.invoiceTypeControl = new FormControl();
     this.salesmanControl = new FormControl();
     this.branchControl = new FormControl(this.branchService.selectedBranch);
     this.branchControl.disable()
