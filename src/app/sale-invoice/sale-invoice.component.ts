@@ -14,11 +14,15 @@ export class SaleInvoiceComponent implements OnInit {
   displayedColumns: string[];
   dataSource = new MatTableDataSource<Item>();
   totalCost: number;
+  totalSinIva: number;
+  iva: number;
+  percentIva: number; 
+  percentDiscountIva: number;
 
   saleResponse: SaleResponse
 
   constructor(private changeDetectorRefs: ChangeDetectorRef, private router: Router) {
-    this.displayedColumns = ["quantity", "detail", "price", "subtotal"]
+    this.displayedColumns = ["quantity", "detail","iva", "price", "subtotal"]
 
     let data = this.router.getCurrentNavigation().extras.state.data
     
@@ -27,9 +31,24 @@ export class SaleInvoiceComponent implements OnInit {
 
       this.dataSource.data = this.saleResponse.sale_details.sale_details.map((it: ItemResponse) => this.toItem(it))
 
+
       this.totalCost = this.dataSource.data
         .map( (item: Item) => item.quantity * item.price)
         .reduce((a, b) => a + b)
+
+      if (this.saleResponse.type=='A'){  
+        
+        this.totalSinIva = this.totalCost * 0.79
+        this.iva = this.totalCost * 0.21
+        this.percentDiscountIva = 0.79
+
+      }else{
+        //Para no alterar los valores
+        this.percentDiscountIva = 1
+
+      }
+
+     
     }
   }
 

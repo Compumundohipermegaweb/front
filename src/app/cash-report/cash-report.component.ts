@@ -110,7 +110,8 @@ reload() {
 export class PrintTable {
   static exportToPdf(tableId1: string,tableId2: string, status?: string, balance?: number, branch?: String) {
      let printContentIncome, printContentExpense, popupWin;
-     let date: Date = new Date();
+     let date=new Date().toLocaleString();
+
     
     printContentIncome = document.getElementById(tableId1).innerHTML;
     printContentExpense = document.getElementById(tableId2).innerHTML;
