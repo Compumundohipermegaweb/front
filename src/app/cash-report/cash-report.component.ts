@@ -99,6 +99,12 @@ getBalanceCash(){
   return (total_cash_income - total_cash_expense)
 }
 
+reload() {
+  this.getBranch();
+  this.initTotals();
+
+}
+
 
 }
 export class PrintTable {

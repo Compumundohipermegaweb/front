@@ -2,14 +2,14 @@
    
     <mat-grid-tile colspan=2> 
         <mat-button-toggle-group name="reportType" aria-label="Tipo de Reporte">
-            <mat-button-toggle value="consolidado">Consolidado</mat-button-toggle>
-            <mat-button-toggle value="detallado" disabled>Detallado</mat-button-toggle>
+            <mat-button-toggle value="consolidado" disabled>Consolidado</mat-button-toggle>
         </mat-button-toggle-group>      
     </mat-grid-tile>
 
     <mat-grid-tile colspan=2> 
-        <!-- <div *ngIf="cashOpened; else elseBlock">Estado de la caja:<strong>ABIERTA</strong></div>
-        <ng-template #elseBlock>Estado de la caja: <strong> CERRADA</strong></ng-template> -->
+        <button mat-mini-fab color="primary" (click)="reload()"  matTooltip="Refrescar">
+            <mat-icon>autorenew</mat-icon>
+        </button>
     </mat-grid-tile>
 
     <mat-grid-tile> 

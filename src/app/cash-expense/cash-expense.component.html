@@ -9,6 +9,10 @@
           add
       </mat-icon>
   </button>
+  
+  <button mat-mini-fab color="primary" (click)="reload()"  matTooltip="Refrescar">
+		<mat-icon>autorenew</mat-icon>
+	</button>
 </div>
 
 <table  mat-table [dataSource]="expenses" multiTemplateDataRows class="full-width-table" matSort aria-label="Elements">

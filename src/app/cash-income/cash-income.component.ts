@@ -171,6 +171,10 @@ export class CashIncomeComponent implements OnInit {
   detectChanges(){
     this.changeDetectorRef.detectChanges()
   }
+  reload() {
+    this.loadIncomes(this.cashService.getCurrentCash())
+  }
+
 
 }
 

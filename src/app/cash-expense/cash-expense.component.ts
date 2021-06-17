@@ -97,6 +97,12 @@ export class CashExpenseComponent implements OnInit {
     
     
   }
+
+  reload() {
+    this.loadExpenses(this.cashService.getCurrentCash())
+  }
+
+ 
 }
 
 export interface CashMovementExpense{

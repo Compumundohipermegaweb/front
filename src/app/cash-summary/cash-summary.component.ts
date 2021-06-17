@@ -124,7 +124,7 @@ import { CashService ,OpenRequest, CloseRequest, CashResponse} from '../service/
         );
         this.cashForm.setValue(null);
         this.openBalanceForm.setValue(null);
-        this.reloadCurrentRoute();
+     //   this.reloadCurrentRoute();
     }
 
     closeCashRegister(){
@@ -167,7 +167,7 @@ import { CashService ,OpenRequest, CloseRequest, CashResponse} from '../service/
           text: "No se pudo cerrada la caja, validar que esté seleccionada la sucursal"
         });
       }
-      this.reloadCurrentRoute();
+    //  this.reloadCurrentRoute();
 
     }  
 
@@ -196,12 +196,9 @@ import { CashService ,OpenRequest, CloseRequest, CashResponse} from '../service/
     }
 
 
-    reloadCurrentRoute() {
-      let currentUrl = this.router.url;
-      this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-          this.router.navigate([currentUrl]);
-          console.log(currentUrl);
-      });
+    reload() {
+      this.initTotalCash()
+      this.getCashOpenByUserId(this.userId)
     }
 
      /** Gets the difference between income and expense */
