@@ -16,7 +16,7 @@ import { AuthorizatedGuard } from './login/core/authorizated.guard';
 import { PurchasesComponent } from './purchases/purchases.component';
 import { SupplierComponent } from './supplier/supplier.component'
 import { SettingsComponent } from './settings/settings.component'
-
+import { OnlineSalesComponent } from './online-sales/online-sales.component';
 
 export const routes: Routes = [
   { path: "login", component: LoginComponent},
@@ -32,7 +32,8 @@ export const routes: Routes = [
     { path: "reports", component: ReportsComponent, canActivate: [AuthorizatedGuard]},
     { path: "purchase", component: PurchasesComponent, canActivate: [AuthorizatedGuard]},
     { path: "supplier", component: SupplierComponent, canActivate: [AuthorizatedGuard]},
-    { path: "setting", component: SettingsComponent, canActivate: [AuthorizatedGuard]}
+    { path: "setting", component: SettingsComponent, canActivate: [AuthorizatedGuard]},
+    { path: "online-sale", component: OnlineSalesComponent, canActivate: [AuthorizatedGuard]}
   ]},
   { path: "", redirectTo: "/home", pathMatch: "full" },
   { path: "**", redirectTo: "/home"}

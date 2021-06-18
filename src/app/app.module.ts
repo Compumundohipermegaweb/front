@@ -80,6 +80,7 @@ import { AddExpenseDialogComponent } from './add-expense-dialog/add-expense-dial
 import { AddIncomeDialogComponent } from './add-income-dialog/add-income-dialog.component';
 import { PurchaseOrdersComponent } from './purchase-orders/purchase-orders.component';
 import { DispatchesComponent } from './dispatches/dispatches.component';
+import { OnlineSalesComponent } from './online-sales/online-sales.component';
 
 
 registerLocaleData(localEsAr)
@@ -127,7 +128,8 @@ registerLocaleData(localEsAr)
     AddExpenseDialogComponent,
     AddIncomeDialogComponent,
     PurchaseOrdersComponent,
-    DispatchesComponent
+    DispatchesComponent,
+    OnlineSalesComponent
   ],
   imports: [
     BrowserModule,

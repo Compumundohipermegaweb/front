@@ -103,4 +103,13 @@
 
   </mat-list-item>
 
+  <mat-list-item *ngIf="isAdmin() || isManager() || isSupervisor()">
+    <button mat-button class="nav-button" [routerLink]="['online-sale']" routerLinkActive="active">
+      <mat-icon>shop</mat-icon> Venta Online
+    </button>
+
+    <mat-divider></mat-divider>
+
+  </mat-list-item>
+
 </mat-list>
