@@ -20,10 +20,10 @@ export class CustomerManagementComponent implements OnInit, AfterViewInit {
   @ViewChild(MatTable) table!: MatTable<MyTableClients>;
   dataSource = new MatTableDataSource<Client>();
 
-  displayedColumns = ['id', 'nombre', 'email', 'limite', 'moroso', 'estado', 'acciones'];
+  displayedColumns = ['id', 'document','name','email','contactNumber' ,'estado', 'acciones'];
 
   constructor(private changeDetectorRefs: ChangeDetectorRef, private clientService: ClientService) {
-    //this.initDataSource();
+    this.initDataSource();
   }
 
   ngOnInit(): void {
@@ -34,10 +34,10 @@ export class CustomerManagementComponent implements OnInit, AfterViewInit {
     this.dataSource.paginator = this.paginator;
   }
 
-  /*initDataSource(){
+  initDataSource(){
     this.dataSource = new MatTableDataSource();
 
-    this.clientService.getClient()
+    this.clientService.getAll()
       .subscribe(
         (response) => {
           this.dataSource.data = response.clients
@@ -51,7 +51,11 @@ export class CustomerManagementComponent implements OnInit, AfterViewInit {
           })
         }
       )
-  }*/
+  }
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
 
   delete(row: MyTableClients){
     Swal.fire({

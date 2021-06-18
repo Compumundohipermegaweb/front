@@ -13,9 +13,14 @@ export class ClientService {
   clientsUrl = "/api/clients";
   checkingAccountBalanceUrl = "/api/clients/{client_id}/checking-account/balance";
   paymentMethodsUrl = "/api/clients/{client_id}/payment-methods";
+  getAllUrl = "/api/clients/all";
 
 
   constructor(private http: HttpClient) { }
+
+  getAll(): Observable<GetAllClientsResponse> {
+    return this.http.get<GetAllClientsResponse>(this.host + this.getAllUrl);
+  }
 
   getClient(name: string, document: string): Observable<ClientResponse[]> {
     const requestParams = new HttpParams().set("name", name).set("document", document);
@@ -64,4 +69,8 @@ export interface CheckingAccountResponse {
 
 export interface PaymentMethodResponse {
   payment_methods: PaymentMethod[];
+}
+
+export interface GetAllClientsResponse {
+  clients: ClientResponse[];
 }
