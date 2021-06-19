@@ -4,13 +4,14 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import Swal from 'sweetalert2';
 import { NewItemDialogComponent } from '../new-item-dialog/new-item-dialog.component';
-import { ItemService } from '../service/item.service';
 import { FormControl} from '@angular/forms';
+import { ItemService, PostItemRequest } from '../service/item.service';
 
 @Component({
   selector: 'app-item-master',
   templateUrl: './item-master.component.html',
-  styleUrls: ['./item-master.component.css']
+  styleUrls: ['./item-master.component.css'],
+  providers:[NewItemDialogComponent]
 })
 export class ItemMasterComponent implements OnInit {
 
@@ -23,7 +24,8 @@ export class ItemMasterComponent implements OnInit {
   constructor(
     private itemService: ItemService, 
     public newItemDialog: MatDialog,
-    public changeDetectorRef: ChangeDetectorRef
+    public changeDetectorRef: ChangeDetectorRef,
+    private itemDialog: NewItemDialogComponent
   ) {
     this.loadItems();
     this.priceControl = new FormControl();
@@ -147,7 +149,19 @@ export class ItemMasterComponent implements OnInit {
       item.price = changes.price
     }
 
-    /*this.settingService.updateAlert(alerta)
+    let item2: PostItemRequest;
+
+    this.itemDialog.createdItems.forEach( itemElement => {
+      if(itemElement.){
+
+      }
+    });
+
+    this.itemDialog.createdItems
+
+    
+
+    this.itemService.updateItem(item)
       .subscribe(
         (response) => {
           Swal.fire({
@@ -164,7 +178,7 @@ export class ItemMasterComponent implements OnInit {
             text: "No se pudieron guardar los cambios"
           })
         }
-      )*/
+      )
   }
 
   isValid(): boolean{

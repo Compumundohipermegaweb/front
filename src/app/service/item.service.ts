@@ -26,6 +26,10 @@ export class ItemService {
   deleteItem(sku: String): Observable<String>{
     return this.http.delete<String>(this.host + this.itemUrl + "/" + sku)
   }
+
+  updateItem(item: PostItemRequest): Observable<MasterItem> {
+    return this.http.put<MasterItem>(this.host + this.itemUrl, item)
+  }
 }
 
 export interface GetAllItemsResponse {
