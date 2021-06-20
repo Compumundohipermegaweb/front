@@ -38,8 +38,11 @@ export class SalesComponent implements OnInit {
   items: Item[];
   client: Client;
   totalCost: number;
+  discountedCost: number
   itemStock: StockValidationResponse;
-
+  
+  discount: number
+  maxDiscount: number
 
   constantsForm: FormGroup;
   itemForm: FormGroup;
@@ -56,9 +59,6 @@ export class SalesComponent implements OnInit {
 
   paymentMethodDataSource = new MatTableDataSource()
   paymentMethodColumns: string[];
-
-  discount: number
-  maxDiscount: number
 
   constructor(private formBuilder: FormBuilder,
               private changeDetectorRefs: ChangeDetectorRef,
@@ -313,9 +313,11 @@ export class SalesComponent implements OnInit {
     if(this.items && this.items.length > 0) {
       this.totalCost = this.items.map(i => i.price * i.quantity ).reduce((a, b) => a + b);
       this.totalCost = this.acotarDecimal(this.totalCost);
+      
     } else {
       this.totalCost = 0;
     }
+    this.calculateDiscountedCost()
   }
 
   acotarDecimal(x) {
@@ -392,15 +394,26 @@ export class SalesComponent implements OnInit {
           if(!value) {
             return "Debe ingresar un descuento"
           } else if(Number.parseInt(value) > this.maxDiscount) {
-            return "El descuento es demasiado alto"
+            return "¡El descuento es demasiado alto!"
+          } else if(Number.parseInt(value) < 0) {
+            return "¡El descuento no puede ser negativo!"
           }
         }
       })
       
       if (discount) {
         this.discount = discount
+        this.calculateDiscountedCost()
       }
       
     })()
+  }
+
+  calculateDiscountedCost() {
+    if(this.discount > 0) {
+      this.discountedCost = this.totalCost - ((this.discount * this.totalCost) / 100)
+    } else {
+      this.discountedCost = this.totalCost
+    }
   }
 }
