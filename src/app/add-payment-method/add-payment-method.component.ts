@@ -72,7 +72,9 @@ export class AddPaymentMethodComponent implements OnInit {
     this.movementId = data.movementId
     this.clientCheckingAccount = {
       id: null,
-      balance: null
+      balance: null,
+      balance_due: null,
+      credit_limit: null
     }  
     
     this.loadAvailablePaymentMethods()
@@ -149,8 +151,8 @@ export class AddPaymentMethodComponent implements OnInit {
     let paymentMethod =this.paymentMethods.find((it) => it.id == this.paymentMethodControl.value);
 
     if(paymentMethod?.type == "CUENTA_CORRIENTE"){
-      if(this.amountControl.value > this.clientCheckingAccount.balance){
-        this.amountControl.setErrors({"exceeded": true});
+      if(this.amountControl.value > (this.clientCheckingAccount.balance+ this.caHistoryAmount)){
+        this.amountControl.setErrors({"insuficientFounds": true});
         Swal.fire({
           icon: "error",
           title: "Cantidad Invalida",
@@ -285,6 +287,7 @@ export class AddPaymentMethodComponent implements OnInit {
   }
 
   delete(payment :Payment){ 
+    
     this.paymentMethodDataSource.data = this.paymentMethodDataSource.data.filter((it) => !( it.method.id==payment.method.id && it.card_id==payment.card_id &&  
                                                                                            it.sub_total==payment.sub_total && it.last_digits==payment.last_digits))
     this.payments = this.payments.filter((it) => !( it.method.id==payment.method.id && it.card_id==payment.card_id &&  

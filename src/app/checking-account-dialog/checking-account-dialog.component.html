@@ -1,0 +1,39 @@
+<h2 mat-header>Configuración de Cuenta Corriente</h2>
+<mat-divider></mat-divider>
+<mat-card>
+    <mat-card-content> 
+        <mat-grid-list cols="2" rowHeight="5:1">
+            <mat-grid-tile class="right-align">Cliente:</mat-grid-tile>
+            <mat-grid-tile class="right-align">{{clientControl}}</mat-grid-tile> 
+            <mat-grid-tile class="right-align">Corriente Nro.:</mat-grid-tile>
+            <mat-grid-tile class="right-align">{{clientCheckingAccount.id}}</mat-grid-tile>
+            <mat-grid-tile class="right-align">Saldo Adeudado.:</mat-grid-tile>
+            <mat-grid-tile>{{clientCheckingAccount.balance_due | localCurrency}}</mat-grid-tile>
+            <mat-grid-tile>Disponible:</mat-grid-tile>
+            <mat-grid-tile>{{clientCheckingAccount.balance | localCurrency}}</mat-grid-tile>
+            <mat-grid-tile>Límite de Credito:</mat-grid-tile>
+            <mat-grid-tile>{{clientCheckingAccount.credit_limit | localCurrency}}</mat-grid-tile>
+
+
+        </mat-grid-list>
+        <div *ngIf="isAllowed()">
+            <mat-form-field appearance="fill" floatLabel="always">
+                <mat-label>Límite de Credito:</mat-label>
+                <input matInput [formControl]="limitControl" type="number" class="right-align" placeholder="0" >
+                <span matPrefix>$&nbsp;</span>
+                <span matSuffix>.00</span>
+            </mat-form-field>
+            <button *ngIf="clientCheckingAccount.id==null" mat-mini-fab color="primary" matTooltip="Dar de alta Cuenta Corriente" >
+                <mat-icon>
+                    add
+                </mat-icon>
+            </button>
+            <button *ngIf="clientCheckingAccount.id" mat-mini-fab color="primary" matTooltip="Editar Límite de Crédito" >
+                <mat-icon>
+                    edit
+                </mat-icon>
+            </button>
+        </div>
+     </mat-card-content> 
+</mat-card> 
+

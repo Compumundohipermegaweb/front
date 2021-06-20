@@ -1,0 +1,24 @@
+.example-container .mat-form-field + .mat-form-field {
+    margin-left: 8px;
+    margin-top: 8px;
+}
+  
+.right-align {
+    text-align: right;
+}
+input.right-align::-webkit-outer-spin-button,
+input.right-align::-webkit-inner-spin-button {
+    display: none;
+}
+
+input.right-align {
+    -moz-appearance: textfield;
+}
+
+mat-grid-list{
+    margin: 2px;
+}
+
+.mat-grid-tile{
+    justify-content: right;
+}

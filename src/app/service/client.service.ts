@@ -11,7 +11,7 @@ export class ClientService {
 
   host = environment.apiHost
   clientsUrl = "/api/clients";
-  checkingAccountBalanceUrl = "/api/clients/{client_id}/checking-account/balance";
+  checkingAccountBalanceUrl = "/api/clients/{client_id}/checking-account";
   paymentMethodsUrl = "/api/clients/{client_id}/payment-methods";
   getAllUrl = "/api/clients/all";
 
@@ -65,6 +65,8 @@ export interface ClientResponse {
 export interface CheckingAccountResponse {
   id: number;
   balance: number;
+  balance_due: number;
+  credit_limit: number;
 }
 
 export interface PaymentMethodResponse {

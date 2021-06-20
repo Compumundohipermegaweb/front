@@ -1,9 +1,10 @@
 import { AfterViewInit, Component, ViewChild, OnInit, ChangeDetectorRef} from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
-//import { runInThisContext } from 'node:vm';
 import Swal  from 'sweetalert2';
+import { CheckingAccountDialogComponent } from '../checking-account-dialog/checking-account-dialog.component';
 import { ClientService } from '../service/client.service'
 
 @Component({
@@ -22,7 +23,11 @@ export class CustomerManagementComponent implements OnInit, AfterViewInit {
 
   displayedColumns = ['id', 'document','name','email','contactNumber' ,'estado', 'acciones'];
 
-  constructor(private changeDetectorRefs: ChangeDetectorRef, private clientService: ClientService) {
+  constructor(
+    private changeDetectorRefs: ChangeDetectorRef,
+    private clientService: ClientService,
+    private checkingAccountDialog: MatDialog)
+  {
     this.initDataSource();
   }
 
@@ -40,7 +45,7 @@ export class CustomerManagementComponent implements OnInit, AfterViewInit {
     this.clientService.getAll()
       .subscribe(
         (response) => {
-          this.dataSource.data = response.clients
+          this.dataSource.data = response.clients.filter((it)=>it.id!=0)
         },
 
         (error) => {
@@ -79,6 +84,29 @@ export class CustomerManagementComponent implements OnInit, AfterViewInit {
       }
     })
   }
+  updateCheckingAccount(client : Client) {
+
+    const dialogRef = this.checkingAccountDialog.open(CheckingAccountDialogComponent,
+         { data: {client_id: client.id,
+                  client_name: client.first_name +" "+client.last_name }})
+    let ok 
+    dialogRef.afterClosed()
+    .subscribe(
+      (result: Client) => {
+        if(result) {
+          ok = result
+        }
+      },
+
+      (error) => {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "No se pudo guardar los cambios"
+        })
+      }
+    )
+}
 
 
 

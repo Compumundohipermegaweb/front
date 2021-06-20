@@ -81,6 +81,7 @@ import { AddIncomeDialogComponent } from './add-income-dialog/add-income-dialog.
 import { PurchaseOrdersComponent } from './purchase-orders/purchase-orders.component';
 import { DispatchesComponent } from './dispatches/dispatches.component';
 import { OnlineSalesComponent } from './online-sales/online-sales.component';
+import { CheckingAccountDialogComponent } from './checking-account-dialog/checking-account-dialog.component';
 
 
 registerLocaleData(localEsAr)
@@ -129,7 +130,8 @@ registerLocaleData(localEsAr)
     AddIncomeDialogComponent,
     PurchaseOrdersComponent,
     DispatchesComponent,
-    OnlineSalesComponent
+    OnlineSalesComponent,
+    CheckingAccountDialogComponent
   ],
   imports: [
     BrowserModule,
