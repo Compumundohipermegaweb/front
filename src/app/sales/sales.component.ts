@@ -387,7 +387,14 @@ export class SalesComponent implements OnInit {
       const { value: discount } = await Swal.fire({
         title: 'Ingrese el descuento',
         text: "Maximo: " + this.maxDiscount + "%",
-        input: "number"
+        input: "number",
+        inputValidator: (value) => {
+          if(!value) {
+            return "Debe ingresar un descuento"
+          } else if(Number.parseInt(value) > this.maxDiscount) {
+            return "El descuento es demasiado alto"
+          }
+        }
       })
       
       if (discount) {
