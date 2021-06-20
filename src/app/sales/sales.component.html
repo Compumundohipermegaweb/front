@@ -145,8 +145,12 @@
                     <span>Factura tipo {{ invoiceTypeControl.value }}</span>
                 </mat-card-title>
                 <mat-card-subtitle>
-                    <span>Vendedor/a: {{ salesmanControl.value }}</span>
-                    <span>Sucursal {{ branchControl.value }}</span>
+                    <div>
+                        <span>Vendedor/a: {{ salesmanControl.value }}</span>
+                    </div>
+                    <div>
+                        <span>Sucursal {{ branchControl.value }}</span>
+                    </div>
                 </mat-card-subtitle>
                 <mat-card-content *ngIf="client != null">
                     <h2 mat-header>Datos del cliente</h2>
@@ -197,8 +201,18 @@
                     </table>
                 </mat-card-content>
                 <mat-card-title>
-                    <span>Total:</span>
-                    <span>{{ totalCost | localCurrency}} </span>
+                    <div style="padding: 1rem;">
+                        <span>Sub total: {{ totalCost | localCurrency }} </span>
+                    </div>
+                    <div style="padding: 1rem;">
+                        <span>Descuento: {{ discount }}%</span>
+                        <button mat-mini-fab color="primary" *ngIf="canApplyDiscount()" (click)="changeDiscount()">
+                            <mat-icon>price_change</mat-icon>
+                        </button>
+                    </div>
+                    <div style="padding: 1rem;">
+                        <span>Total: {{ totalCost | localCurrency }}</span>
+                    </div>
                 </mat-card-title>
 
             </mat-card>

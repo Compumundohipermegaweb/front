@@ -16,6 +16,7 @@ import Swal  from 'sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
 import { BranchService } from '../service/branch.service';
 import { CashService } from '../service/cash.service';
+import { RoleService } from '../service/role.service';
 
 
 @Component({
@@ -56,6 +57,9 @@ export class SalesComponent implements OnInit {
   paymentMethodDataSource = new MatTableDataSource()
   paymentMethodColumns: string[];
 
+  discount: number
+  maxDiscount: number
+
   constructor(private formBuilder: FormBuilder,
               private changeDetectorRefs: ChangeDetectorRef,
               private salesService: SalesService,
@@ -63,6 +67,7 @@ export class SalesComponent implements OnInit {
               private stockService: StockService,
               private branchService: BranchService,
               private cashService: CashService,
+              private roleService: RoleService,
               private router: Router,
               public clientLookupDialog: MatDialog,
               public itemLookupDialog: MatDialog,
@@ -73,6 +78,8 @@ export class SalesComponent implements OnInit {
     this.initItems();
     this.initControls();
     this.initForms(formBuilder);
+    this.discount = 0
+    this.maxDiscount = 20
   }
 
   ngOnInit(): void {
@@ -368,5 +375,25 @@ export class SalesComponent implements OnInit {
       payment: [],
       total: this.acotarDecimal(this.totalCost)
     }
+  }
+
+  canApplyDiscount() {
+    return this.roleService.isAdmin() || this.roleService.isManager() || this.roleService.isSupervisor()
+  }
+
+  changeDiscount() {
+    (async () => {
+
+      const { value: discount } = await Swal.fire({
+        title: 'Ingrese el descuento',
+        text: "Maximo: " + this.maxDiscount + "%",
+        input: "number"
+      })
+      
+      if (discount) {
+        this.discount = discount
+      }
+      
+    })()
   }
 }
