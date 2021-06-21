@@ -14,6 +14,7 @@ export class ClientService {
   checkingAccountBalanceUrl = "/api/clients/{client_id}/checking-account";
   paymentMethodsUrl = "/api/clients/{client_id}/payment-methods";
   getAllUrl = "/api/clients/all";
+  checkingAccountUrl = '/api/checking-account';
 
 
   constructor(private http: HttpClient) { }
@@ -43,6 +44,14 @@ export class ClientService {
     return this.paymentMethodsUrl.replace(/{client_id}/gi, clientId.toString());
   }
 
+  createCheckingAccount(checkingAccountRequest: CheckingAccountRequest): Observable<CheckingAccountResponse> {
+    return this.http.post<CheckingAccountResponse>(this.host + this.checkingAccountUrl, checkingAccountRequest);
+  }
+
+  updateCreditLimit(checkingAccountRequest: CheckingAccountRequest): Observable<Boolean> {
+    return this.http.put<Boolean>(this.host + this.checkingAccountUrl, checkingAccountRequest);
+  }
+
   
 }
 
@@ -66,6 +75,11 @@ export interface CheckingAccountResponse {
   id: number;
   balance: number;
   balance_due: number;
+  credit_limit: number;
+}
+
+export interface CheckingAccountRequest {
+  client_id: number;
   credit_limit: number;
 }
 

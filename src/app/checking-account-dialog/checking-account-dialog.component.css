@@ -15,10 +15,6 @@ input.right-align {
     -moz-appearance: textfield;
 }
 
-mat-grid-list{
-    margin: 2px;
-}
-
-.mat-grid-tile{
+.mat-raised-button  {
     justify-content: right;
 }

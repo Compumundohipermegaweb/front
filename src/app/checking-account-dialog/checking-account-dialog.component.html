@@ -2,10 +2,10 @@
 <mat-divider></mat-divider>
 <mat-card>
     <mat-card-content> 
-        <mat-grid-list cols="2" rowHeight="5:1">
+        <mat-grid-list cols="2" rowHeight="4:1">
             <mat-grid-tile class="right-align">Cliente:</mat-grid-tile>
             <mat-grid-tile class="right-align">{{clientControl}}</mat-grid-tile> 
-            <mat-grid-tile class="right-align">Corriente Nro.:</mat-grid-tile>
+            <mat-grid-tile class="right-align">C.Corriente Nro.:</mat-grid-tile>
             <mat-grid-tile class="right-align">{{clientCheckingAccount.id}}</mat-grid-tile>
             <mat-grid-tile class="right-align">Saldo Adeudado.:</mat-grid-tile>
             <mat-grid-tile>{{clientCheckingAccount.balance_due | localCurrency}}</mat-grid-tile>
@@ -22,18 +22,26 @@
                 <input matInput [formControl]="limitControl" type="number" class="right-align" placeholder="0" >
                 <span matPrefix>$&nbsp;</span>
                 <span matSuffix>.00</span>
+                <mat-error *ngIf="limitControl.invalid"> {{ getErrors() }} </mat-error>
             </mat-form-field>
-            <button *ngIf="clientCheckingAccount.id==null" mat-mini-fab color="primary" matTooltip="Dar de alta Cuenta Corriente" >
+            <button *ngIf="clientCheckingAccount.id==null" mat-mini-fab color="primary" matTooltip="Dar de alta Cuenta Corriente" 
+                (click)="createCheckingAccount()">
                 <mat-icon>
                     add
                 </mat-icon>
             </button>
-            <button *ngIf="clientCheckingAccount.id" mat-mini-fab color="primary" matTooltip="Editar Límite de Crédito" >
+            <button *ngIf="clientCheckingAccount.id" mat-mini-fab color="primary" matTooltip="Editar Límite de Crédito" 
+                (click)="updateCreditLimit()">
                 <mat-icon>
                     edit
                 </mat-icon>
             </button>
         </div>
-     </mat-card-content> 
+        <div  style="text-align: center">
+        <button mat-raised-button color="primary"(click)="close()">Cerrar</button></div>
+    </mat-card-content> 
 </mat-card> 
+    
+    
+
 
