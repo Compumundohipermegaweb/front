@@ -21,7 +21,7 @@
       <td mat-cell *matCellDef="let row">{{row.id}}</td>
     </ng-container>
 
-    <ng-container matColumnDef="document">
+    <ng-container matColumnDef="documento">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Nro. Documento</th>
       <td mat-cell *matCellDef="let row">
        
@@ -34,16 +34,30 @@
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="name">
+    <ng-container matColumnDef="nombre">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
       <td mat-cell *matCellDef="let row">
         
       
-        <span *ngIf="!row.editing">{{row.first_name}} {{row.last_name}}</span>
+        <span *ngIf="!row.editing">{{row.first_name}}</span>
 
         <mat-form-field *ngIf="row.editing" style="padding: 0%;">
-                  <input matInput [formControl]="nameControl" placeholder="{{row.first_name}} {{row.last_name}}">
+                  <input matInput [formControl]="nameControl" placeholder="{{row.first_name}}">
         </mat-form-field>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="apellido">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Apellido</th>
+      <td mat-cell *matCellDef="let row">
+        
+
+        <span *ngIf="!row.editing">{{row.last_name}}</span>
+
+        <mat-form-field *ngIf="row.editing" style="padding: 0%;">
+                  <input matInput [formControl]="lastNameControl" placeholder="{{row.last_name}}">
+        </mat-form-field>
+
       </td>
     </ng-container>
 
@@ -61,7 +75,7 @@
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="contactNumber">
+    <ng-container matColumnDef="telefono">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Teléfono</th>
       <td mat-cell *matCellDef="let row">
         
@@ -84,6 +98,20 @@
 
         <mat-form-field *ngIf="row.editing" style="padding: 0%;">
                   <input matInput [formControl]="stateControl" placeholder="{{row.state}}">
+        </mat-form-field>
+
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="limiteDeCredito">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Limite De Credito</th>
+      <td mat-cell *matCellDef="let row">
+        
+
+        <span *ngIf="!row.editing">{{row.credit_limit}}</span>
+
+        <mat-form-field *ngIf="row.editing" style="padding: 0%;">
+                  <input matInput [formControl]="creditLimitControl" placeholder="{{row.credit_limit}}">
         </mat-form-field>
 
       </td>
