@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { OnlineVsLocalResponse, ReportService } from '../service/report.service';
+import { OnlineVsLocalResponse, RankingByBranchResponse, ReportService } from '../service/report.service';
 
 @Component({
   selector: 'app-managerial-reports',
@@ -15,6 +15,11 @@ export class ManagerialReportsComponent implements OnInit {
     sales_amount: [0,0]
   }
 
+  rankingByBranch: RankingByBranchResponse = {
+    branches:[],
+    sales_quantity: [0,0]
+  }
+
   typeControl = new FormControl();
   type?: string;
 
@@ -22,13 +27,15 @@ export class ManagerialReportsComponent implements OnInit {
     private reportService: ReportService
   ) {
     
-    this.initChart()
+    this.initChartOnlineVsLocal()
+    this.initChartRanking()
 
-    console.log(JSON.stringify(this.onlineVsLocal.sales_quantity))
    }
 
   ngOnInit(): void {
   }
+
+  //Chart Ventas Online Vs Ventas Local
 
   public chartType: string = 'pie';
 
@@ -52,13 +59,12 @@ export class ManagerialReportsComponent implements OnInit {
   public chartClicked(e: any): void { }
   public chartHovered(e: any): void { }
 
-  initChart() {
+  initChartOnlineVsLocal() {
             
     this.reportService.getVentasOnlineVsLocal()
       .subscribe(
         (response) => {
           this.onlineVsLocal = response;
-          console.log(JSON.stringify(this.onlineVsLocal))
           this.chartDatasets =[
             { data: this.onlineVsLocal.sales_quantity, label: 'Venta Online Vs Venta Local' }
           ];
@@ -85,5 +91,78 @@ export class ManagerialReportsComponent implements OnInit {
     ];
     
   }
+
+//Chart Ranking By Branch
+
+  public chartTypeRanking: string = 'bar';
+
+  public chartDatasetsRanking: Array<any> = [
+    { data: [0], label: 'Ranking' }
+  ];
+
+  public chartLabelsRanking: Array<any> = [];
+
+  public chartColorsRanking: Array<any> = [
+    {
+      backgroundColor: [
+        'rgba(128, 0, 128, 0.8)',
+        'rgba(247, 70, 74, 0.8)',
+        'rgba(255, 206, 86, 0.6)',
+        'rgba(75, 192, 192, 0.6)',
+        'rgba(255, 159, 64, 0.6)'
+      ],
+      borderColor: [
+        'rgba(128, 0, 128, 1)',
+        'rgba(247, 70, 74, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(255, 159, 64, 1)'
+      ],
+      borderWidth: 2,
+    }
+  ];
+
+  public chartOptionsRanking: any = {
+    scales: {
+        yAxes: [{
+            ticks: {
+                beginAtZero: true,
+                userCallback: function(label, index, labels) {
+                    // when the floored value is the same as the value we have a whole number
+                    if (Math.floor(label) === label) {
+                        return label;
+                    }
+                },
+            }
+        }],
+    },
+  }
+
+
+  public chartClickedRanking(e: any): void { }
+  public chartHoveredRanking(e: any): void { }
+
+
+
+  initChartRanking() {
+            
+    this.reportService.getRankingByBranch()
+      .subscribe(
+        (response) => {
+          this.rankingByBranch = response
+          console.log(JSON.stringify(this.rankingByBranch))
+          this.chartLabelsRanking = []
+          this.rankingByBranch.branches.forEach((it)=> this.chartLabelsRanking.push(it.branch))
+          this.chartDatasetsRanking = [
+            { data: this.rankingByBranch.sales_quantity, label: 'Ranking'}
+          ];
+          
+        },
+        (error) => {
+          this.rankingByBranch = null
+        }
+      );
+    
+      }
 
 }

@@ -54,7 +54,6 @@ import { CashService ,OpenRequest, CloseRequest, CashResponse} from '../service/
       private branchService: BranchService,
       public changeDetectorRef: ChangeDetectorRef,
       private router: Router,
-     // private cashIncomeComponent :CashIncomeComponent,
     ) { 
       this.cashOpened=this.cashService.getCurrentCash()
       this.getCashOpenByUserId(this.userId);
@@ -69,7 +68,7 @@ import { CashService ,OpenRequest, CloseRequest, CashResponse} from '../service/
       this.cashService.getAllCash()
         .subscribe(
           (response) => {
-            this.cashRegisters = response.cash_registers;
+            this.cashRegisters = response.cash_registers.filter((it)=>it.branch_id==this.branchService.selectedBranch);
           },
           (error) => {
             this.cashRegisters = []

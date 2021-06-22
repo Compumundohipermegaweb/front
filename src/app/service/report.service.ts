@@ -9,11 +9,17 @@ export class ReportService {
 
   apiHost = environment.apiHost
   onlinevslocalUrl = "/api/report/ventas/onlinevslocal"
+  rankingByBranchlUrl = "/api/report/ventasporsucursal"
+
 
   constructor(private http: HttpClient) { }
 
   getVentasOnlineVsLocal() {
     return this.http.get<OnlineVsLocalResponse>(this.apiHost + this.onlinevslocalUrl)
+  }
+
+  getRankingByBranch() {
+    return this.http.get<RankingByBranchResponse>(this.apiHost + this.rankingByBranchlUrl)
   }
 }
 
@@ -24,3 +30,17 @@ export interface OnlineVsLocalResponse{
 }
 
 
+export interface RankingByBranchResponse{
+  branches:BranchResponse[]
+  sales_quantity: Array<number>
+}
+
+export interface BranchResponse{
+  id: number,
+  branch: string,
+  address: string,
+  postalCode: string,
+  email: string,
+  contactNumber: string,
+  attentionSchedule: string
+}

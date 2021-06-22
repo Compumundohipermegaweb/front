@@ -28,3 +28,27 @@
 
 </mat-card-content>
 </mat-card>
+
+
+<mat-card class="card">
+    <mat-card-header>
+      <mat-card-title>Ranking de Ventas por Sucursal</mat-card-title>
+      <mat-card-subtitle>Reporte de Cantidad de Ventas por Sucusal </mat-card-subtitle>
+    </mat-card-header>
+      
+    <mat-card-content>
+    <div class="chart" style="display: block">
+        <canvas mdbChart
+            [chartType]="chartTypeRanking"
+            [datasets]="chartDatasetsRanking"
+            [labels]="chartLabelsRanking"
+            [colors]="chartColorsRanking"
+            [options]="chartOptionsRanking"
+            [legend]="true"
+            (chartHover)="chartHoveredRanking($event)"
+            (chartClick)="chartClickedRanking($event)">
+        </canvas>
+    </div>
+
+</mat-card-content>
+</mat-card>
