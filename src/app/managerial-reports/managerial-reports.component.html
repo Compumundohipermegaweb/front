@@ -1,1 +1,30 @@
-<p>managerial-reports works!</p>
+
+<mat-card class="card">
+    <mat-card-header>
+      <mat-card-title>Ventas Online vs Ventas Local</mat-card-title>
+      <mat-card-subtitle>Reporte de Cantidad de Ventas o Total de Ventas: Online vs Local</mat-card-subtitle>
+    </mat-card-header>
+
+    <section>
+        <mat-button-toggle-group [formControl]="typeControl" aria-label="Type Report">
+          <mat-button-toggle value="quantity" (click)="refreshByQuantity()">Cantidad de Ventas</mat-button-toggle>
+          <mat-button-toggle value="amount" (click)="refreshByAmount()">Monto Total de Ventas</mat-button-toggle>
+        </mat-button-toggle-group>
+    </section>
+      
+    <mat-card-content>
+    <div class="chart" style="display: block">
+        <canvas mdbChart
+            [chartType]="chartType"
+            [datasets]="chartDatasets"
+            [labels]="chartLabels"
+            [colors]="chartColors"
+            [options]="chartOptions"
+            [legend]="true"
+            (chartHover)="chartHovered($event)"
+            (chartClick)="chartClicked($event)">
+        </canvas>
+    </div>
+
+</mat-card-content>
+</mat-card>
