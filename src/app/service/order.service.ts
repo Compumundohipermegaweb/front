@@ -1,7 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -13,9 +14,10 @@ export class OrderService {
 
   constructor(private http: HttpClient) { }
 
-  /*getOrders(branch_id: number): Observable<Orders>{
-    return this.http.get<Orders>(this.HOST + this.BASE_URL, branch_id)
-  }*/
+  getOrders(branch_id: number): Observable<Orders>{
+    const requestParams = new HttpParams().set("branch_id", branch_id.toString());
+    return this.http.get<Orders>(this.HOST + this.BASE_URL, { params: requestParams })
+  }
 }
 
 export interface Orders{
@@ -25,7 +27,7 @@ export interface Orders{
 export interface Order {
   id: number;
   sale_id: number;
-  state: String;
+  state: Status;
   shipping_price: number;
   shipping_company: String;
   items_detail: sale_details;
@@ -40,4 +42,11 @@ export interface Item{
   description: String;
   quantity: number;
   unit_price: number;
+}
+
+export enum Status {
+  PENDING = "PENDING", 
+  ACCEPTED = "ACCEPTED", 
+  CONFIRMED = "CONFIRMED", 
+  REJECTED = "REJECTED"
 }

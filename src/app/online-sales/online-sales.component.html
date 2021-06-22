@@ -12,34 +12,44 @@
 <table mat-table [dataSource]="dataSource" class="full-width-table">
 
     <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef> Venta </th>
+      <th mat-header-cell *matHeaderCellDef> Pedido </th>
       <td mat-cell *matCellDef="let row"> {{row.id}} </td>
     </ng-container>
   
-    <ng-container matColumnDef="sku">
-        <th mat-header-cell *matHeaderCellDef> SKU </th>
-        <td mat-cell *matCellDef="let row"> {{row.sku}} </td>
+    <ng-container matColumnDef="sale_id">
+        <th mat-header-cell *matHeaderCellDef> Venta </th>
+        <td mat-cell *matCellDef="let row"> {{row.sale_id}} </td>
     </ng-container>
       
-    <ng-container matColumnDef="amount">
-        <th mat-header-cell *matHeaderCellDef> Cantidad </th>
-        <td mat-cell *matCellDef="let row"> {{row.amount}} </td>
-    </ng-container>
-      
-    <ng-container matColumnDef="supplier">
-        <th mat-header-cell *matHeaderCellDef> Contacto </th>
-        <td mat-cell *matCellDef="let row"> {{row.supplier}} </td>
-    </ng-container>
-      
-    <ng-container matColumnDef="status">
+    <ng-container matColumnDef="state">
         <th mat-header-cell *matHeaderCellDef> Estado </th>
         <td mat-cell *matCellDef="let row">
-            <mat-icon *ngIf="row.status == 'PENDING'" matTooltip="Pendiente" style="color: orange">schedule</mat-icon>
-            <mat-icon *ngIf="row.status == 'ACCEPTED'" matTooltip="Enviando">local_shipping</mat-icon>
-            <mat-icon *ngIf="row.status == 'CONFIRMED'" matTooltip="Llego" style="color: green">check</mat-icon>
-            <mat-icon *ngIf="row.status == 'REJECTED'" matTooltip="Rechazado" style="color: red">close</mat-icon>
+            <mat-icon *ngIf="row.state == 'PENDING'" matTooltip="Pendiente" style="color: orange">schedule</mat-icon>
+            <mat-icon *ngIf="row.state == 'ACCEPTED'" matTooltip="Enviando">local_shipping</mat-icon>
+            <mat-icon *ngIf="row.state == 'CONFIRMED'" matTooltip="Llego" style="color: green">check</mat-icon>
+            <mat-icon *ngIf="row.state == 'REJECTED'" matTooltip="Rechazado" style="color: red">close</mat-icon>
         </td>
     </ng-container>
+      
+    <ng-container matColumnDef="shipping_price">
+        <th mat-header-cell *matHeaderCellDef> Precio de Envio </th>
+        <td mat-cell *matCellDef="let row"> {{row.shipping_price}} </td>
+    </ng-container>
+      
+    <ng-container matColumnDef="shipping_company">
+        <th mat-header-cell *matHeaderCellDef> Compañia </th>
+        <td mat-cell *matCellDef="let row"> {{row.shipping_company}} </td>
+    </ng-container>
+
+    <ng-container>
+        <th mat-header-cell *matHeaderCellDef> Items </th>
+        <td mat-cell *matCellDef="let row"> 
+            <mat-select [formControl]="itemsControl">
+                <mat-option *ngFor="let row of rows" [value]="row.id"> {{row.items_detail}}  </mat-option>
+            </mat-select>
+        </td>
+    </ng-container>
+    
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>

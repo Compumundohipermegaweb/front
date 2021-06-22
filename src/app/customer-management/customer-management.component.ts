@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, ViewChild, OnInit, ChangeDetectorRef} from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -14,14 +15,20 @@ import { ClientService } from '../service/client.service'
 })
 export class CustomerManagementComponent implements OnInit, AfterViewInit {
 
-
+  stateControl: FormControl;
+  contactNumberControl: FormControl;
+  emailControl: FormControl;
+  nroDocumentControl: FormControl;
+  firstNameControl: FormControl;
+  lastNameControl: FormControl;
+  creditLimitControl: FormControl;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  @ViewChild(MatTable) table!: MatTable<MyTableClients>;
+  @ViewChild(MatTable) table!: MatTable<Client>;
   dataSource = new MatTableDataSource<Client>();
 
-  displayedColumns = ['id', 'document','name','email','contactNumber' ,'estado', 'acciones'];
+  displayedColumns = ['id', 'documento', 'nombre', 'apellido' ,'email','telefono' ,'estado', 'limiteDeCredito', 'acciones'];
 
   constructor(
     private changeDetectorRefs: ChangeDetectorRef,
@@ -29,6 +36,13 @@ export class CustomerManagementComponent implements OnInit, AfterViewInit {
     private checkingAccountDialog: MatDialog)
   {
     this.initDataSource();
+    this.stateControl = new FormControl()
+    this.contactNumberControl = new FormControl()
+    this.emailControl = new FormControl()
+    this.nroDocumentControl = new FormControl();
+    this.firstNameControl = new FormControl();
+    this.lastNameControl = new FormControl();
+    this.creditLimitControl = new FormControl();
   }
 
   ngOnInit(): void {
@@ -62,11 +76,11 @@ export class CustomerManagementComponent implements OnInit, AfterViewInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  delete(row: MyTableClients){
+  delete(row: Client){
     Swal.fire({
       icon: "question",
       title: "Seguro desea eliminar",
-      text: "Cliente" + row.name,
+      text: "Cliente" + row.first_name + row.last_name,
       showCancelButton: true,
       confirmButtonText: "Eliminar",
       confirmButtonColor: "#3f51b5",
@@ -77,10 +91,8 @@ export class CustomerManagementComponent implements OnInit, AfterViewInit {
         Swal.fire({
           icon: "success",
           title: "Item eliminado!",
-          text: "Se ha eliminado " + "Cliente" + row.name
+          text: "Se ha eliminado " + "Cliente" + row.first_name + row.last_name
         });
-        //this.EXAMPLE_DATA = this.EXAMPLE_DATA.filter((cli: MyTableClients) => cli.id != row.id)
-        //this.refreshDataSource()
       }
     })
   }
@@ -108,30 +120,85 @@ export class CustomerManagementComponent implements OnInit, AfterViewInit {
     )
 }
 
- updateClient(client: Client){
-   
+ toggleEdit(client: Client){
+  client.editing = !client.editing
  }
 
- toggleEdit(client: MyTableClients){
+ saveChanges(client: Client){
+  debugger;
+    let changes = {
+      email: this.emailControl.value,
+      contact_number: this.contactNumberControl.value,
+      state: this.stateControl.value,
+      first_name: this.firstNameControl.value,
+      document_number: this.nroDocumentControl.value,
+      credit_limit: this.creditLimitControl.value,
+      last_name: this.lastNameControl.value  
+    }
 
+    if(changes.email == null && changes.contact_number == null && changes.state == null && changes.first_name == null 
+      && changes.document_number == null, changes.credit_limit == null, changes.last_name == null) {
+      return;
+    }
+
+    if(changes.email) {
+      client.email = changes.email
+    }
+
+    if(changes.first_name) {
+      client.first_name = changes.first_name
+    }
+
+    if(changes.last_name) {
+      client.last_name = changes.last_name
+    }
+
+    if(changes.contact_number) {
+      client.contact_number = changes.contact_number
+    }
+
+    if(changes.state) {
+      client.state = changes.state
+    }
+
+    if(changes.document_number) {
+      client.document_number = changes.document_number
+    }
+
+    if(changes.credit_limit) {
+      client.credit_limit = changes.credit_limit
+    }
+
+
+    /**this.clientService.save(client)
+      .subscribe(
+        (response) => {
+          Swal.fire({
+            icon: 'success',
+            title: "¡Cambios guardados!"
+          })
+          this.stateControl.setValue(null)
+          this.contactNumberControl.setValue(null)
+          this.emailControl.setValue(null)
+          this.nroDocumentControl.setValue(null)
+          this.firstNameControl.setValue(null)
+          this.lastNameControl.setValue(null)
+          this.creditLimitControl.setValue(null)
+        },
+
+        (error) => {
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "No se pudieron guardar los cambios"
+          })
+        }
+      )*/
+  }
  }
 
- saveChanges(client: MyTableClients){
-
- }
 
 
-}
-
-export interface MyTableClients{
-  id: number;
-  name: String;
-  email: String;
-  credit_limit: number;
-  defaulter: boolean;
-  state: boolean;
-  editing?: boolean;
-}
 
 export interface Client{
   id: number;
@@ -142,4 +209,5 @@ export interface Client{
   credit_limit: number;
   email: String;
   contact_number: String;
+  editing?: boolean;
 }
