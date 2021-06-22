@@ -17,6 +17,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { BranchService } from '../service/branch.service';
 import { CashService } from '../service/cash.service';
 import { RoleService } from '../service/role.service';
+import { threadId } from 'node:worker_threads';
 
 
 @Component({
@@ -375,7 +376,13 @@ export class SalesComponent implements OnInit {
       branchCode: this.branchControl.value,
       details: this.items,
       payment: [],
-      total: this.acotarDecimal(this.totalCost)
+      total: this.acotarDecimal(this.discountedCost),
+      discount: {
+        id: 0,
+        percentage: this.discount,
+        amount: this.totalCost - this.discountedCost,
+        saleId: 0
+      }
     }
   }
 

@@ -8,6 +8,7 @@ export interface Sale {
     details: Item[];
     payment: Payment[];
     total: number;
+    discount: Discount;
 }
 
 export interface Client {
@@ -23,4 +24,11 @@ export interface Item {
     description: String;
     quantity: number;
     price: number;
+}
+
+export interface Discount {
+    id: number;
+    percentage: number;
+    amount: number;
+    saleId: number;
 }

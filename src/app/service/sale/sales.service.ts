@@ -40,7 +40,15 @@ export class SalesService {
 
     const saleDetails: SaleDetailsRequest = {
       details: sale.details.map(it => this.toItemRequest(it)),
-      payments: sale.payment.map(it => this.toPaymentRequest(it))
+      payments: sale.payment.map(it => this.toPaymentRequest(it)),
+      discount: null
+    }
+
+    if(sale.discount.percentage > 0) {
+      saleDetails.discount = {
+        percentage: sale.discount.percentage,
+        amount: sale.discount.amount
+      }
     }
 
     return {

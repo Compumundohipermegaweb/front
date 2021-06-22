@@ -21,6 +21,7 @@ export interface SaleRequest {
   export interface SaleDetailsRequest {
     details: ItemRequest[];
     payments: PaymentRequest[];
+    discount: DiscountRequest;
   }
   
   export interface ItemRequest {
@@ -33,4 +34,9 @@ export interface SaleRequest {
   export interface PaymentRequest {
     type: String;
     sub_total: number;
+  }
+
+  export interface DiscountRequest {
+    percentage: number;
+    amount: number;
   }
