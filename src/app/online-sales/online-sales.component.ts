@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { SalesService } from '../service/sale/sales.service';
+import { OrderService } from '../service/order.service';
 
 @Component({
   selector: 'app-online-sales',
@@ -9,11 +9,11 @@ import { SalesService } from '../service/sale/sales.service';
 })
 export class OnlineSalesComponent implements OnInit {
 
-  dataSource: MatTableDataSource<OnlineSale>
+  dataSource: MatTableDataSource<Order>
   displayedColumns: String[]
 
 
-  constructor(private saleService: SalesService, private changeDetector: ChangeDetectorRef) { 
+  constructor(private saleService: OrderService, private changeDetector: ChangeDetectorRef) { 
     this.displayedColumns =  ['id', 'sku', 'amount', 'supplier', 'status'] //datos de venta online
     this.initDatasource()
   }
@@ -27,9 +27,20 @@ export class OnlineSalesComponent implements OnInit {
 
 }
 
-export interface OnlineSale{
+export interface Order{
+  id: number;
+  sale_id: number;
+  state: Status;
+  shipping_price: number;
+  shipping_company: String;
+  items_detail: number;
+}
 
-  status: Status
+export interface ItemSaleDetail{
+  id: number;
+  description: String;
+  quantity: number;
+  unit_price: number;
 }
 
 export enum Status {

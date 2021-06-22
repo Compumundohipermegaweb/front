@@ -10,8 +10,7 @@ import { ItemService, PostItemRequest } from '../service/item.service';
 @Component({
   selector: 'app-item-master',
   templateUrl: './item-master.component.html',
-  styleUrls: ['./item-master.component.css'],
-  providers:[NewItemDialogComponent]
+  styleUrls: ['./item-master.component.css']
 })
 export class ItemMasterComponent implements OnInit {
 
@@ -25,7 +24,6 @@ export class ItemMasterComponent implements OnInit {
     private itemService: ItemService, 
     public newItemDialog: MatDialog,
     public changeDetectorRef: ChangeDetectorRef,
-    private itemDialog: NewItemDialogComponent
   ) {
     this.loadItems();
     this.priceControl = new FormControl();
@@ -148,17 +146,6 @@ export class ItemMasterComponent implements OnInit {
     if(changes.price) {
       item.price = changes.price
     }
-
-    let item2: PostItemRequest;
-
-    this.itemDialog.createdItems.forEach( itemElement => {
-      if(itemElement.){
-
-      }
-    });
-
-    this.itemDialog.createdItems
-
     
 
     this.itemService.updateItem(item)
@@ -168,7 +155,7 @@ export class ItemMasterComponent implements OnInit {
             icon: 'success',
             title: "¡Cambios guardados!"
           })
-          this.timeControl.setValue(null)
+          this.priceControl.setValue(null)
         },
 
         (error) => {
@@ -191,7 +178,7 @@ export class ItemMasterComponent implements OnInit {
 }
 
 export interface MasterItem {
-  sku: number;
+  sku: string;
   description: String;
   short_description: String;
   price: number;
@@ -201,4 +188,14 @@ export interface MasterItem {
   uom_sale: String;
   imported: boolean;
   editing?: boolean;
+  brand_id: number;
+  supplier: SupplierRequest;
+}
+
+export interface SupplierRequest {
+  organization: String;
+  contact_name: String;
+  contact_number: String;
+  email: String;
+  cuit: String;
 }
