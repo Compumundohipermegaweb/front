@@ -14,8 +14,9 @@ export class SaleInvoiceComponent implements OnInit {
   displayedColumns: string[];
   dataSource = new MatTableDataSource<Item>();
   totalCost: number;
+  discount: number
   totalSinIva: number;
-  iva: number;
+  iva: number
   percentIva: number; 
   percentDiscountIva: number;
 
@@ -35,17 +36,16 @@ export class SaleInvoiceComponent implements OnInit {
       this.totalCost = this.dataSource.data
         .map( (item: Item) => item.quantity * item.price)
         .reduce((a, b) => a + b)
+      
+      this.discount = this.totalCost - this.saleResponse.total
 
-      if (this.saleResponse.type=='A'){  
-        
+      if (this.saleResponse.type=='A') {  
         this.totalSinIva = this.totalCost * 0.79
         this.iva = this.totalCost * 0.21
         this.percentDiscountIva = 0.79
-
-      }else{
+      } else {
         //Para no alterar los valores
         this.percentDiscountIva = 1
-
       }
 
      

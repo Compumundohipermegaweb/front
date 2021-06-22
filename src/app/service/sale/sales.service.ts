@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
-import { from, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Sale, Item } from '../../sales/sales.model';
 import { SaleRequest, ClientRequest, SaleDetailsRequest, ItemRequest, PaymentRequest } from './sale-request.model';
 import { SaleResponse } from './sale-response.model';
@@ -47,7 +47,7 @@ export class SalesService {
     if(sale.discount.percentage > 0) {
       saleDetails.discount = {
         percentage: sale.discount.percentage,
-        amount: sale.discount.amount
+        amount: Math.round(sale.discount.amount * 100) / 100
       }
     }
 

@@ -17,7 +17,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { BranchService } from '../service/branch.service';
 import { CashService } from '../service/cash.service';
 import { RoleService } from '../service/role.service';
-import { threadId } from 'node:worker_threads';
 
 
 @Component({
@@ -419,6 +418,7 @@ export class SalesComponent implements OnInit {
   calculateDiscountedCost() {
     if(this.discount > 0) {
       this.discountedCost = this.totalCost - ((this.discount * this.totalCost) / 100)
+      this.discountedCost = Math.round( this.discountedCost * 100) / 100
     } else {
       this.discountedCost = this.totalCost
     }
