@@ -33,12 +33,16 @@
 
     <ng-container matColumnDef="email">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
-      <td mat-cell *matCellDef="let row">{{row.email}}</td>
+      <td mat-cell *matCellDef="let row">
+        {{row.email}}
+      </td>
     </ng-container>
 
     <ng-container matColumnDef="contactNumber">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Teléfono</th>
-      <td mat-cell *matCellDef="let row">{{row.contact_number}}</td>
+      <td mat-cell *matCellDef="let row">
+        {{row.contact_number}}
+      </td>
     </ng-container>
 
     <ng-container matColumnDef="estado">
@@ -52,8 +56,11 @@
         <button mat-mini-fab color="primary"(click)="updateCheckingAccount(row)" >
           <mat-icon>credit_score</mat-icon>
         </button>
-        <button mat-mini-fab color="primary">
+        <button mat-mini-fab color="primary" (click)="toggleEdit(row)">
           <mat-icon>edit</mat-icon> 
+        </button>
+        <button *ngIf="row.editing" mat-mini-fab color="primary" (click)="toggleEdit(row);saveChanges(row)">
+          <mat-icon>save</mat-icon>
         </button>
         <button mat-mini-fab color="warn" (click)="delete(row)">
           <mat-icon>delete</mat-icon>

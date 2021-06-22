@@ -108,7 +108,17 @@ export class CustomerManagementComponent implements OnInit, AfterViewInit {
     )
 }
 
+ updateClient(client: Client){
+   
+ }
 
+ toggleEdit(client: MyTableClients){
+
+ }
+
+ saveChanges(client: MyTableClients){
+
+ }
 
 
 }
@@ -120,6 +130,7 @@ export interface MyTableClients{
   credit_limit: number;
   defaulter: boolean;
   state: boolean;
+  editing?: boolean;
 }
 
 export interface Client{
