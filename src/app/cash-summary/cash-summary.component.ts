@@ -3,9 +3,6 @@ import { FormControl } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
-import { CashExpenseComponent } from '../cash-expense/cash-expense.component';
-import { CashIncomeComponent } from '../cash-income/cash-income.component';
-import { CashReportComponent } from '../cash-report/cash-report.component';
 import { Cash } from '../cash/cash.component';
 import { BranchService } from '../service/branch.service';
 import { CashService ,OpenRequest, CloseRequest, CashResponse} from '../service/cash.service';
@@ -58,9 +55,8 @@ import { CashService ,OpenRequest, CloseRequest, CashResponse} from '../service/
       this.cashOpened=this.cashService.getCurrentCash()
       this.getCashOpenByUserId(this.userId);
       this.initCashRegisters(); 
-      this.initTotalCash();
       this.getCashIdOpen();
-
+      this.initTotalCash();
     }
 
     initCashRegisters() {
@@ -103,14 +99,12 @@ import { CashService ,OpenRequest, CloseRequest, CashResponse} from '../service/
       this.cashService.open(openRequest)
         .subscribe(
           (response) => { 
-           console.log(JSON.stringify(this.cash.data));
            Swal.fire({
             icon: "success",
             title: "La caja fue abierta",
           });
-          this.initTotalCash()
           this.getCashOpenByUserId(this.userId)
-          this.changeDetectorRef.detectChanges()
+          this.initTotalCash()
           },
   
           (error) => {
@@ -123,7 +117,6 @@ import { CashService ,OpenRequest, CloseRequest, CashResponse} from '../service/
         );
         this.cashForm.setValue(null);
         this.openBalanceForm.setValue(null);
-     //   this.reloadCurrentRoute();
     }
 
     closeCashRegister(){
@@ -144,9 +137,8 @@ import { CashService ,OpenRequest, CloseRequest, CashResponse} from '../service/
               icon: "success",
               title: "La caja fue cerrada",
             });
-            this.initTotalCash()
             this.getCashOpenByUserId(this.userId)
-            this.changeDetectorRef.detectChanges()
+            this.initTotalCash()
             },
     
             (error) => {
@@ -158,7 +150,6 @@ import { CashService ,OpenRequest, CloseRequest, CashResponse} from '../service/
             }
           );
           
-        this.closeBalanceForm.setValue(null);
       }else{
         Swal.fire({
           icon: "error",
@@ -166,8 +157,8 @@ import { CashService ,OpenRequest, CloseRequest, CashResponse} from '../service/
           text: "No se pudo cerrada la caja, validar que esté seleccionada la sucursal"
         });
       }
-    //  this.reloadCurrentRoute();
-
+      this.closeBalanceForm.setValue(null);
+      
     }  
 
     getCashOpenByUserId(userId: number){
@@ -176,7 +167,7 @@ import { CashService ,OpenRequest, CloseRequest, CashResponse} from '../service/
       .subscribe(
         response => {
           this.cashService.setCurrentCash(response.cash_start_end_id);
-          this.cashOpened = this.cashService.getCurrentCash()
+          this.cashOpened = response.cash_start_end_id
         }
       );
 
@@ -196,8 +187,8 @@ import { CashService ,OpenRequest, CloseRequest, CashResponse} from '../service/
 
 
     reload() {
-      this.initTotalCash()
       this.getCashOpenByUserId(this.userId)
+      this.initTotalCash();
     }
 
      /** Gets the difference between income and expense */
@@ -212,15 +203,15 @@ import { CashService ,OpenRequest, CloseRequest, CashResponse} from '../service/
       this.cashService.getTotal(branchId)
         .subscribe(
           (response) => {
-            let income_cash= response.totals.filter((it)=>it.movement_type =="INGRESO" && it.payment_method =="Efectivo");         
-            let total_cash_income: number=income_cash.map(t => t.total).reduce((acc, value) =>  acc + value, 0);
-            let expense_cash = response.totals.filter((it)=>it.movement_type =="EGRESO" && it.payment_method =="Efectivo");
-            let total_cash_expense: number=expense_cash.map(t => t.total).reduce((acc, value) =>  acc + value, 0);
+            let total_cash_income: number= response.totals.find((it)=>it.movement_type =="INGRESO" && it.payment_method =="Efectivo" && it.level==1)?.total |0 ;
+            let total_cash_expense: number=response.totals.find((it)=>it.movement_type =="EGRESO" && it.payment_method =="Efectivo" && it.level==1)?.total |0 ; 
 
             this.transactions = [
               {movement: 'Ingreso', amount: total_cash_income},
               {movement: 'Egreso', amount: total_cash_expense},
             ];
+            this.closeBalanceForm.setValue(total_cash_income-total_cash_expense)
+            this.changeDetectorRef.detectChanges()
             
           },
           (error) => {
@@ -229,12 +220,10 @@ import { CashService ,OpenRequest, CloseRequest, CashResponse} from '../service/
               title: "Error",
               text: "No se pudieron cargar los ingresos de la Caja"
             });
- 
-          }
-        );
- 
-    }
 
+          }
+        ); 
+    }
 
   }
 

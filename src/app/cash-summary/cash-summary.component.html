@@ -25,11 +25,11 @@
 
                     <mat-form-field class="start-end-full-width" *ngIf="cashOpened">
                         <mat-label>Saldo final de Caja</mat-label>
-                        <input type="number" matInput [formControl]="closeBalanceForm" value="{{getTotalCost()}}"  disabled>
+                        <input type="number" matInput [formControl]="closeBalanceForm" value="getTotalCost()" >
                         <mat-hint>Pesos Argentinos</mat-hint>
                     </mat-form-field>
 
-                    <button mat-raised-button class="button_right" color="primary" (click)="closeCashRegister()" *ngIf="cashOpened" >Cerrar Caja</button>
+                    <button mat-raised-button class="button_right" color="primary" (click)="closeCashRegister();" *ngIf="cashOpened" >Cerrar Caja</button>
 
 
             </form>

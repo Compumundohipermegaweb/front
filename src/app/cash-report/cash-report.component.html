@@ -1,8 +1,9 @@
 <mat-grid-list cols="6" rowHeight="3:1">
    
     <mat-grid-tile colspan=2> 
-        <mat-button-toggle-group name="reportType" aria-label="Tipo de Reporte">
-            <mat-button-toggle value="consolidado" disabled>Consolidado</mat-button-toggle>
+        <mat-button-toggle-group  [formControl]="reportType" aria-label="Tipo de Reporte">
+            <mat-button-toggle value="consolidado">Consolidado</mat-button-toggle>
+            <mat-button-toggle value="detallado">Detallado</mat-button-toggle>
         </mat-button-toggle-group>      
     </mat-grid-tile>
 
@@ -24,78 +25,224 @@
         </div>
     </mat-grid-tile>
 </mat-grid-list>
+<div *ngIf="reportType.value=='consolidado'">
 <mat-card>
-    <mat-card-title>Ingresos</mat-card-title> 
+    <mat-card-header>
+        <mat-card-title>Ingresos</mat-card-title>
+    </mat-card-header>
 <div class="container">  
     <table id="MovementsTableInc" mat-table [dataSource]="movementsIncome" class="mat-elevation-z8">
 
         <ng-container matColumnDef="payment_method">
             <th mat-header-cell *matHeaderCellDef> Medio de Pago </th>
-            <td mat-cell *matCellDef="let movements"> {{movements.payment_method }} </td>
+            <td mat-cell *matCellDef="let movements"> 
+                <div *ngIf="movements.source!='Total'">{{movements.payment_method }}</div> 
+            </td>
             <td mat-footer-cell *matFooterCellDef>  </td>
-        </ng-container>
-
-        <ng-container matColumnDef="card">
-            <th mat-header-cell *matHeaderCellDef> Tarjeta </th>
-            <td mat-cell *matCellDef="let movements"> {{movements.card }} </td>
-            <td mat-footer-cell *matFooterCellDef></td>
         </ng-container>
 
         <ng-container matColumnDef="source">
             <th mat-header-cell *matHeaderCellDef> Origen </th>
-            <td mat-cell *matCellDef="let movements"> {{movements.source }} </td>
-            <td mat-footer-cell *matFooterCellDef> Total Ingresos: </td>
+            <td mat-cell *matCellDef="let movements">
+                <div *ngIf="movements.source=='Total'; else elseBlock"><strong> >> {{movements.source+" "+movements.payment_method}}</strong></div> 
+                <ng-template #elseBlock>{{movements.source}}</ng-template>
+                </td>
+            <td mat-footer-cell *matFooterCellDef><strong>TOTAL INGRESOS:</strong>  </td>
         </ng-container>   
 
         <ng-container matColumnDef="monto">
             <th mat-header-cell *matHeaderCellDef> Monto </th>
             <td mat-cell *matCellDef="let movements">  {{movements.total | localCurrency }}</td>
-            <td mat-footer-cell *matFooterCellDef> {{getTotalCostIncome() | localCurrency }} </td>
+            <td mat-footer-cell *matFooterCellDef><strong> {{getTotalCostIncome() | localCurrency }} </strong> </td>
         </ng-container>   
     
 
-        <tr mat-header-row *matHeaderRowDef="displayedColumns " > </tr>
-        <tr mat-row *matRowDef="let movements; columns: displayedColumns;"></tr>
-        <tr mat-footer-row *matFooterRowDef="displayedColumns; "></tr>
+        <tr mat-header-row *matHeaderRowDef="columnsConsolidado " > </tr>
+        <tr mat-row *matRowDef="let movements; columns: columnsConsolidado;"></tr>
+        <tr mat-footer-row *matFooterRowDef="columnsConsolidado; "></tr>
 
     </table>
 </div> 
 </mat-card>
 
 <mat-card> 
-    <mat-card-title>Egresos</mat-card-title> 
+    <mat-card-header>
+        <mat-card-title>Egresos</mat-card-title>
+    </mat-card-header>
     <div class="container">  
         <table id="MovementsTableExp" mat-table [dataSource]="movementsExpense" class="mat-elevation-z8">
     
             <ng-container matColumnDef="payment_method">
                 <th mat-header-cell *matHeaderCellDef> Medio de Pago </th>
-                <td mat-cell *matCellDef="let movements"> {{movements.payment_method }} </td>
-                <td mat-footer-cell *matFooterCellDef></td>
-            </ng-container>
-    
-            <ng-container matColumnDef="card">
-                <th mat-header-cell *matHeaderCellDef> Tarjeta </th>
-                <td mat-cell *matCellDef="let movements"> {{movements.card }} </td>
+                <td mat-cell *matCellDef="let movements"> 
+                    <div *ngIf="movements.source!='Total'">{{movements.payment_method }}</div> 
+                </td>
                 <td mat-footer-cell *matFooterCellDef></td>
             </ng-container>
     
             <ng-container matColumnDef="source">
                 <th mat-header-cell *matHeaderCellDef> Origen </th>
-                <td mat-cell *matCellDef="let movements"> {{movements.source }} </td>
-                <td mat-footer-cell *matFooterCellDef> Total Egresos:</td>
+                <td mat-cell *matCellDef="let movements"> 
+                    <div *ngIf="movements.source=='Total'; else elseBlock"><strong> >> {{movements.source+" "+movements.payment_method}}</strong></div> 
+                    <ng-template #elseBlock>{{movements.source}}</ng-template>
+                </td>
+                <td mat-footer-cell *matFooterCellDef> <strong>TOTAL EGRESOS:</strong></td>
             </ng-container>   
     
             <ng-container matColumnDef="monto">
                 <th mat-header-cell *matHeaderCellDef> Monto </th>
                 <td mat-cell *matCellDef="let movements">  {{movements.total | localCurrency }}</td>
-                <td mat-footer-cell *matFooterCellDef> {{getTotalCostExpense() | localCurrency}} </td>
+                <td mat-footer-cell *matFooterCellDef>  <strong>{{getTotalCostExpense() | localCurrency}}</strong> </td>
             </ng-container>   
         
-    
-            <tr mat-header-row *matHeaderRowDef="displayedColumns " > </tr>
-            <tr mat-row *matRowDef="let movements; columns: displayedColumns;"></tr>
-            <tr mat-footer-row *matFooterRowDef="displayedColumns; "></tr>
+            <tr mat-header-row *matHeaderRowDef="columnsConsolidado " > </tr>
+            <tr mat-row *matRowDef="let movements; columns: columnsConsolidado;"></tr>
+            <tr mat-footer-row *matFooterRowDef="columnsConsolidado; "></tr>
     
         </table>
     </div> 
+    </mat-card>
+</div>
+<div *ngIf="reportType.value=='detallado'">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Ingresos</mat-card-title>
+        </mat-card-header>
+    <div class="container">  
+        <table id="MovementsTableIncDet" mat-table [dataSource]="movementsIncomeDetail" class="mat-elevation-z8">
+    
+            <ng-container matColumnDef="payment_method">
+                <th mat-header-cell *matHeaderCellDef> Medio de Pago </th>
+                <td mat-cell *matCellDef="let movements"> 
+                    <div *ngIf="movements.level > 1">{{movements.payment_method }}</div> 
+                </td>
+                <td mat-footer-cell *matFooterCellDef>  </td>
+            </ng-container>
+
+            <ng-container matColumnDef="source">
+                <th mat-header-cell *matHeaderCellDef> Origen </th>
+                <td mat-cell *matCellDef="let movements"> 
+                    <div *ngIf="movements.source=='Total'; else elseBlock"><strong> >> {{movements.source+" "+movements.payment_method}}</strong></div> 
+                    <ng-template #elseBlock>{{movements.source}}</ng-template> 
+                </td>
+                <td mat-footer-cell *matFooterCellDef></td>
+            </ng-container>   
+     
+            <ng-container matColumnDef="card">
+                <th mat-header-cell *matHeaderCellDef> Tarjeta </th>
+                <td mat-cell *matCellDef="let movements"> 
+                    <div *ngIf="movements.card=='Total'; else elseBlock"><strong> >> {{movements.source+" con "+movements.payment_method}}</strong></div> 
+                    <ng-template #elseBlock>{{movements.card}}</ng-template> 
+                </td>
+                <td mat-footer-cell *matFooterCellDef></td>
+            </ng-container> 
+
+            <ng-container matColumnDef="digits">
+                <th mat-header-cell *matHeaderCellDef> Nro Tarjeta </th>
+                <td mat-cell *matCellDef="let movements"> 
+                    <div *ngIf="movements.digits=='Total'; else elseBlock"><strong> >> {{movements.source+" con "+movements.payment_method+": "+movements.card }}</strong></div> 
+                    <ng-template #elseBlock>{{movements.digits}}</ng-template> 
+                </td>
+                <td mat-footer-cell *matFooterCellDef></td>
+            </ng-container> 
+        
+            <ng-container matColumnDef="detail">
+                <th mat-header-cell *matHeaderCellDef> Detalle </th>
+                <td mat-cell *matCellDef="let movements"> {{movements.detail }} </td>
+                <td mat-footer-cell *matFooterCellDef> <strong>TOTAL INGRESOS:</strong></td>
+            </ng-container>   
+    
+            <ng-container matColumnDef="monto">
+                <th mat-header-cell *matHeaderCellDef> Monto </th>
+                <td mat-cell *matCellDef="let movements">  {{movements.total | localCurrency }}</td>
+                <td mat-footer-cell *matFooterCellDef><strong>{{getTotalCostIncome() | localCurrency }} </strong> </td>
+            </ng-container>   
+        
+    
+            <tr mat-header-row *matHeaderRowDef="columnsDetallado " > </tr>
+            <tr mat-row *matRowDef="let movements; columns: columnsDetallado;"></tr>
+            <tr mat-footer-row *matFooterRowDef="columnsDetallado; "></tr>
+    
+        </table>
+    </div> 
+    </mat-card>
+    
+    <mat-card> 
+        <mat-card-header>
+            <mat-card-title>Egresos</mat-card-title>
+        </mat-card-header>
+        <div class="container">  
+            <table id="MovementsTableExpDet" mat-table [dataSource]="movementsExpenseDetail" class="mat-elevation-z8">
+        
+                <ng-container matColumnDef="payment_method">
+                    <th mat-header-cell *matHeaderCellDef> Medio de Pago </th>
+                    <td mat-cell *matCellDef="let movements">
+                         <div *ngIf="movements.source!='Total'">{{movements.payment_method }}</div> 
+                    </td>
+                    <td mat-footer-cell *matFooterCellDef></td>
+                </ng-container>
+
+                <ng-container matColumnDef="source">
+                    <th mat-header-cell *matHeaderCellDef> Origen </th>
+                    <td mat-cell *matCellDef="let movements">
+                        <div *ngIf="movements.source=='Total'; else elseBlock"><strong> >> {{movements.source+" "+movements.payment_method}}</strong></div> 
+                        <ng-template #elseBlock>{{movements.source}}</ng-template>
+                    </td>
+                    <td mat-footer-cell *matFooterCellDef></td>
+                </ng-container>   
+        
+                 <ng-container matColumnDef="card">
+                    <th mat-header-cell *matHeaderCellDef></th>
+                    <td mat-cell *matCellDef="let movements">
+                        <div *ngIf="movements.card=='Total'"><strong> >> {{movements.source+" con "+movements.payment_method}}</strong></div> 
+                    </td>
+                    <td mat-footer-cell *matFooterCellDef></td>
+                </ng-container> 
+
+                <ng-container matColumnDef="digits">
+                    <th mat-header-cell *matHeaderCellDef></th>
+                    <td mat-cell *matCellDef="let movements"> </td>
+                    <td mat-footer-cell *matFooterCellDef></td>
+                </ng-container> 
+
+                <ng-container matColumnDef="detail">
+                    <th mat-header-cell *matHeaderCellDef> Detalle </th>
+                    <td mat-cell *matCellDef="let movements"> {{movements.detail }} </td>
+                    <td mat-footer-cell *matFooterCellDef> <strong> TOTAL EGRESOS:</strong></td>
+                </ng-container>   
+        
+                <ng-container matColumnDef="monto">
+                    <th mat-header-cell *matHeaderCellDef> Monto </th>
+                    <td mat-cell *matCellDef="let movements">  {{movements.total | localCurrency }}</td>
+                    <td mat-footer-cell *matFooterCellDef><strong> {{getTotalCostExpense() | localCurrency}} </strong></td>
+                </ng-container>   
+            
+                <tr mat-header-row *matHeaderRowDef="columnsDetallado " > </tr>
+                <tr mat-row *matRowDef="let movements; columns: columnsDetallado;"></tr>
+                <tr mat-footer-row *matFooterRowDef="columnsDetallado; "></tr>
+        
+            </table>
+        </div> 
+        </mat-card>
+    </div>
+
+    <mat-card class="card">
+        <mat-card-header>
+        <mat-card-title>Gráfico Arqueo Diario</mat-card-title>
+        <mat-card-subtitle>Monto de Ingresos y Egresos por Medio de Pago</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <div class="chart" style="display: block">
+                <canvas id="Chart" mdbChart
+                    [chartType]="chartType"
+                    [datasets]="chartDatasets"
+                    [labels]="chartLabels"
+                    [colors]="chartColors"
+                    [options]="chartOptions"
+                    [legend]="true"
+                    (chartHover)="chartHovered($event)"
+                    (chartClick)="chartClicked($event)">
+                </canvas>
+            </div>
+        </mat-card-content>
     </mat-card>

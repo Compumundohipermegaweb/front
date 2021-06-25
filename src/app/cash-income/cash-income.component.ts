@@ -33,7 +33,7 @@ export class CashIncomeComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  columns = ['client','paymentMethods','amount','source', 'description','actions'];
+  columns = ['client','paymentMethods','source', 'description','amount','actions'];
   incomes = new MatTableDataSource<CashMovement>()
   expandedElement: CashMovement | null;
   paymentMethods: PaymentMethod[] = []

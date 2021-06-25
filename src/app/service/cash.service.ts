@@ -72,7 +72,6 @@ constructor(private http: HttpClient) { }
   }
 
   getIncomes(cashStartEndId: number): Observable<IncomesResponse> {
-    console.log("zzzz")
     return this.http.get<IncomesResponse>(this.apiHost + this.buildUrlIncomes(cashStartEndId));
    
   }
@@ -192,7 +191,10 @@ export interface TotalResponse{
   source: String,
   payment_method: String,
   card: String,
-  total: number
+  digits: String,
+  detail: String,
+  total: number,
+  level: number
 }
 
 export interface TotalsResponse{

@@ -24,16 +24,8 @@
       <ng-container matColumnDef="paymentMethods">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Medios de pago</th>
         <td mat-cell *matCellDef="let row"  > Efectivo
-          <!-- <div *ngFor="let item of row.payments; let i = index">
-             {{item.method.description}}
-          </div>  -->
         </td>  
       </ng-container> 
-  
-      <ng-container matColumnDef="amount">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Monto</th>
-          <td mat-cell *matCellDef="let row"> {{row.amount | localCurrency}}</td>
-      </ng-container>
   
       <ng-container matColumnDef="source">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Origen</th>
@@ -44,16 +36,15 @@
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Descripción</th>
         <td mat-cell *matCellDef="let row">{{row.detail}} </td>
       </ng-container>
+
+      <ng-container matColumnDef="amount">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Monto</th>
+        <td mat-cell *matCellDef="let row"> {{row.amount | localCurrency}}</td>
+    </ng-container>
   
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
         <td mat-cell *matCellDef="let row">
-          <!-- <button mat-mini-fab color="primary">      
-            <mat-icon>attach_money</mat-icon>
-          </button>
-          <button mat-mini-fab color="primary">
-            <mat-icon>edit</mat-icon>
-          </button> -->
 		    </td>
       </ng-container>
 
@@ -70,9 +61,6 @@
             <div class="expenses-element-diagram">
               Metodos de Pago:
               <div  class="expenses-element-name">{{row.payment}}</div>
-              <!-- <div  class="expenses-element-name" *ngFor="let item of row.payments; let i = index" [attr.data-index]="i">
-                {{item.method.description}} {{item.typeName}} : ${{item.amount}}
-              </div> -->
               </div>
             </div>
              

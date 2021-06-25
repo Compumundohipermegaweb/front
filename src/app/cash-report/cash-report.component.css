@@ -19,12 +19,27 @@ mat-card-title{
     padding-bottom:10px;
 }
 
-/* .container {
-    height: 400px;
-    overflow: auto;
-} */
-
 tr.mat-footer-row, th.mat-header-cell  {
     font-weight: bold; font-size: small;
   }
-  
+
+
+  .mat-column-monto {
+    text-align: right;
+    justify-content: flex-end;
+    padding-right: 25px;
+  }
+
+
+  mat-footer-cell{
+    font-size: large;
+  }
+
+  .chart {
+    margin-left: 25px;
+    padding: 15px;
+    display: block;
+    width: 852px;
+    height: 426px;
+
+}

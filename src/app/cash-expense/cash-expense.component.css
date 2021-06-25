@@ -33,5 +33,10 @@ table {
     height: 104px;
   }
   
+  .mat-column-amount {
+    text-align: right;
+    justify-content: flex-end;
+    padding-right: 25px;
+  }
 
   

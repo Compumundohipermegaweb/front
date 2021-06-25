@@ -24,7 +24,7 @@ export class CashExpenseComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  columns = ['supplier','paymentMethods','amount','source', 'description','actions'];
+  columns = ['supplier','paymentMethods','source', 'description','amount','actions'];
   expenses = new MatTableDataSource<CashMovementExpense>()
   cashOpened = 0
 
