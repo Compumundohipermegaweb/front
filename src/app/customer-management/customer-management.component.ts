@@ -133,7 +133,8 @@ export class CustomerManagementComponent implements OnInit, AfterViewInit {
       first_name: this.firstNameControl.value,
       document_number: this.nroDocumentControl.value,
       credit_limit: this.creditLimitControl.value,
-      last_name: this.lastNameControl.value  
+      last_name: this.lastNameControl.value,
+      address: ""
     }
 
     if(changes.email == null && changes.contact_number == null && changes.state == null && changes.first_name == null 
@@ -170,7 +171,9 @@ export class CustomerManagementComponent implements OnInit, AfterViewInit {
     }
 
 
-    /**this.clientService.save(client)
+    
+
+    this.clientService.save(client)
       .subscribe(
         (response) => {
           Swal.fire({
@@ -193,7 +196,7 @@ export class CustomerManagementComponent implements OnInit, AfterViewInit {
             text: "No se pudieron guardar los cambios"
           })
         }
-      )*/
+      )
   }
  }
 
@@ -209,5 +212,7 @@ export interface Client{
   credit_limit: number;
   email: String;
   contact_number: String;
+  address?: String
   editing?: boolean;
 }
+

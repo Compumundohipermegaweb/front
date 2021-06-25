@@ -52,9 +52,9 @@ export class ClientService {
     return this.http.put<Boolean>(this.host + this.checkingAccountUrl, checkingAccountRequest);
   }
 
-  /*save(client: ClientRequest): Observable<ClientResponse> {
-    return this.http.put<ClientResponse>(this.host  this.clientsUrl, client)
-  }*/
+  save(client: ClientRequest): Observable<ClientResponse> {
+    return this.http.put<ClientResponse>(this.host + this.clientsUrl, client)
+  }
   
 }
 
@@ -83,7 +83,7 @@ export interface ClientRequest {
   credit_limit: number;
   email: String;
   contact_number: String;
-  address: String;
+  address?: String;
 }
 
 export interface CheckingAccountResponse {
