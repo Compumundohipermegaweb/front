@@ -135,15 +135,12 @@ export class SalesComponent implements OnInit {
     this.idControl = new FormControl();
 
     this.skuControl = new FormControl();
-    this.skuControl.disable()
 
     this.descriptionControl = new FormControl();
-    this.descriptionControl.disable()
 
     this.quantityControl = new FormControl();
 
     this.priceControl = new FormControl();
-    this.priceControl.disable()
   }
 
   initForms(formBuilder: FormBuilder) {
