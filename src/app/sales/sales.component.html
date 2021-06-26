@@ -52,25 +52,24 @@
                     </mat-form-field>
 
                     <mat-form-field>
-                        <mat-label>SKU</mat-label>
-                        <input matInput type="number" [formControl]="skuControl" required>
-                    </mat-form-field>
-
-                    <mat-form-field>
-                        <mat-label>Detalle</mat-label>
-                        <input matInput [formControl]="descriptionControl" required>
-                    </mat-form-field>
-
-                    <mat-form-field>
                         <mat-label>Cantidad</mat-label>
                         <input matInput type="number" [formControl]="quantityControl" (focusout)="validateStock()" required>
                         <mat-error *ngIf="quantityControl.invalid">{{ getQuantityErrors() }}</mat-error>
                     </mat-form-field>
 
+                    <mat-form-field>
+                        <mat-label>SKU</mat-label>
+                        <input matInput type="number" [formControl]="skuControl" required disabled>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <mat-label>Detalle</mat-label>
+                        <input matInput [formControl]="descriptionControl" required disabled>
+                    </mat-form-field>
 
                     <mat-form-field>
                         <mat-label>Precio unitario</mat-label>
-                        <input matInput type="number" [formControl]="priceControl" required>
+                        <input matInput type="number" [formControl]="priceControl" required disabled>
                         <span matPrefix>$&nbsp;</span>
                     </mat-form-field>
 
