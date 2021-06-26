@@ -17,6 +17,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { BranchService } from '../service/branch.service';
 import { CashService } from '../service/cash.service';
 import { RoleService } from '../service/role.service';
+import { StorageService } from '../login/core/storage.service';
 
 
 @Component({
@@ -68,6 +69,7 @@ export class SalesComponent implements OnInit {
               private branchService: BranchService,
               private cashService: CashService,
               private roleService: RoleService,
+              private storageService: StorageService,
               private router: Router,
               public clientLookupDialog: MatDialog,
               public itemLookupDialog: MatDialog,
@@ -122,7 +124,8 @@ export class SalesComponent implements OnInit {
   initControls() {
     this.invoiceTypeControl = new FormControl();
 
-    this.salesmanControl = new FormControl();
+    this.salesmanControl = new FormControl(this.storageService.getCurrentToken().code);
+    this.salesmanControl.disable()
 
     this.branchControl = new FormControl(this.branchService.selectedBranch);
     this.branchControl.disable()

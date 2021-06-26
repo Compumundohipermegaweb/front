@@ -13,7 +13,14 @@
     <mat-vertical-stepper *ngIf="cashOpen" linear #stepper>
         <mat-step [completed]="isCompleted">
             <form [formGroup]="constantsForm">
-                <ng-template matStepLabel>Detalle</ng-template>
+                <ng-template matStepLabel>Detalle</ng-template>                
+
+                <mat-form-field>
+                    <mat-label>Cliente</mat-label>
+                    <input matInput type="number" [formControl]="clientControl" (focusout)="clientLookup()" required>
+                    <mat-error *ngIf="clientControl.invalid">{{ getClientErrors() }}</mat-error>
+                </mat-form-field>
+
                 <mat-form-field>
                     <mat-label>Tipo de factura</mat-label>
                     <mat-select [formControl]="invoiceTypeControl" required>
@@ -32,12 +39,6 @@
                     <mat-label>Sucursal</mat-label>
                     <input matInput type="number" [formControl]="branchControl" required>
                     <mat-hint>Código de sucursal</mat-hint>
-                </mat-form-field>
-
-                <mat-form-field>
-                    <mat-label>Cliente</mat-label>
-                    <input matInput type="number" [formControl]="clientControl" (focusout)="clientLookup()" required>
-                    <mat-error *ngIf="clientControl.invalid">{{ getClientErrors() }}</mat-error>
                 </mat-form-field>
 
                 <button mat-icon-button (click)="searchClients()">
