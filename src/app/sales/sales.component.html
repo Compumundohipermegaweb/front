@@ -58,19 +58,14 @@
                     </mat-form-field>
 
                     <mat-form-field>
-                        <mat-label>SKU</mat-label>
-                        <input matInput type="number" [formControl]="skuControl" required disabled>
+                        <mat-label>Precio unitario</mat-label>
+                        <input matInput type="number" [formControl]="priceControl" required>
+                        <span matPrefix>$&nbsp;</span>
                     </mat-form-field>
 
                     <mat-form-field>
                         <mat-label>Detalle</mat-label>
-                        <input matInput [formControl]="descriptionControl" required disabled>
-                    </mat-form-field>
-
-                    <mat-form-field>
-                        <mat-label>Precio unitario</mat-label>
-                        <input matInput type="number" [formControl]="priceControl" required disabled>
-                        <span matPrefix>$&nbsp;</span>
+                        <input matInput [formControl]="descriptionControl" required>
                     </mat-form-field>
 
                     <button mat-mini-fab color="primary" class="sumbit">
