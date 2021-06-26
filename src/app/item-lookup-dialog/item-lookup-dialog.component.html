@@ -11,8 +11,10 @@
 
             <mat-form-field>
                 <mat-label>Categoría</mat-label>
-                <input matInput [formControl]="itemCategoryControl">
-                <mat-hint>Código de Categoría</mat-hint>
+                <mat-select [formControl]="itemCategoryControl">
+                    <mat-option [value]="">-</mat-option>
+                    <mat-option *ngFor="let category of categories" [value]="category.id"> {{ category.name }} </mat-option>
+                </mat-select>
             </mat-form-field>
 
             <mat-form-field>
@@ -22,8 +24,10 @@
 
             <mat-form-field>
                 <mat-label>Marca</mat-label>
-                <input matInput [formControl]="itemBrandControl">
-                <mat-hint>Código de Marca</mat-hint>
+                <mat-select [formControl]="itemBrandControl">
+                    <mat-option [value]="">-</mat-option>
+                    <mat-option *ngFor="let brand of brands" [value]="brand.id"> {{ brand.name }} </mat-option>
+                </mat-select>
             </mat-form-field>
 
             <mat-checkbox [formControl]="importedControl">

@@ -1,6 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Brand } from '../brands/brands.component';
+import { Category } from '../categories/categories.component';
+import { BrandService } from '../service/brand.service';
+import { CategoryService } from '../service/category.service';
 import { GetStockFilters, ItemLookupResponse, ItemStockResponse, StockService } from '../service/stock.service';
 
 @Component({
@@ -23,11 +27,17 @@ export class ItemLookupDialogComponent implements OnInit {
 
   filtersForm: FormGroup;
 
+  categories: Category[]
+  brands: Brand[]
+
   constructor(
     public dialogRef: MatDialogRef<ItemLookupDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ItemsStockLookupData,
     private formBuilder: FormBuilder,
-    private stockService: StockService) {
+    private stockService: StockService,
+    private categoryService: CategoryService,
+    private brandService: BrandService) {
+      
       this.branchIdControl = new FormControl(data.branchId);
       this.branchIdControl.disable()
       this.itemCategoryControl = new FormControl("");
@@ -42,6 +52,35 @@ export class ItemLookupDialogComponent implements OnInit {
         brand: this.itemBrandControl,
         imported: this.importedControl
       });
+
+      this.categoryService.findAll().subscribe(
+          (respose) => {
+            if(respose.categories) {
+              this.categories = respose.categories
+            } else {
+              this.categories = []
+            }
+          },
+
+          (error) => {
+            this.categories = []
+          }
+        )
+      
+      this.brandService.findAll().subscribe(
+          (response) => {
+            if(response.brands) {
+              this.brands = response.brands
+            } else {
+              this.brands = []
+            }
+          },
+
+          (error) => {
+            this.brands = []
+          }
+        )
+    
     }
 
   ngOnInit(): void {
