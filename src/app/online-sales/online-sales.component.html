@@ -9,7 +9,7 @@
     <mat-divider></mat-divider>
 
 <mat-card-content>
-<table mat-table [dataSource]="dataSource" class="full-width-table">
+<table mat-table [dataSource]="dataSource" multiTemplateDataRows class="full-width-table">
 
     <ng-container matColumnDef="id">
       <th mat-header-cell *matHeaderCellDef> Pedido </th>
@@ -24,9 +24,9 @@
     <ng-container matColumnDef="state">
         <th mat-header-cell *matHeaderCellDef> Estado </th>
         <td mat-cell *matCellDef="let row">
-            <mat-icon *ngIf="row.state == 'PENDING'" matTooltip="Pendiente" style="color: orange">schedule</mat-icon>
+            <mat-icon *ngIf="row.state == 'PENDIENTE'" matTooltip="Pendiente" style="color: orange">schedule</mat-icon>
             <mat-icon *ngIf="row.state == 'ACCEPTED'" matTooltip="Enviando">local_shipping</mat-icon>
-            <mat-icon *ngIf="row.state == 'CONFIRMED'" matTooltip="Llego" style="color: green">check</mat-icon>
+            <mat-icon *ngIf="row.state == 'ENVIADO'" matTooltip="Enviado" style="color: green">check</mat-icon>
             <mat-icon *ngIf="row.state == 'REJECTED'" matTooltip="Rechazado" style="color: red">close</mat-icon>
         </td>
     </ng-container>
@@ -41,18 +41,26 @@
         <td mat-cell *matCellDef="let row"> {{row.shipping_company}} </td>
     </ng-container>
 
-    <ng-container matColumnDef="items_detail">
-        <th mat-header-cell *matHeaderCellDef> Items </th>
-        <td mat-cell *matCellDef="let row"> 
-            <mat-select [formControl]="itemsControl">
-                <mat-option *ngFor="let row of rows" [value]="row.id"> {{row.items_detail}}  </mat-option>
-            </mat-select>
-        </td>
-    </ng-container>
-    
+    <ng-container matColumnDef="expandedDetail">
+		<td mat-cell *matCellDef="let row" [attr.colspan]="displayedColumns.length">
+			<div class="example-element-detail" [@detailExpand]="row == expandedElement ? 'expanded' : 'collapsed'">
+                    <mat-option *ngFor="let item of row.items_detail.sale_details; let i = index" [attr.data-index]="i">
+                        <p>Item: {{item.id }} Cantidad: {{item.quantity}} Precio x Unid.: {{item.unit_price}} </p>
+                    </mat-option> 
+
+            </div>
+		</td>
+	</ng-container>
+
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
+    <tr mat-row *matRowDef="let element; columns: displayedColumns;"
+      class="example-element-row"
+      [class.example-expanded-row]="expandedElement === element"
+      (click)="expandedElement = expandedElement === element ? null : element">
+  </tr>
+  <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+</table>
+
 </mat-card-content>
 </mat-card>

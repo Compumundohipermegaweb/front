@@ -21,7 +21,7 @@ export class OrderService {
 }
 
 export interface Orders{
-  Orders: Order[];
+  orders: Order[];
 }
 
 export interface Order {
