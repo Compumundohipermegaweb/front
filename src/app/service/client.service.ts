@@ -27,6 +27,11 @@ export class ClientService {
     const requestParams = new HttpParams().set("name", name).set("document", document);
     return this.http.get<ClientResponse[]>(this.host + this.clientsUrl, { params: requestParams });
   }
+  
+  getClientByFullParams(name: string, lastName: string, document: string): Observable<ClientResponse[]> {
+    const requestParams = new HttpParams().set("name", name).set("document", document).set("last_name", lastName);
+    return this.http.get<ClientResponse[]>(this.host + this.clientsUrl, { params: requestParams });
+  }
 
   getClientBalance(clientId: number): Observable<CheckingAccountResponse> {
     return this.http.get<CheckingAccountResponse>(this.host + this.buildCheckingAccountUrl(clientId))

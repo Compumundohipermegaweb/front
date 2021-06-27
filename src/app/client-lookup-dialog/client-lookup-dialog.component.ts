@@ -16,6 +16,7 @@ export class ClientLookupDialogComponent implements OnInit {
 
   form: FormGroup;
   nameControl: FormControl;
+  lastNameControl: FormControl
   documentControl: FormControl;
 
   foundClients: Client[] = []
@@ -28,10 +29,12 @@ export class ClientLookupDialogComponent implements OnInit {
     private clientService: ClientService
   ) {
     this.nameControl = new FormControl("")
+    this.lastNameControl = new FormControl("")
     this.documentControl = new FormControl("")
 
     this.form = formBuilder.group({
       name: this.nameControl,
+      lastName: this.lastNameControl,
       document: this.documentControl
     });
   }
@@ -42,7 +45,7 @@ export class ClientLookupDialogComponent implements OnInit {
 
   lookupClients() {
     this.searchingClients = true;
-    this.clientService.getClient(this.nameControl.value, this.documentControl.value)
+    this.clientService.getClientByFullParams(this.nameControl.value, this.lastNameControl.value, this.documentControl.value)
       .subscribe(
         (response) => {
           this.searchingClients = false;
