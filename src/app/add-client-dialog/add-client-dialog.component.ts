@@ -25,6 +25,10 @@ export class AddClientDialogComponent implements OnInit {
 
   createdClients: ClientResponse[];
 
+  clients: ClientResponse[];
+
+  repetido: boolean;
+
   constructor(
     public dialogRef: MatDialogRef<AddClientDialogComponent>, 
     private formBuilder: FormBuilder,
@@ -53,10 +57,26 @@ export class AddClientDialogComponent implements OnInit {
       })
 
       this.dialogRef.disableClose = true;
+
+      this.fetchClients()
+
+      this.repetido = false;
     }
 
   ngOnInit(): void {
   }
+
+  fetchClients(){
+    this.clients = []
+
+    this.clientService.getAll()
+      .subscribe(
+        (response) => {
+          this.clients = response.clients.filter((it)=>it.id!=0)
+        }
+      )
+  }
+
 
   createClient(){
     this.creatingClient = true;
@@ -88,6 +108,7 @@ export class AddClientDialogComponent implements OnInit {
 
           this.createdClients.push(response);
           console.log("Clientes creados = " + this.createdClients.length)
+          this.close()
         },
 
         (error) => {
@@ -99,6 +120,26 @@ export class AddClientDialogComponent implements OnInit {
           });
         }
       );
+  }
+
+  validateClient(){
+    this.repetido = false;
+    this.clients.forEach(element => {
+      if(element.document_number == this.documentControl.value){
+        this.repetido = true;
+        this.documentControl.setErrors({"invalid": true});
+      }
+    });
+    if(this.repetido == false){
+      this.documentControl.setErrors(null)
+    }
+    
+  }
+
+  getDocumentErrors() {
+    if(this.documentControl.hasError("invalid")) {
+      return " Documento Existente ";
+    }
   }
 
   private getState() {

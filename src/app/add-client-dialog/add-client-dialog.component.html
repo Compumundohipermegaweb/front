@@ -5,7 +5,8 @@
             <div>
                 <mat-form-field appearance="outline">
                     <mat-label>Documento</mat-label>
-                    <input matInput type="number" [formControl]="documentControl" required>
+                    <input matInput type="number" [formControl]="documentControl" (focusout)="validateClient()" required>
+                    <mat-error *ngIf="documentControl.invalid">{{ getDocumentErrors() }}</mat-error>
                 </mat-form-field>
                 <mat-form-field>
                     <mat-label>Nombre</mat-label>
