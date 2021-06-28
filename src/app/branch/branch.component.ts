@@ -4,8 +4,10 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { StringValueToken } from 'html2canvas/dist/types/css/syntax/tokenizer';
-import { BranchService } from '../service/branch.service'
+import { BranchResponse, BranchService } from '../service/branch.service'
 import Swal from 'sweetalert2';
+import { AddBranchDialogComponent } from '../add-branch-dialog/add-branch-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 
 
@@ -17,18 +19,16 @@ import Swal from 'sweetalert2';
 })
 
 //export class BranchComponent implements AfterViewInit {
-export class BranchComponent implements OnInit, AfterViewInit{
+export class BranchComponent implements OnInit{
 
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
-  @ViewChild(MatTable) table!: MatTable<MyTableItem>;
-  dataSource = new MatTableDataSource<Branch>();
+  
+  dataSource = new MatTableDataSource<BranchResponse>();
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
   displayedColumns = ['codigo', 'domicilio', 'cp', 'telefono', 'mail', 'horarios'];
 
-  constructor(private changeDetectorRefs: ChangeDetectorRef, private branchService: BranchService) {
+  constructor(private changeDetectorRefs: ChangeDetectorRef, private branchService: BranchService, private newBranch: MatDialog) {
     this.initDataSource();
   }
 
@@ -37,11 +37,22 @@ export class BranchComponent implements OnInit, AfterViewInit{
   }
 
 
+  add(){
+    const dialogRef = this.newBranch.open(AddBranchDialogComponent, { });
 
-  ngAfterViewInit(): void {
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
+    dialogRef.afterClosed()
+      .subscribe(
+        (result: BranchResponse[]) => {
+          if(result != null && result.length > 0) {
+            result.forEach(element => {
+              this.dataSource.data.push(element);
+            });
+            this.changeDetectorRefs.detectChanges();
+          }
+        }
+      );
   }
+  
 
   initDataSource() {
     this.dataSource = new MatTableDataSource()

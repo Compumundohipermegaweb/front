@@ -25,8 +25,32 @@ export class BranchService {
   selectBranch(branchId: number) {
     this.selectedBranch = branchId
   }
+
+  newBranch(branch: PostBranchRequest): Observable<BranchResponse> {
+    return this.http.post<BranchResponse>(this.HOST + this.BASE_URL, branch)
+  }
 }
 
 export interface GetAllBranchesResponse {
-  branches: Branch[]
+  branches: BranchResponse[]
+}
+
+export interface PostBranchRequest{
+  id?: number;
+  branch: String;
+  address: String;
+  postal_code: String;
+  email: String;
+  contact_number: String;
+  attention_schedule: String;
+}
+
+export interface BranchResponse{
+  id: number;
+  branch: String;
+  address: String;
+  postalCode: String;
+  email: String;
+  contactNumber: String;
+  attentionSchedule: String;
 }

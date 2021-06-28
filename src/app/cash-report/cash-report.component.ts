@@ -85,7 +85,7 @@ getBranch(){
 this.branchService.getAll()
       .subscribe(
         (response) => {
-         this.branch =response.branches.filter((it)=>it.id=this.branchService.selectedBranch)[0].name
+         this.branch =response.branches.filter((it)=>it.id=this.branchService.selectedBranch)[0].branch
          console.log(JSON.stringify(this.branch))
         },
 
