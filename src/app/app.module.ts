@@ -82,6 +82,7 @@ import { PurchaseOrdersComponent } from './purchase-orders/purchase-orders.compo
 import { DispatchesComponent } from './dispatches/dispatches.component';
 import { OnlineSalesComponent } from './online-sales/online-sales.component';
 import { CheckingAccountDialogComponent } from './checking-account-dialog/checking-account-dialog.component';
+import { AddClientDialogComponent } from './add-client-dialog/add-client-dialog.component';
 
 
 registerLocaleData(localEsAr)
@@ -131,7 +132,8 @@ registerLocaleData(localEsAr)
     PurchaseOrdersComponent,
     DispatchesComponent,
     OnlineSalesComponent,
-    CheckingAccountDialogComponent
+    CheckingAccountDialogComponent,
+    AddClientDialogComponent
   ],
   imports: [
     BrowserModule,

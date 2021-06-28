@@ -60,6 +60,10 @@ export class ClientService {
   save(client: ClientRequest): Observable<ClientResponse> {
     return this.http.put<ClientResponse>(this.host + this.clientsUrl, client)
   }
+
+  newClient(client: ClientRequest2): Observable<ClientResponse> {
+    return this.http.post<ClientResponse>(this.host + this.clientsUrl, client)
+  }
   
 }
 
@@ -89,6 +93,18 @@ export interface ClientRequest {
   email: String;
   contact_number: String;
   address?: String;
+}
+
+export interface ClientRequest2 {
+  id?: number;
+  document_number: String;
+  first_name: String;
+  last_name: String;
+  state: String;
+  credit_limit: number;
+  email: String;
+  contact_number: String;
+  address: String;
 }
 
 export interface CheckingAccountResponse {

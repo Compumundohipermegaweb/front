@@ -5,8 +5,9 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import Swal  from 'sweetalert2';
+import { AddClientDialogComponent } from '../add-client-dialog/add-client-dialog.component';
 import { CheckingAccountDialogComponent } from '../checking-account-dialog/checking-account-dialog.component';
-import { ClientService } from '../service/client.service'
+import { ClientResponse, ClientService } from '../service/client.service'
 
 @Component({
   selector: 'app-customer-management',
@@ -30,7 +31,8 @@ export class CustomerManagementComponent implements OnInit{
   constructor(
     private changeDetectorRefs: ChangeDetectorRef,
     private clientService: ClientService,
-    private checkingAccountDialog: MatDialog)
+    private checkingAccountDialog: MatDialog,
+    private newClient: MatDialog)
   {
     this.initDataSource();
     this.stateControl = new FormControl()
@@ -183,7 +185,24 @@ export class CustomerManagementComponent implements OnInit{
         }
       )
   }
- }
+
+  add(){
+    const dialogRef = this.newClient.open(AddClientDialogComponent, { });
+
+    dialogRef.afterClosed()
+      .subscribe(
+        (result: ClientResponse[]) => {
+          if(result != null && result.length > 0) {
+            result.forEach(element => {
+              this.dataSource.data.push(element);
+            });
+            this.changeDetectorRefs.detectChanges();
+          }
+        }
+      );
+  }
+  }
+ 
 
 
 

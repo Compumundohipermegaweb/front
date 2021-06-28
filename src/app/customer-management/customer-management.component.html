@@ -12,6 +12,11 @@
     <input matInput (keyup)="applyFilter($event)" #input>
   </mat-form-field>
 
+  <button mat-raised-button color="primary" (click)="add()">
+    <mat-icon>add</mat-icon>
+    <span>Nuevo</span>
+</button>
+
   <mat-card-content>
 
   <table  mat-table [dataSource]="dataSource"  class="full-width-table" matSort aria-label="Elements">
