@@ -13,7 +13,7 @@ import { ClientService } from '../service/client.service'
   templateUrl: './customer-management.component.html',
   styleUrls: ['./customer-management.component.css']
 })
-export class CustomerManagementComponent implements OnInit, AfterViewInit {
+export class CustomerManagementComponent implements OnInit{
 
   stateControl: FormControl;
   contactNumberControl: FormControl;
@@ -21,14 +21,11 @@ export class CustomerManagementComponent implements OnInit, AfterViewInit {
   nroDocumentControl: FormControl;
   firstNameControl: FormControl;
   lastNameControl: FormControl;
-  creditLimitControl: FormControl;
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
-  @ViewChild(MatTable) table!: MatTable<Client>;
+ 
   dataSource = new MatTableDataSource<Client>();
 
-  displayedColumns = ['id', 'documento', 'nombre', 'apellido' ,'email','telefono' ,'estado', 'limiteDeCredito', 'acciones'];
+  displayedColumns = ['id', 'documento', 'nombre', 'apellido' ,'email','telefono' ,'estado', 'acciones'];
 
   constructor(
     private changeDetectorRefs: ChangeDetectorRef,
@@ -42,15 +39,9 @@ export class CustomerManagementComponent implements OnInit, AfterViewInit {
     this.nroDocumentControl = new FormControl();
     this.firstNameControl = new FormControl();
     this.lastNameControl = new FormControl();
-    this.creditLimitControl = new FormControl();
   }
 
   ngOnInit(): void {
-  }
-
-  ngAfterViewInit(): void {
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
   }
 
   initDataSource(){
@@ -132,13 +123,12 @@ export class CustomerManagementComponent implements OnInit, AfterViewInit {
       state: this.stateControl.value,
       first_name: this.firstNameControl.value,
       document_number: this.nroDocumentControl.value,
-      credit_limit: this.creditLimitControl.value,
       last_name: this.lastNameControl.value,
       address: ""
     }
 
-    if(changes.email == null && changes.contact_number == null && changes.state == null && changes.first_name == null 
-      && changes.document_number == null, changes.credit_limit == null, changes.last_name == null) {
+    if(changes.email == null && changes.contact_number == null && changes.state == null && changes.first_name == null && changes.document_number == null  && changes.last_name == null){
+      alert("entro")
       return;
     }
 
@@ -166,10 +156,6 @@ export class CustomerManagementComponent implements OnInit, AfterViewInit {
       client.document_number = changes.document_number
     }
 
-    if(changes.credit_limit) {
-      client.credit_limit = changes.credit_limit
-    }
-
 
     
 
@@ -186,7 +172,6 @@ export class CustomerManagementComponent implements OnInit, AfterViewInit {
           this.nroDocumentControl.setValue(null)
           this.firstNameControl.setValue(null)
           this.lastNameControl.setValue(null)
-          this.creditLimitControl.setValue(null)
         },
 
         (error) => {
