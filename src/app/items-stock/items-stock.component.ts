@@ -5,6 +5,7 @@ import { StockService } from '../service/stock.service';
 import Swal from 'sweetalert2';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { EditStockDialogComponent } from '../edit-stock-dialog/edit-stock-dialog.component';
+import { BranchService } from '../service/branch.service';
 
 @Component({
   selector: 'app-items-stock',
@@ -22,6 +23,7 @@ export class ItemsStockComponent implements OnInit {
     private stockService: StockService,
     public changeDetectorRef: ChangeDetectorRef,
     public editStockDialog: MatDialog,
+    private branchService: BranchService,
     //@Inject(MAT_DIALOG_DATA) public data: EditStockDialogData,
   ) {
     this.loadStock();
@@ -36,7 +38,7 @@ export class ItemsStockComponent implements OnInit {
   }
 
   loadStock() {
-    this.stockService.getStock(1)
+    this.stockService.getStock(this.branchService.selectedBranch)
       .subscribe(
         (response) => {
           this.stock.data = response.stocks;
